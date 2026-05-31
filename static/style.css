@@ -1,0 +1,91 @@
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+.main-body{
+    width: 100%;
+    min-height: 100vh;
+    background: #fff;
+}
+.image img {
+    float: left;
+    width: 167px;
+    height: 170px;
+}
+.image{
+    width: 100%;
+    height: 169px;
+}
+.qoute{
+    width: 100%;
+    height: 90px;
+    font-family: Luminari, fantasy;
+    color: black;
+    font-size: 27px;
+    padding-left: 311px;
+}
+.upload-image{
+    position: fixed;
+    bottom: 15px;
+    right: 25px;
+}
+
+.uploadimage{
+    width: 92px;
+    cursor: pointer;
+}
+#login{
+    position:fixed;
+    right: 100px;
+    top: 175px;
+    font-weight: 200;
+    font-family: Luminari, fantasy;
+}
+#demo{
+    position: fixed;
+    right: 220px;
+    top: 175px;
+    color: black;
+    font-size: 20px;
+    font-family: Luminari, fantasy;
+}
+.form {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;     
+    gap: 20px;               
+    margin-top: 50px;        
+}
+
+.form input {
+    padding: 10px 20px;      
+    font-size: 16px;
+    margin-left: 193px;
+}
+
+.form button {
+    padding: 10px 30px;   
+    font-size: 16px;
+    cursor: pointer;
+}
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    color: #333333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.google-btn img {
+    width: 30px;
+    margin-right: 10px;
+}
+.google-btn:hover {
+    background-color: #f1f1f1;
+}

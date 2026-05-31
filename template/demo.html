@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/script.js"></script>
+<style>
+    html{background: black;}
+</style>
+<body>
+    <h1 style="color: white;font-weight:bold;text-align:center">Upload Disaster Image</h1>
+    <div class="form">
+            <input type="file" accept="image/*" onchange="preview_image(event)">
+            <img id="preview" width="350px;">
+            <button type="submit" onclick="upload()">Upload</button>
+    </div>
+</body>
+</html>

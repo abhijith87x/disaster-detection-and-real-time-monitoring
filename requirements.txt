@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+tensorflow
+numpy
+pillow
+python-multipart
+authlib
+itsdangerous
+httpx
