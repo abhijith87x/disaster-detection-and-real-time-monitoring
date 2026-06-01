@@ -4,7 +4,9 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
-model = load_model("ml/Disaster_detector.keras", compile=False)
+model = load_model("ml/multi-Disaster_detector3.keras", compile=False)
+classes = ["Earthquake","Flood","Landslide","No-disaster","Wildfire"]
+
 async def predict_disaster(file):
     await file.seek(0)
     image_bytes = await file.read()
@@ -14,8 +16,16 @@ async def predict_disaster(file):
     image_array = np.array(image)
     image_array = image_array/255.0
     Final_image = np.expand_dims(image_array,axis=0)
-    prediction = model.predict(Final_image)[0][0]
-    if prediction > 0.5:
-        return{"Non_Disaster"}
+    ##prediction = model.predict(Final_image)[0][0]
+    #print("Prediction value:", f"{prediction*100:.2f}%")
+    #if prediction > 0.5:
+        #return{"Non_Disaster"}
+    #else:
+        #return{"Disaster"}
+    prediction = model.predict(Final_image)
+    predicted_class = classes[np.argmax(prediction)]
+    if predicted_class in ["Earthquake", "Flood", "Landslide", "Wildfire"]:
+        return { "Disaster"}
     else:
-        return{"Disaster"}
+        return {"Non_Disaster"}
+    
