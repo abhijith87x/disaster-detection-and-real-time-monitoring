@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from auth.auth import router as auth_router
 from users.image_route import router as image_router
+from users.profile import router as profile_router
 from starlette.middleware.sessions import SessionMiddleware
 from config import client_secret
 from fastapi.staticfiles import StaticFiles
@@ -26,3 +27,4 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(auth_router)
 app.include_router(image_router)
+app.include_router(profile_router)

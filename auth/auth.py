@@ -65,7 +65,7 @@ async def google_callback(request : Request):
         else:
             print("User already exists in database")
         
-        jwt_token = await create_access_token(data={"sub": email})
+        jwt_token = await create_access_token(data={"sub": email,"user_id": existing_user[0] })
         print("Generated JWT token:", jwt_token)
         response = RedirectResponse(url="/")
         

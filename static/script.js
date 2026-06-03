@@ -141,7 +141,86 @@ function drawCanvas(canvas, img) {
       x, y, img.width * ratio, img.height * ratio);
 };
 
-  async function senddata(){
+async function checkuser() {
+      const response = await fetch("http://localhost:8000/profile",{
+      method : 'GET',
+      credentials: 'include'
+  });
+  
+const authSection = document.getElementById("auth-section");
+const authButton =  document.getElementById("auth-section");
+console.log("auth button : ",authButton)
+if (response.ok){
+  const user = await response.json()
+  if (user) {
+    authSection.innerHTML = `
+            <div class="profile-container">
+
+                <img
+                    src="${user.profile_pic}"
+                    class="profile-img"
+                    id="profile-img"
+                >
+
+                <div class="profile-menu"
+                    id="profile-menu">
+
+                    <div class="profile-info">
+
+                        <div class="profile-name">
+                            ${user.name}
+                        </div>
+
+                        <div class="profile-email">
+                            ${user.email}
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="logout-btn"
+                        onclick="window.location.href='/logout'"
+                    >
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>
+            `;
+
+            const profileImg =
+                document.getElementById("profile-img");
+
+            const profileMenu =
+                document.getElementById("profile-menu");
+
+            profileImg.addEventListener("click", () => {
+
+                if (
+                    profileMenu.style.display === "block"
+                ) {
+
+                    profileMenu.style.display = "none";
+
+                } else {
+
+                    profileMenu.style.display = "block";
+                }
+
+            });
+
+        }
+}else{
+  authSection.innerHTML = `
+    <button class="btn-login"
+        onclick="window.location.href='/login-page'">
+        Login / Signup
+    </button>
+    `;
+ }
+}
+async function senddata(){
   //console.log(file,"...",typeof(file),"....",file instanceof File)
   //const reader = new FileReader();
   //reader.onload = (e)=>{

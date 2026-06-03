@@ -25,9 +25,19 @@
                 <i class="ti ti-radar"></i>
                 <span class="app-title">DisasterWatch</span>
             </div>
-            <div class="nav-right">
+            <!-- <div class="nav-right">
                 <a href="/upload-form" class="btn-demo">Demo</a>
                 <button class="btn-login" onclick="window.location.href='/login-page'">Login / Signup</button>
+            </div> -->
+            <div class="nav-right">
+                <a href="/upload-form" class="btn-demo">Demo</a>
+
+                <div id="auth-section">
+                    <button class="btn-login"
+                        onclick="window.location.href='/login-page'">
+                        Login / Signup
+                     </button>
+                </div>
             </div>
         </div>
 
@@ -65,5 +75,8 @@
 
     </div>
     <script src="/static/script.js"></script>
+    <script>
+        window.addEventListener("pageshow" ,checkuser);
+    </script>
 </body>
 </html>

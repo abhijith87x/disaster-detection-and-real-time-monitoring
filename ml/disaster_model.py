@@ -23,8 +23,11 @@ async def predict_disaster(file):
     #else:
         #return{"Disaster"}
     prediction = model.predict(Final_image)
+    print("prediction array:", prediction)
+    print("max prediction value:", f"{np.max(prediction)*100:.2f}%")
     predicted_class = classes[np.argmax(prediction)]
-    if predicted_class in ["Earthquake", "Flood", "Landslide", "Wildfire"]:
+    print("Predicted class:", predicted_class)
+    if predicted_class in ["Earthquake","Flood","Landslide","Wildfire"]:
         return { "Disaster"}
     else:
         return {"Non_Disaster"}
