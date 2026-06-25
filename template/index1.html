@@ -47,24 +47,6 @@
         </div>
 
         <div class="cards-grid" id="disaster-feed">
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
-            <div class="disaster-card placeholder">
-                <div class="placeholder-txt"><i class="ti ti-plus"></i>Reports appear here</div>
-            </div>
         </div>
 
         <div class="camera-fab">
@@ -74,9 +56,14 @@
         </div>
 
     </div>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script src="/static/script.js"></script>
+
     <script>
-        window.addEventListener("pageshow" ,checkuser);
+        window.addEventListener("pageshow" ,() =>{
+            profile_update();
+        });
     </script>
 </body>
 </html>

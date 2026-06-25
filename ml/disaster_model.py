@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 model = load_model("ml/multi-Disaster_detector3.keras", compile=False)
-classes = ["Earthquake","Flood","Landslide","No-disaster","Wildfire"]
+classes = ["Earthquake","Flood","Landslide","Non_Disaster","Wildfire"]
 
 async def predict_disaster(file):
     await file.seek(0)
@@ -27,8 +27,4 @@ async def predict_disaster(file):
     print("max prediction value:", f"{np.max(prediction)*100:.2f}%")
     predicted_class = classes[np.argmax(prediction)]
     print("Predicted class:", predicted_class)
-    if predicted_class in ["Earthquake","Flood","Landslide","Wildfire"]:
-        return { "Disaster"}
-    else:
-        return {"Non_Disaster"}
-    
+    return predicted_class

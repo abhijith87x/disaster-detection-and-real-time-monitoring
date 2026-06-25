@@ -15,7 +15,9 @@ body {
     width: 100%;
 }
 
-/* Icon strip */
+/* ─────────────────────────────────────────
+   ICON STRIP
+   ───────────────────────────────────────── */
 .image {
     display: flex;
     width: 100%;
@@ -40,7 +42,9 @@ body {
     font-size: 22px;
 }
 
-/* Navbar */
+/* ─────────────────────────────────────────
+   NAVBAR
+   ───────────────────────────────────────── */
 .navbar {
     display: flex;
     align-items: center;
@@ -83,63 +87,6 @@ body {
     font-family: sans-serif;
 }
 
-.profile-container{
-    position:relative;
-}
-
-.profile-img{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    object-fit:cover;
-    cursor:pointer;
-    border:2px solid #e94560;
-}
-
-.profile-menu{
-    position:absolute;
-    top:50px;
-    right:0;
-    width:250px;
-    background:#12122a;
-    border:1px solid #2a2a4a;
-    border-radius:10px;
-    display:none;
-    overflow:hidden;
-    z-index:1000;
-}
-
-.profile-info{
-    padding:15px;
-}
-
-.profile-name{
-    color:white;
-    font-size:14px;
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.profile-email{
-    color:#a0a8c8;
-    font-size:12px;
-    word-break:break-word;
-}
-
-.logout-btn{
-    width:100%;
-    padding:12px;
-    border:none;
-    background:#e94560;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.logout-btn:hover{
-    opacity:0.9;
-}
-
 .btn-login {
     font-size: 11px;
     color: #fff;
@@ -152,7 +99,69 @@ body {
     font-family: sans-serif;
 }
 
-/* Section header */
+/* ─────────────────────────────────────────
+   PROFILE
+   ───────────────────────────────────────── */
+.profile-container {
+    position: relative;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #e94560;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 250px;
+    background: #12122a;
+    border: 1px solid #2a2a4a;
+    border-radius: 10px;
+    display: none;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.profile-info {
+    padding: 15px;
+}
+
+.profile-name {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    color: #a0a8c8;
+    font-size: 12px;
+    word-break: break-word;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #e94560;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    opacity: 0.9;
+}
+
+/* ─────────────────────────────────────────
+   SECTION HEADER
+   ───────────────────────────────────────── */
 .section-header {
     display: flex;
     align-items: center;
@@ -176,7 +185,9 @@ body {
     padding: 3px 10px;
 }
 
-/* Disaster cards grid */
+/* ─────────────────────────────────────────
+   CARDS GRID
+   ───────────────────────────────────────── */
 .cards-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -184,42 +195,62 @@ body {
     padding: 0 14px 100px;
 }
 
-.disaster-card.placeholder {
-    border: 0.5px dashed #2a2a4a;
+/* ─────────────────────────────────────────
+   DISASTER CARD
+   ───────────────────────────────────────── */
+.dcard {
+    background: #12122a;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Image slot */
+.cimg-slot {
+    width: 100%;
+    aspect-ratio: 16 / 9;
     background: #0d0d1a;
-    border-radius: 10px;
+    border-bottom: 0.5px solid #1a1a38;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 110px;
-    opacity: 0.45;
 }
 
-.placeholder-txt {
-    font-size: 10px;
-    color: #3a3a6a;
-    text-align: center;
-}
-
-.placeholder-txt i {
-    font-size: 20px;
+/* Real image from backend */
+.cimg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    margin-bottom: 4px;
-    color: #2a2a4a;
 }
 
-/* Real disaster cards (used when data loads in) */
-.disaster-card {
-    background: #12122a;
-    border: 0.5px solid #2a2a4a;
-    border-radius: 10px;
-    padding: 12px;
+/* Placeholder until image arrives */
+.cimg-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cimg-placeholder i {
+    font-size: 24px;
+    color: #1e1e3a;
+}
+
+/* Card body */
+.cbody {
+    padding: 10px 10px 9px;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.card-type {
+/* Type tag */
+.ctag {
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -228,43 +259,220 @@ body {
     width: fit-content;
 }
 
-.card-type.flood  { background: #0f3460; color: #7ab3f0; }
-.card-type.fire   { background: #3d1a0a; color: #f09a60; }
-.card-type.quake  { background: #2a1a3d; color: #c09af0; }
-.card-type.wind   { background: #0a2a2a; color: #60d0c0; }
+.ctag.fire  { background: #3d1a0a; color: #f09a60; }
+.ctag.flood { background: #0f3460; color: #7ab3f0; }
+.ctag.quake { background: #2a1a3d; color: #c09af0; }
+.ctag.wind  { background: #0a2a2a; color: #60d0c0; }
 
-.card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
+/* Caption */
+.ccap {
+    font-size: 11px;
+    color: #8890b8;
+    line-height: 1.45;
 }
 
-.card-meta {
-    font-size: 10px;
-    color: #6070a0;
+/* ─────────────────────────────────────────
+   ACTION BAR
+   ───────────────────────────────────────── */
+.cacts {
     display: flex;
     align-items: center;
     gap: 4px;
+    border-top: 0.5px solid #1a1a38;
+    padding-top: 8px;
 }
 
-.card-meta i {
-    font-size: 11px;
-}
+.sp { flex: 1; }
 
-.card-status {
-    font-size: 9px;
-    font-weight: 700;
-    color: #e94560;
+/* ─────────────────────────────────────────
+   LIKE / DISLIKE — particle burst animation
+   ───────────────────────────────────────── */
+.abtn {
+    position: relative;
+    background: none;
+    border: none;
+    color: #404878;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 3px;
+    justify-content: center;
+    overflow: visible;
 }
 
-.card-status.resolved {
-    color: #6070a0;
+.abtn i {
+    font-size: 17px;
+    position: relative;
+    z-index: 2;
+    transition: color 0.2s, transform 0.15s;
 }
 
-/* Camera FAB */
+.abtn:hover i { transform: scale(1.15); }
+
+.burst-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.b {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+}
+
+.b1 { --angle: 0deg;   }
+.b2 { --angle: 60deg;  }
+.b3 { --angle: 120deg; }
+.b4 { --angle: 180deg; }
+.b5 { --angle: 240deg; }
+.b6 { --angle: 300deg; }
+
+@keyframes burst-out {
+    0%   { transform: translate(-50%,-50%) rotate(var(--angle)) translateX(0)    scale(1); opacity: 1; }
+    70%  { transform: translate(-50%,-50%) rotate(var(--angle)) translateX(14px) scale(1); opacity: 1; }
+    100% { transform: translate(-50%,-50%) rotate(var(--angle)) translateX(18px) scale(0); opacity: 0; }
+}
+
+@keyframes icon-bounce {
+    0%   { transform: scale(1);    }
+    35%  { transform: scale(1.4);  }
+    60%  { transform: scale(0.88); }
+    80%  { transform: scale(1.1);  }
+    100% { transform: scale(1);    }
+}
+
+@keyframes icon-shake {
+    0%   { transform: scale(1)    rotate(0deg);   }
+    20%  { transform: scale(1.35) rotate(-12deg); }
+    45%  { transform: scale(1.3)  rotate(10deg);  }
+    65%  { transform: scale(1.0)  rotate(-5deg);  }
+    85%  { transform: scale(1.05) rotate(3deg);   }
+    100% { transform: scale(1)    rotate(0deg);   }
+}
+
+/* Like active */
+.abtn.lk-on { color: #22c55e; }
+.abtn.lk-on i { animation: icon-bounce 0.38s ease forwards; color: #22c55e; }
+.abtn.lk-on .b { background: #22c55e; animation: burst-out 0.42s ease-out forwards; }
+.abtn.lk-on .b2 { animation-delay: 0.03s; }
+.abtn.lk-on .b3 { animation-delay: 0.06s; }
+.abtn.lk-on .b4 { animation-delay: 0.02s; }
+.abtn.lk-on .b5 { animation-delay: 0.05s; }
+.abtn.lk-on .b6 { animation-delay: 0.04s; }
+
+/* Dislike active */
+.abtn.dk-on { color: #f59e0b; }
+.abtn.dk-on i { animation: icon-shake 0.42s ease forwards; color: #f59e0b; }
+.abtn.dk-on .b { background: #f59e0b; animation: burst-out 0.42s ease-out forwards; }
+.abtn.dk-on .b2 { animation-delay: 0.03s; }
+.abtn.dk-on .b3 { animation-delay: 0.06s; }
+.abtn.dk-on .b4 { animation-delay: 0.02s; }
+.abtn.dk-on .b5 { animation-delay: 0.05s; }
+.abtn.dk-on .b6 { animation-delay: 0.04s; }
+
+/* ─────────────────────────────────────────
+   REPORT PILL
+   ───────────────────────────────────────── */
+.rpt-btn {
+    background: #2a0a10;
+    border-color: #e94560;
+    color: #e94560;
+    /*background: none;*/
+    border: 0.5px solid #2a2a4a;
+    /*color: #8890b8;*/
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 4px 9px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: sans-serif;
+    white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.rpt-btn:hover { border-color: #e94560; color: #e94560; }
+
+@keyframes rpt-snap {
+    0%   { transform: scale(0.85); opacity: 0; }
+    60%  { transform: scale(1.08); }
+    100% { transform: scale(1);    opacity: 1; }
+}
+
+.rpt-btn.reported {
+    background: #2a0a10;
+    /*border-color: #e94560;*/
+    color: #e94560;
+    animation: rpt-snap 0.22s ease forwards;
+}
+
+/* ─────────────────────────────────────────
+   THREE-DOT MENU
+   ───────────────────────────────────────── */
+.tdwrap { position: relative; }
+
+.tdbtn {
+    background: none;
+    border: none;
+    color: #2a3060;
+    padding: 4px 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s, background 0.15s;
+}
+
+.tdbtn i { font-size: 17px; }
+.tdbtn:hover { background: #1a1a38; color: #8890b8; }
+
+.ddrop {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 32px;
+    background: #1a1a38;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 100;
+    min-width: 96px;
+}
+
+.ddrop.open { display: block; }
+
+.ddrop button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #e94560;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 9px 12px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.ddrop button:hover { background: #2a1020; }
+.ddrop button i     { font-size: 14px; }
+
+/* ─────────────────────────────────────────
+   CAMERA FAB
+   ───────────────────────────────────────── */
 .camera-fab {
     display: flex;
     justify-content: flex-end;
@@ -272,6 +480,9 @@ body {
 }
 
 .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
     width: 58px;
     height: 58px;
     border-radius: 50%;
@@ -282,14 +493,14 @@ body {
     justify-content: center;
     cursor: pointer;
     text-decoration: none;
+    z-index: 50;
 }
 
-.fab i {
-    font-size: 26px;
-    color: #fff;
-}
+.fab i { font-size: 26px; color: #fff; }
 
-/* Form styles (login/other pages) */
+/* ─────────────────────────────────────────
+   FORM STYLES (login/signup pages)
+   ───────────────────────────────────────── */
 .form {
     display: flex;
     flex-direction: column;
@@ -298,16 +509,8 @@ body {
     margin-top: 50px;
 }
 
-.form input {
-    padding: 10px 20px;
-    font-size: 16px;
-}
-
-.form button {
-    padding: 10px 30px;
-    font-size: 16px;
-    cursor: pointer;
-}
+.form input  { padding: 10px 20px; font-size: 16px; }
+.form button { padding: 10px 30px; font-size: 16px; cursor: pointer; }
 
 .google-btn {
     display: inline-flex;
@@ -323,11 +526,5 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.google-btn img {
-    width: 30px;
-    margin-right: 10px;
-}
-
-.google-btn:hover {
-    background-color: #f1f1f1;
-}
+.google-btn img   { width: 30px; margin-right: 10px; }
+.google-btn:hover { background-color: #f1f1f1; }

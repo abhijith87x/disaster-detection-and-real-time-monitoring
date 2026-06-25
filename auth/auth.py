@@ -61,6 +61,10 @@ async def google_callback(request : Request):
                 (email, name, google_id, profile)
             )
             mydb.commit()
+            cursor.execute(
+                "SELECT id FROM users WHERE email = %s",(email,)
+            )
+            existing_user = cursor.fetchone()
             print("New user added to database")
         else:
             print("User already exists in database")
