@@ -115,7 +115,7 @@ async def demo(
                  latitude, 
                  longitude,
                  f"AI detected {result}-related visual patterns in the user uploaded image at {location}."
-                 )
+                )
             )
             last_row = cursor.lastrowid
             mydb.commit()

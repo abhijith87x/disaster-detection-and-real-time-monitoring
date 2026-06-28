@@ -10,7 +10,7 @@ async def get_latest_reports(page: int = 1):
     LIMIT = 6
     OFFSET = (page - 1) * LIMIT
     cursor.execute(
-        "SELECT image_id, user_id, image_path, description FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
+        "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
         (LIMIT, OFFSET)
     )
     reports = cursor.fetchall()

@@ -259,10 +259,8 @@ body {
     width: fit-content;
 }
 
-.ctag.fire  { background: #3d1a0a; color: #f09a60; }
-.ctag.flood { background: #0f3460; color: #7ab3f0; }
-.ctag.quake { background: #2a1a3d; color: #c09af0; }
-.ctag.wind  { background: #0a2a2a; color: #60d0c0; }
+.ctag.Unverified {  color: red; }
+.ctag.Verified {  color: green; }
 
 /* Caption */
 .ccap {
@@ -528,3 +526,145 @@ body {
 
 .google-btn img   { width: 30px; margin-right: 10px; }
 .google-btn:hover { background-color: #f1f1f1; }
+
+/* ─────────────────────────────────────────
+   DISLIKE REASON POPUP
+   ───────────────────────────────────────── */
+.dislike-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: overlay-fade 0.2s ease;
+}
+ 
+@keyframes overlay-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+ 
+.dislike-box {
+    background: #12122a;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 14px;
+    width: 280px;
+    max-width: 90vw;
+    padding: 18px;
+    animation: box-pop 0.25s ease;
+}
+ 
+@keyframes box-pop {
+    0%   { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+ 
+.dislike-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+ 
+.dislike-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+ 
+.dislike-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: #1a1a38;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+ 
+.dislike-option:hover {
+    background: #20203f;
+}
+ 
+.dislike-option input[type="radio"] {
+    accent-color: #f59e0b;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+ 
+.dislike-option span {
+    color: #c5cae9;
+    font-size: 12px;
+}
+ 
+.dislike-actions {
+    display: flex;
+    gap: 8px;
+}
+ 
+.dislike-cancel,
+.dislike-submit {
+    flex: 1;
+    padding: 9px;
+    border-radius: 8px;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+ 
+.dislike-cancel {
+    background: #1e1e3a;
+    color: #8890b8;
+}
+ 
+.dislike-cancel:hover {
+    background: #25254a;
+}
+ 
+.dislike-submit {
+    background: #f59e0b;
+    color: #1a1a2e;
+}
+ 
+.dislike-submit:hover {
+    background: #fbbf4f;
+}
+
+.loc-btn {
+    background: none;
+    border: none;
+    color: #404878;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+}
+
+.loc-btn i {
+    font-size: 18px;
+    transition: transform 0.15s;
+}
+
+.loc-btn:hover {
+    color: #ea4335;
+}
+
+.loc-btn:hover i {
+    transform: scale(1.2);
+}
+
+.loc-btn.active i {
+    color: #ea4335;
+}

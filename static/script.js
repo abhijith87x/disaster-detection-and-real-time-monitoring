@@ -1,5 +1,5 @@
 var imageCapture;
-if (window.location.pathname.includes("/input-camera")){
+if(window.location.pathname.includes("/input-camera")) {
     navigator.mediaDevices.getUserMedia({ video: true })
     .then(mediaStream => {
         document.querySelector('video').srcObject = mediaStream
@@ -7,15 +7,15 @@ if (window.location.pathname.includes("/input-camera")){
         imageCapture = new ImageCapture(track);
     })
 .catch(error => alert("allow camera permission")
- );
+);
 }
 
 function grabFrameButton() {
     imageCapture.grabFrame()
     .then(imageBitmap => {
-    const canvas = document.querySelector('#grabFrameCanvas');
-    drawCanvas(canvas, imageBitmap);
-})
+        const canvas = document.querySelector('#grabFrameCanvas');
+        drawCanvas(canvas, imageBitmap);
+    })
 .catch(error => console.log(error));
 };
 
@@ -27,9 +27,13 @@ function appendGeolocationToFormData(formData) {
         function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
+            const accuracy = position.coords.accuracy
+            if ( accuracy > 20){
+                alert("Location accuracy is low! Use your smartphone to get high accuracy")
+            }
             formData.append("latitude", latitude);
             formData.append("longitude", longitude);
-            console.log("location appended");
+            console.log("location appended",latitude,longitude,accuracy);
             resolve(formData);
         },
         (error) => {
@@ -40,7 +44,7 @@ function appendGeolocationToFormData(formData) {
             resolve(formData); 
         },
         {
-          enableHighAccuracy :false,
+          enableHighAccuracy :true,
           timeout:40000,
           maximumAge:60000
         }
@@ -80,7 +84,8 @@ let date,formData;
             byteArrays.push(byteArray);
           }
         return new Blob(byteArrays,{ type: contentType });
-      } 
+    } 
+
 formData = new FormData();
 formData.append("file", blob,"captured_media.png");
 //console.log("blob",blob)
@@ -101,7 +106,7 @@ appendGeolocationToFormData(formData)
     //console.log(file)
     //console.log( typeof lat);
    
-    if (lat && lon){
+    if (lat && lon) {
       console.log("this oky");
       document.getElementById("upload").style.display="block";
     }  
@@ -123,7 +128,6 @@ appendGeolocationToFormData(formData)
   .catch(error => console.log(error));
 };
 
-
 /* Utils */
 
 function drawCanvas(canvas, img) {
@@ -134,7 +138,7 @@ function drawCanvas(canvas, img) {
   let y = (canvas.height - img.height * ratio) / 2;
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-      x, y, img.width * ratio, img.height * ratio);
+    x, y, img.width * ratio, img.height * ratio);
 };
 
 async function checkuser() {
@@ -143,12 +147,13 @@ async function checkuser() {
       credentials: 'include'
   });
 }
-async function profile_update(){
+
+async function profile_update() {
 const auth_response = await checkuser();
 const authSection = document.getElementById("auth-section");
 const authButton =  document.getElementById("auth-section");
 console.log("auth button : ",authButton)
-if (auth_response.ok){
+if(auth_response.ok) {
   const user = await auth_response.json()
   if (user) {
     authSection.innerHTML = `
@@ -218,7 +223,8 @@ if (auth_response.ok){
     `;
  }
 }
-async function senddata(){
+
+async function senddata() {
     response = await fetch("http://localhost:8000/upload-data", {
     method: "POST",
     body: formData,
@@ -227,11 +233,11 @@ async function senddata(){
 
 console.log("response : ",response)
 const data = await response.json();
-if (response.status == 401){
+if(response.status == 401) {
     window.location.href="/login-page"
-}else if (data == "Non_Disaster"){
+}else if(data == "Non_Disaster") {
     alert("Given image is not Disaster...Reupload");
-}else if (data == "Screen_captured_image"){
+}else if(data == "Screen_captured_image") {
     alert("Sorry Not uploaded! Image is fake or manipulated");
 }else{
     alert("Successfully Uploaded for Backend Process");
@@ -261,7 +267,8 @@ function preview_image(event){
   img.src = URL.createObjectURL(demo_file);
   
 }
-function upload(){
+
+function upload() {
   latitude = demo_formdata.get("latitude")
   longitude = demo_formdata.get("longitude");
   console.log(latitude,longitude)
@@ -269,6 +276,7 @@ function upload(){
     alert("Please give file and location for upload")
     return;
   }
+
   demo_formdata.append("File",demo_file);
   demo_formdata.append("latitude",latitude);
   demo_formdata.append("longitude",longitude);
@@ -280,6 +288,7 @@ function upload(){
   })
 
 .then(res => res.json())
+
 .then(data => {
     if (data == "Non_Disaster"){
       alert("Given image is not Disaster...Reupload");
@@ -292,14 +301,8 @@ function upload(){
       window.location.href="/login-page"
     }
 })
-.catch(err => console.error("error : ",err))
+.catch(err => console.error("error : ", err))
 }
-
-
-
-
-
-
 
 /* ═══════════════════════════════════════════════
    DisasterWatch — script.js
@@ -311,68 +314,75 @@ console.log("socket : soc")
 /* ─────────────────────────────────────────
    LIKE
    ───────────────────────────────────────── */
-async function lk(btn, cardId) {
-    console.log("card id",cardId,typeof(cardId))
-    let like = false;
-    const card_id = document.getElementById(cardId);
-    const isOn  = btn.classList.contains('lk-on');
-    if (card_id.classList.contains('dk-on')) {
-        card_id.classList.remove('dk-on');
-        void card_id.offsetWidth;
-    }
-    btn.classList.remove('lk-on');
-    void btn.offsetWidth;
-    if (!isOn) {
-       btn.classList.add('lk-on');
-       like = true;
-    }
+async function lk(btn, cardId, id) {
     const response = await checkuser();
-        if(response.ok) {
-            user = await response.json();
-            if(user) {
-                currentUserId = user.id;
-                console.log("current user id : ",currentUserId)
-                const card_id = parseInt(cardId.substring(1))
-                fetch(`http://localhost:8000/user/like/update?current_user=${currentUserId}&card_id=${card_id}&like=${like}`,{
-                    method : "POST"
-                });
-           }else{
-                window.location.href="/login-page"
+    if(response.ok) {
+        user = await response.json();
+        if(user) {
+            currentUserId = user.id;
+            console.log("card id",cardId,typeof(cardId))
+            let like = false;
+            const card_id = document.getElementById(cardId);
+            const isOn  = btn.classList.contains('lk-on');
+            if (card_id.classList.contains('dk-on')) {
+                card_id.classList.remove('dk-on');
+                void card_id.offsetWidth;
             }
+            btn.classList.remove('lk-on');
+            void btn.offsetWidth;
+            if(!isOn) {
+                btn.classList.add('lk-on');
+                like = true;
+            }
+    
+            console.log("current user id : ",currentUserId)
+            //const card_iid = parseInt(cardId.substring(1))
+            fetch(`http://localhost:8000/user/like/update?current_user=${currentUserId}&card_id=${id}&like=${like}`,{
+                method : "POST"
+            });
         }else{
             window.location.href="/login-page"
         }
+    }else{
+        window.location.href="/login-page"
+    }
 }
 
 
-/* ─────────────────────────────────────────
+/* ────────────────────────────────────────
    DISLIKE
    ───────────────────────────────────────── */
-async function dk(btn, cardId) {
+const dislikeReasons = [
+    'Flood',
+    'Landslide',
+    'Earthquake',
+    'Wildfire',
+    'Tsunami'
+];
+ 
+let pendingDislike = { btn: null, cardId: null, id: null, dislike : null, type : null };
+
+async function dk(btn, cardId, id, type) {
     const response = await checkuser();
         if(response.ok) {
             user = await response.json();
+
             if(user) {
                 let dislike = false
-                const card_id = document.getElementById(cardId);
-                const isOn  = btn.classList.contains('dk-on');
-                if (card_id.classList.contains('lk-on')) {
-                    card_id.classList.remove('lk-on');
-                    void card_id.offsetWidth;
+                if (btn.classList.contains('dk-on')) {
+                    btn.classList.remove('dk-on');
+                    void btn.offsetWidth;
+                    currentUserId = user.id;
+                    fetch(`http://localhost:8000/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
+                        method : "POST"
+                    });
+                    return;
                 }
-                btn.classList.remove('dk-on');
-                void btn.offsetWidth;
-                if (!isOn){
-                    btn.classList.add('dk-on');
-                    dislike = true
-                }
-                currentUserId = user.id;
-                console.log("current user id : ",currentUserId)
-                const card_id = parseInt(cardId.substring(1))
-                const type = "flood"
-                fetch(`http://localhost:8000/user/dislike/update?current_user=${currentUserId}&card_id=${card_id}&dislike=${dislike}&type=${type}`,{
-                    method : "POST"
-                });
+
+                pendingDislike = { btn, cardId, id, dislike : true, type };
+                console.log(pendingDislike)
+                openDislikePopup();   
+
            }else{
                 window.location.href="/login-page"
             }
@@ -381,6 +391,82 @@ async function dk(btn, cardId) {
         }
 }
 
+function openDislikePopup() {
+    //closeDislikePopup(); // remove any existing one first
+ 
+    const overlay = document.createElement('div');
+    overlay.className = 'dislike-overlay';
+    overlay.id = 'dislikeOverlay';
+ 
+    const optionsHTML = dislikeReasons.map((reason, i) => `
+        <label class="dislike-option">
+            <input type="radio" name="dislikeReason" value="${reason}" ${i === 0 ? 'checked' : ''}>
+            <span>${reason}</span>
+        </label>
+    `).join('');
+ 
+    overlay.innerHTML = `
+        <div class="dislike-box">
+            <h3 class="dislike-title">What type of disaster is this?</h3>
+            <div class="dislike-options">
+                ${optionsHTML}
+            </div>
+            <div class="dislike-actions">
+                <button class="dislike-cancel" onclick="closeDislikePopup()">Cancel</button>
+                <button class="dislike-submit" onclick="confirmDislike()">Submit</button>
+            </div>
+        </div>`;
+ 
+    document.body.appendChild(overlay);
+}
+ 
+function closeDislikePopup() {
+    const existing = document.getElementById('dislikeOverlay');
+    if (existing) existing.remove();
+    pendingDislike = { btn: null, cardIdId: null, id: null, dislike : null, type : null };
+}
+ 
+async function confirmDislike() {
+    console.log("startednpop")
+    const response = await checkuser();
+        if(response.ok) {
+            user = await response.json();
+
+            if(user) {
+                currentUserId = user.id;
+                const selected = document.querySelector('input[name="dislikeReason"]:checked');
+                pendingDislike.type = selected.value
+                if (!selected) {
+                    alert("Empty respone");
+                        return
+                    }
+                
+                const { btn, cardId, id, dislike, type } = pendingDislike;
+                console.log(btn, cardId)
+                if (!btn) return;
+ 
+                const other = document.getElementById(cardId);
+                if (other && other.classList.contains('lk-on')) {
+                    other.classList.remove('lk-on');
+                    void other.offsetWidth;
+                }
+    
+                btn.classList.remove('dk-on');
+                void btn.offsetWidth;
+                btn.classList.add('dk-on');
+               
+                fetch(`http://localhost:8000/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
+                        method : "POST"
+                });
+                console.log("after fetch")
+                closeDislikePopup();
+            }else{
+                window.location.href="/login-page"
+            }
+        }else{
+            window.location.href="/login-page"
+        }
+}
 
 /* ─────────────────────────────────────────
    REPORT
@@ -487,10 +573,8 @@ function removeCard(reportId) {
    ═══════════════════════════════════════════════ */
  async function createCard(report, canDelete, user_actions) {
     const id = report.image_id;
-    if (user_actions) {
-
-    }
-    
+    const latitude = report.latitude;
+    const longitude = report.longitude;
     /* prevent duplicate if card already on screen */
     if (document.getElementById('c' + id)) return;
 
@@ -531,14 +615,17 @@ function removeCard(reportId) {
         <div class="dcard" id="c${id}">
             <div class="cimg-slot">${imageHTML}</div>
             <div class="cbody">
-                <span class="ctag ${report.type}">${report.type ? report.type.toUpperCase() : ''}</span>
+                <span class="ctag ${report.status}">${report.status}</span>
                 <p class="ccap">${caption}</p>
                 <div class="cacts">
-                    <button class="abtn" id="l${id}" onclick="lk(this, 'd${id}')" aria-label="Confirm">
+                    <button class="abtn" id="l${id}" onclick="lk(this, 'd${id}', '${id}')" aria-label="Confirm">
                         ${burst}<i class="ti ti-thumb-up"></i>
                     </button>
-                    <button class="abtn" id="d${id}" onclick="dk(this, 'l${id}')" aria-label="Doubt">
+                    <button class="abtn" id="d${id}" onclick="dk(this, 'l${id}', '${id}')" aria-label="Doubt">
                         ${burst}<i class="ti ti-thumb-down"></i>
+                    </button>
+                    <button class="loc-btn" id="loc${id}" onclick="openLocation('${latitude}', '${longitude}')" aria-label="Location">
+                        <i class="ti ti-map-pin"></i>
                     </button>
                     <div class="sp"></div>
                     <button class="rpt-btn" id="r${id}" onclick="rpt(this, 'r${id}')">Report</button>
@@ -567,7 +654,7 @@ function removeCard(reportId) {
 
     if (user_actions && user_actions.reported == "TRUE") {
         const card_id = document.getElementById(`r${id}`);
-         console.log("report  cardddd", card_id)
+        console.log("report  cardddd", card_id)
         card_id.textContent = 'reported'
     }
  }
@@ -604,6 +691,16 @@ socket.on('remove_report', function(card_id) {
     removeCard(card_id);
 });
 
+socket.on('status_update', function(status){
+    element = document.getElementById("c" + status.card_id).querySelector(".ctag")
+    element.textContent = status.status
+    element.className = `ctag ${status.status}`;
+})
+
+socket.on('update_description', function(data){
+    element = document.getElementById("c" + data.card_id).querySelector(".ccap")
+    element.textContent = data.description
+})
 
 /* ═══════════════════════════════════════════════
    PAGE LOAD
@@ -639,9 +736,11 @@ async function loadReports() {
             }
         }
         ////////
-        reports.forEach(report => {    
+        reports.forEach(report => {   
+            console.log(report) 
             const user_actions = user_action_map[report.image_id]
             can_delete = (report.user_id === currentUserId);
+            console.log("kkkkkkk",report.status)
             const  reaction = "Like"
             createCard(report, can_delete, user_actions);
             });
@@ -651,7 +750,7 @@ async function loadReports() {
 if (window.location.pathname === "/") {
 loadReports();
 console.log("executd")
-   }
+}
 
 /* load more when user scrolls to bottom */
 if (window.location.pathname === "/") {
@@ -661,3 +760,6 @@ window.addEventListener('scroll', function () {
 });
 }
 
+function openLocation(latitude, longitude){
+    window.open(`https://www.google.com/maps?q=${latitude},${longitude}`, '_blank')
+}
