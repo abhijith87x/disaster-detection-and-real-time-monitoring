@@ -295,8 +295,8 @@ function upload() {
     }else if (data == "Disaster"){
       console.log("data : ",data);
       console.log("disaster")
-      //alert("Successfully Uploaded for Backend Process");
-      //window.location.href="/"
+      alert("Successfully Uploaded for Backend Process");
+      window.location.href="/"
     }else{
       window.location.href="/login-page"
     }
@@ -571,7 +571,8 @@ function removeCard(reportId) {
    canDelete = true   → three-dot with Delete renders
    canDelete = false  → no three-dot at all
    ═══════════════════════════════════════════════ */
- async function createCard(report, canDelete, user_actions) {
+ async function createCard(report, canDelete, user_actions, position) {
+    console.log("create card",report)
     const id = report.image_id;
     const latitude = report.latitude;
     const longitude = report.longitude;
@@ -634,9 +635,10 @@ function removeCard(reportId) {
             </div>
         </div>`;
         
-
-    /* newest card at top of feed */
-    document.getElementById('disaster-feed').insertAdjacentHTML('afterbegin', cardHTML);
+    console.log("cardHTML", cardHTML)
+    /* newest card at top of feed */  
+        
+    document.getElementById('disaster-feed').insertAdjacentHTML(position, cardHTML);
     // const feed = await document.getElementById('disaster-feed');
      //console.log("feed =", feed);
      //feed.insertAdjacentHTML('beforeend', cardHTML);
@@ -665,7 +667,7 @@ function removeCard(reportId) {
 
 /* new report from anyone → appears instantly on all screens */
 socket.on('new_report', async function(report) {
-    console.log("my_reporttt",report)
+    console.log("my_reporttttttttt",report)
     const feed = document.getElementById("disaster-feed");
     if (!feed) {
         return;
@@ -683,7 +685,8 @@ socket.on('new_report', async function(report) {
     }
     const canDelete = (report.user_id === currentUserId);
     console.log("socket report",report)
-    await createCard(report, canDelete);
+     //document.getElementById('disaster-feed').insertAdjacentHTML('afterbegin', createCard(report, canDelete));
+      createCard(report, canDelete, null, "afterbegin");
 });
 
 /* report deleted by owner → disappears instantly on all screens */
@@ -710,7 +713,9 @@ let page = 1;
 let currentUserId ="";
 const user_action_map = {}
 async function loadReports() {
+    console.log("load reports")
     const res = await fetch(`/feed/reports/latest?page=${page}`)
+    console.log("after fetch",res)
         reports = await res.json()
         //.then(res => res.json())
         //.then(reports => {
@@ -718,6 +723,7 @@ async function loadReports() {
             return;
         }
         const response = await checkuser();
+        console.log("after checkuser")
         if (response.ok){
             user = await response.json();
             if(user){
@@ -736,21 +742,24 @@ async function loadReports() {
             }
         }
         ////////
+        console.log("my reports",reports)
         reports.forEach(report => {   
-            console.log(report) 
             const user_actions = user_action_map[report.image_id]
             can_delete = (report.user_id === currentUserId);
-            console.log("kkkkkkk",report.status)
-            const  reaction = "Like"
-            createCard(report, can_delete, user_actions);
+            console.log("before create card")
+             createCard(report, can_delete, user_actions,"beforeend")
+            //document.getElementById('disaster-feed').insertAdjacentHTML('beforeend',createCard(report, can_delete, user_actions));
+            console.log("bottom cards",report) 
             });
             page++;
+            console.log("page incrimented",page)
+            
         //});
-    }
-if (window.location.pathname === "/") {
-loadReports();
-console.log("executd")
 }
+//if (window.location.pathname === "/") {
+//loadReports();
+//console.log("executd")
+//}
 
 /* load more when user scrolls to bottom */
 if (window.location.pathname === "/") {

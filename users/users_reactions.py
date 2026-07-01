@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from database.database import cursor,mydb
 from socket_app.feed_updates import card_del, status_update, update_description
 from users.image_route import get_location
-
+from cache.redis_connection import r
 router = APIRouter()
 cursor = mydb.cursor(dictionary = True)
 
@@ -44,6 +44,9 @@ async def like_update(
                 "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Verified',card_id)
             )
             mydb.commit()
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
             status = {
                 "status" : "Verified",
                 "card_id" : card_id
@@ -77,6 +80,9 @@ async def like_update(
                 "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Unverified', card_id)
             )
             mydb.commit() 
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
             status = {
                 "status" : "Unverified",
                 "card_id" : card_id
@@ -129,7 +135,9 @@ async def dislike_update(
             )
             print("looking card",card_id)
             mydb.commit()
-            
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
             data = {
                 "description" : description,
                 "card_id" : card_id
@@ -137,7 +145,7 @@ async def dislike_update(
             await update_description(data)
             
             cursor.execute(
-            "SELECT COUNT(*) as like_count FROM reactions WHERE card_id=%s AND reaction='LIKE'",(card_id,)
+                "SELECT COUNT(*) as like_count FROM reactions WHERE card_id=%s AND reaction='LIKE'",(card_id,)
             )
             like_count = cursor.fetchone()["like_count"]
             if like_count < 1:
@@ -145,7 +153,9 @@ async def dislike_update(
                     "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Unverified',card_id)
                 )
                 mydb.commit()
-                
+                keys = await r.keys("feed:*")
+                if keys:
+                    await r.delete(*keys)
                 status = {
                     "status" : "Unverified",
                     "card_id" : card_id
@@ -203,6 +213,9 @@ async def report_update(
                 "DELETE FROM reactions WHERE card_id = %s",(card_id,)
             )
             mydb.commit()
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
             await card_del(card_id)
     else:
         if not reaction:
@@ -228,5 +241,8 @@ async def del_reports(
         "DELETE FROM reactions WHERE card_id=%s",(card_id,)
     )
     mydb.commit()
+    keys = await r.keys("feed:*")
+    if keys:
+        await r.delete(*keys)
     await card_del(card_id)
     return {"success" : True}

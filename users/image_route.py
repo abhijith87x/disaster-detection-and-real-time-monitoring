@@ -11,6 +11,7 @@ from jwt.jwt_handler import get_current_user
 import uuid, os, requests
 from database.database import cursor, mydb
 from socket_app.feed_updates import card_update
+from cache.redis_connection import r
 
 router = APIRouter()
 
@@ -119,6 +120,9 @@ async def demo(
             )
             last_row = cursor.lastrowid
             mydb.commit()
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
             print("Upload record saved to database")
             await card_update({
                 "image_id" : last_row,
@@ -126,7 +130,8 @@ async def demo(
                 "description" : f"AI detected {result}-related visual patterns in the user uploaded image at {location}.",
                 "latitude" : latitude,
                 "longitude" : longitude,
-                "image_path" : file_path     
+                "image_path" : file_path,
+                "status" : "Unverified",   
             })
             print("websocket card report given    ",last_row)
             return "Disaster"
