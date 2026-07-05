@@ -11,3 +11,5 @@ dist/
 .vscode/
 user_uploads/
 users/__pycache__/
+desktop.ini
+Thumbs.db
