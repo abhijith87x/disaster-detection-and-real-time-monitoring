@@ -3,3 +3,11 @@ __pycache__/
 .env
 .ipynb_checkpoints/
 *.pyc
+*.h5
+*.keras
+build/
+dist/
+*.tar
+.vscode/
+user_uploads/
+users/__pycache__/

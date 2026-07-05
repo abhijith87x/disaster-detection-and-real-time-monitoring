@@ -4,7 +4,8 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
-model = load_model("ml/multi-Disaster_detector3.keras", compile=False)
+model = load_model("ml/multi-Disaster_detector3.h5", compile=False)
+
 classes = ["Earthquake","Flood","Landslide","Non_Disaster","Wildfire"]
 
 async def predict_disaster(file):

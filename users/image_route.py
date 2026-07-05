@@ -45,8 +45,8 @@ async def input_camera(request : Request):
 @router.post("/upload-data")
 async def upload(
     request : Request,
-    latitude: str = Form(...),
-    longitude: str = Form(...),
+    latitude: float = Form(...),
+    longitude: float = Form(...),
     file:UploadFile = File(...),
     date: str = Form(...) 
 ):
@@ -88,8 +88,8 @@ async def get_location(lat, lon):
 async def demo(
     request : Request,
     File:UploadFile = File(...),
-    latitude: str = Form(...),
-    longitude: str = Form(...)
+    latitude: float = Form(...),
+    longitude: float = Form(...)
 ):
     try:
         user = await get_current_user(request)
@@ -98,6 +98,15 @@ async def demo(
         
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
+            cursor.execute(
+                "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",
+                (result, latitude - 0.005, latitude + 0.005, longitude - 0.005, longitude + 0.005)
+            )
+            nearby_disasters = cursor.fetchall()
+            
+            if nearby_disasters:
+                return "Disaster already reported in this area."
+            
             print("Disaster detected, saving file...")
             await File.seek(0)
             file = await File.read()

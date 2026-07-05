@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from ml.disaster_model import predict_disaster
 
-model = tf.keras.models.load_model("ml/screen_image_detector.keras",compile=False)
+model = tf.keras.models.load_model("ml/screen_image_detector.h5",compile=False)
 
 async def predict_screen_capture(file):
     image_bytes = await file.read()

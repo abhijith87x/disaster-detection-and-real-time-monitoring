@@ -206,11 +206,12 @@ async def report_update(
             )
         report_count = cursor.fetchone()["report_count"]
         if report_count == 1:
-            cursor.execute(
-                "DELETE FROM disaster_uploads WHERE image_id = %s",(card_id,)
-            )
+            print("report count", report_count)
             cursor.execute(
                 "DELETE FROM reactions WHERE card_id = %s",(card_id,)
+            )
+            cursor.execute(
+                "DELETE FROM disaster_uploads WHERE image_id = %s",(card_id,)
             )
             mydb.commit()
             keys = await r.keys("feed:*")
@@ -235,10 +236,10 @@ async def del_reports(
     currentUserId : int
 ):
     cursor.execute(
-        "DELETE FROM disaster_uploads WHERE image_id=%s",(card_id,)
+        "DELETE FROM reactions WHERE card_id=%s",(card_id,)
     )
     cursor.execute(
-        "DELETE FROM reactions WHERE card_id=%s",(card_id,)
+        "DELETE FROM disaster_uploads WHERE image_id=%s",(card_id,)
     )
     mydb.commit()
     keys = await r.keys("feed:*")

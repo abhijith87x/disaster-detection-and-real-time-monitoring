@@ -31,8 +31,8 @@ function appendGeolocationToFormData(formData) {
             if ( accuracy > 20){
                 alert("Location accuracy is low! Use your smartphone to get high accuracy")
             }
-            formData.append("latitude", latitude);
-            formData.append("longitude", longitude);
+            formData.append("latitude", parseFloat(latitude));
+            formData.append("longitude", parseFloat(longitude));
             console.log("location appended",latitude,longitude,accuracy);
             resolve(formData);
         },
@@ -290,8 +290,11 @@ function upload() {
 .then(res => res.json())
 
 .then(data => {
+    console.log("data : ",data)
     if (data == "Non_Disaster"){
       alert("Given image is not Disaster...Reupload");
+    }else if (data == "Disaster already reported in this area."){
+      alert("A disaster of the same type has already been reported in this area.");
     }else if (data == "Disaster"){
       console.log("data : ",data);
       console.log("disaster")
