@@ -13,20 +13,21 @@ from socket_app.socket_server import sio
 import socketio
 
 app = FastAPI()
+
 socket_app = socketio.ASGIApp(sio, app)
 
-origins = [
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
-]
+#origins = [
+    #"http://127.0.0.1:5500",
+    #"http://localhost:5500"
+#]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins = ["*"],
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers = ["*"],
-)
+#app.add_middleware(
+    #CORSMiddleware,
+    #allow_origins = ["*"],
+    #allow_credentials = True,
+    #allow_methods = ["*"],
+    #allow_headers = ["*"],
+#)
 
 app.add_middleware(SessionMiddleware, secret_key=client_secret)
 app.mount("/static", StaticFiles(directory="static"), name="static")

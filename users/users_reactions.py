@@ -3,7 +3,9 @@ from database.database import cursor,mydb
 from socket_app.feed_updates import card_del, status_update, update_description
 from users.image_route import get_location
 from cache.redis_connection import r
+
 router = APIRouter()
+
 cursor = mydb.cursor(dictionary = True)
 
 @router.post("/user/like/update")
@@ -69,12 +71,6 @@ async def like_update(
             "SELECT COUNT(*) as like_count FROM reactions WHERE card_id=%s AND reaction='LIKE'",(card_id,)
         )
         like_count = cursor.fetchone()["like_count"]
-        
-        ##if like_count == 1:
-            #cursor.execute(
-                #"UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Verified', card_id)
-            #)
-            #mydb.commit()
         if like_count < 1:
             cursor.execute(
                 "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Unverified', card_id)
@@ -133,7 +129,6 @@ async def dislike_update(
             cursor.execute(
                 "UPDATE disaster_uploads SET description = %s, disaster_type = %s WHERE image_id=%s",(description, type, card_id)
             )
-            print("looking card",card_id)
             mydb.commit()
             keys = await r.keys("feed:*")
             if keys:
@@ -206,7 +201,6 @@ async def report_update(
             )
         report_count = cursor.fetchone()["report_count"]
         if report_count == 1:
-            print("report count", report_count)
             cursor.execute(
                 "DELETE FROM reactions WHERE card_id = %s",(card_id,)
             )

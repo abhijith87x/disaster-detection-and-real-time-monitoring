@@ -12,7 +12,6 @@ cursor = mydb.cursor(dictionary=True)
 
 @router.get("/feed/reports/latest")
 async def get_latest_reports(page: int):
-    print("page num",page)
     LIMIT = 6
     OFFSET = (page - 1) * LIMIT
     
@@ -20,9 +19,6 @@ async def get_latest_reports(page: int):
   
     if reports is not None:
         print("reports from cache:", reports)
-        #keys = await r.keys("feed:*")
-        #if keys:
-        #    await r.delete(*keys)
         return json.loads(reports)
     
     cursor.execute(
@@ -32,7 +28,6 @@ async def get_latest_reports(page: int):
     reports = cursor.fetchall()
     
     await r.set(f"feed:{OFFSET}:{LIMIT}",json.dumps(reports, default=float))
-    print("report goes from db")
     return reports
 
 @router.get("/feed/card/action")
@@ -44,7 +39,6 @@ async def user_action(
             "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
         )
         useraction = cursor.fetchall()
-        print(useraction)
         return useraction
     else:
         return None

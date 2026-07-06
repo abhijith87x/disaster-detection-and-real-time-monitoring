@@ -65,12 +65,8 @@ async def google_callback(request : Request):
                 "SELECT id FROM users WHERE email = %s",(email,)
             )
             existing_user = cursor.fetchone()
-            print("New user added to database")
-        else:
-            print("User already exists in database")
         
         jwt_token = await create_access_token(data={"sub": email,"user_id": existing_user[0] })
-        print("Generated JWT token:", jwt_token)
         response = RedirectResponse(url="/")
         
         response.set_cookie(
@@ -81,10 +77,8 @@ async def google_callback(request : Request):
             secure=False,
             path="/"
         )
-        print("response.cookies:", request.cookies.get(jwt_token))
         return response
         
     except Exception as e:
         import traceback
-        print("error",traceback.format_exc())
         return{"error": str(e)}

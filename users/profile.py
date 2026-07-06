@@ -8,9 +8,7 @@ router = APIRouter()
 
 @router.get("/profile")
 async def get_profile(request : Request):
-    print("Request cookies:", request.cookies)
     token = request.cookies.get("access_token")
-    print("Retrieved token:", token)
     if not token:
         return None
     else:
@@ -19,7 +17,6 @@ async def get_profile(request : Request):
             user_id = payload["user_id"]
             cursor.execute("SELECT id,email, name, profile_pic FROM users WHERE id = %s", (user_id,))
             user = cursor.fetchone()
-            print("User data from database:", user)
             return {
                 "id": user[0],
                 "email": user[1],

@@ -22,7 +22,6 @@ function grabFrameButton() {
 function appendGeolocationToFormData(formData) {
     return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
-        console.log("starting")
         navigator.geolocation.getCurrentPosition(
         function (position) {
             const latitude = position.coords.latitude;
@@ -33,11 +32,9 @@ function appendGeolocationToFormData(formData) {
             }
             formData.append("latitude", parseFloat(latitude));
             formData.append("longitude", parseFloat(longitude));
-            console.log("location appended",latitude,longitude,accuracy);
             resolve(formData);
         },
         (error) => {
-            console.error("Error getting geolocation:", error.code,error.message);
             alert("turn on the location for upload");
             // You might still want to resolve with the original formData if geolocation isn't critical
              // or reject if it's essential.
@@ -50,7 +47,7 @@ function appendGeolocationToFormData(formData) {
         }
     );
     } else {
-        console.warn("Geolocation is not supported by this browser.");
+        alert("Geolocation is not supported by this browser.");
         resolve(formData); // Resolve with original formData if geolocation is not supported
     }
   });
@@ -64,9 +61,6 @@ let date,formData;
         const canvas = document.querySelector('#takePhotoCanvas');
         drawCanvas(canvas, imageBitmap);
         let base64String = canvas.toDataURL("img/png");
-        //if (base64String){
-            //document.getElementById("upload").style.display="block";
-        //}
         const contentType = base64String.split(';')[0].split(':')[1]; // Extract MIME type
         const blob = base64ToBlob(base64String, contentType);
         function base64ToBlob(base64, contentType) {
@@ -88,11 +82,8 @@ let date,formData;
 
 formData = new FormData();
 formData.append("file", blob,"captured_media.png");
-//console.log("blob",blob)
 date = new Date().toISOString().split("T")[0];//.toLocaleString();//
 formData.append("date",date);
-console.log("date is appended")
-console.log(typeof(date))
 appendGeolocationToFormData(formData)
     
 appendGeolocationToFormData(formData)
@@ -101,29 +92,14 @@ appendGeolocationToFormData(formData)
     lon = updatedFormData.get('longitude');
     file = updatedFormData.get('file');
     date = updatedFormData.get('date')
-    console.log("values",file)
-    console.log(typeof(lon))
-    //console.log(file)
-    //console.log( typeof lat);
    
     if (lat && lon) {
-      console.log("this oky");
       document.getElementById("upload").style.display="block";
     }  
     })
     .catch((error) => {
        console.error("Error getting geolocation:", error);
     });
-    appendGeolocationToFormData(formData).then(updatedFormData => {
-        for (let pair of updatedFormData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
-    });
-   //async function uploadformData() {
-    //const lat = await appendGeolocationToFormData(formData);
-    //console.log(updatedFormData.get('longitude')); // e.g., 76.7890
-//}
-
   })
   .catch(error => console.log(error));
 };
@@ -142,7 +118,7 @@ function drawCanvas(canvas, img) {
 };
 
 async function checkuser() {
-    return  fetch("http://localhost:8000/profile",{
+    return  fetch("/profile",{
       method : 'GET',
       credentials: 'include'
   });
@@ -152,7 +128,6 @@ async function profile_update() {
 const auth_response = await checkuser();
 const authSection = document.getElementById("auth-section");
 const authButton =  document.getElementById("auth-section");
-console.log("auth button : ",authButton)
 if(auth_response.ok) {
   const user = await auth_response.json()
   if (user) {
@@ -225,13 +200,12 @@ if(auth_response.ok) {
 }
 
 async function senddata() {
-    response = await fetch("http://localhost:8000/upload-data", {
+    response = await fetch("/upload-data", {
     method: "POST",
     body: formData,
     credentials: 'include'
 })
 
-console.log("response : ",response)
 const data = await response.json();
 if(response.status == 401) {
     window.location.href="/login-page"
@@ -241,22 +215,9 @@ if(response.status == 401) {
     alert("Sorry Not uploaded! Image is fake or manipulated");
 }else{
     alert("Successfully Uploaded for Backend Process");
+} 
 }
-  //.then(res => res.json())
-  //.then(data =>{
-    //console.log("data : ",data.status_code)
-    //if (data == "Screen_captured_image"){
-      //alert("Sorry Not uploaded! Image is fake or manipulated");
-    //}else if( data == "Disaster"){
-      //alert("Successfully Uploaded within few Minutes")
-      //window.location.href = "/"
-    //}else{
-      //alert("Your image looking Non Disaster..Reupload");
-    //}
-  //})
-  //.catch(err => console.error("Error:", err));
-  
-}
+
 //FOR DEMO PAGE
 let demo_file;
 const demo_formdata = new FormData();
@@ -264,14 +225,12 @@ function preview_image(event){
   appendGeolocationToFormData(demo_formdata)
   demo_file = event.target.files[0];
   img = document.getElementById("preview");
-  img.src = URL.createObjectURL(demo_file);
-  
+  img.src = URL.createObjectURL(demo_file);  
 }
 
 function upload() {
   latitude = demo_formdata.get("latitude")
   longitude = demo_formdata.get("longitude");
-  console.log(latitude,longitude)
   if (!demo_file || !latitude || !longitude ){
     alert("Please give file and location for upload")
     return;
@@ -280,24 +239,18 @@ function upload() {
   demo_formdata.append("File",demo_file);
   demo_formdata.append("latitude",latitude);
   demo_formdata.append("longitude",longitude);
-  console.log("success : ",demo_formdata);
-    fetch("http://localhost:8000/demo",{
-      method:"POST",
-      body : demo_formdata,
-      credentials: 'include'
-  })
-
+fetch("/demo",{
+    method:"POST",
+    body : demo_formdata,
+    credentials: 'include'
+})
 .then(res => res.json())
-
 .then(data => {
-    console.log("data : ",data)
     if (data == "Non_Disaster"){
       alert("Given image is not Disaster...Reupload");
     }else if (data == "Disaster already reported in this area."){
       alert("A disaster of the same type has already been reported in this area.");
     }else if (data == "Disaster"){
-      console.log("data : ",data);
-      console.log("disaster")
       alert("Successfully Uploaded for Backend Process");
       window.location.href="/"
     }else{
@@ -310,9 +263,7 @@ function upload() {
 /* ═══════════════════════════════════════════════
    DisasterWatch — script.js
    ═══════════════════════════════════════════════ */
-console.log("script loadedddddddddd");
-const socket = io("http://localhost:8000");  // connect to WebSocket server
-console.log("socket : soc")
+const socket = io();  // connect to WebSocket server
 
 /* ─────────────────────────────────────────
    LIKE
@@ -323,7 +274,6 @@ async function lk(btn, cardId, id) {
         user = await response.json();
         if(user) {
             currentUserId = user.id;
-            console.log("card id",cardId,typeof(cardId))
             let like = false;
             const card_id = document.getElementById(cardId);
             const isOn  = btn.classList.contains('lk-on');
@@ -337,10 +287,8 @@ async function lk(btn, cardId, id) {
                 btn.classList.add('lk-on');
                 like = true;
             }
-    
-            console.log("current user id : ",currentUserId)
             //const card_iid = parseInt(cardId.substring(1))
-            fetch(`http://localhost:8000/user/like/update?current_user=${currentUserId}&card_id=${id}&like=${like}`,{
+            fetch(`/user/like/update?current_user=${currentUserId}&card_id=${id}&like=${like}`,{
                 method : "POST"
             });
         }else{
@@ -376,16 +324,14 @@ async function dk(btn, cardId, id, type) {
                     btn.classList.remove('dk-on');
                     void btn.offsetWidth;
                     currentUserId = user.id;
-                    fetch(`http://localhost:8000/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
+                    fetch(`/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
                         method : "POST"
                     });
                     return;
                 }
 
                 pendingDislike = { btn, cardId, id, dislike : true, type };
-                console.log(pendingDislike)
                 openDislikePopup();   
-
            }else{
                 window.location.href="/login-page"
             }
@@ -430,7 +376,6 @@ function closeDislikePopup() {
 }
  
 async function confirmDislike() {
-    console.log("startednpop")
     const response = await checkuser();
         if(response.ok) {
             user = await response.json();
@@ -445,7 +390,6 @@ async function confirmDislike() {
                     }
                 
                 const { btn, cardId, id, dislike, type } = pendingDislike;
-                console.log(btn, cardId)
                 if (!btn) return;
  
                 const other = document.getElementById(cardId);
@@ -458,10 +402,9 @@ async function confirmDislike() {
                 void btn.offsetWidth;
                 btn.classList.add('dk-on');
                
-                fetch(`http://localhost:8000/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
+                fetch(`/user/dislike/update?current_user=${currentUserId}&card_id=${id}&dislike=${dislike}&type=${type}`,{
                         method : "POST"
                 });
-                console.log("after fetch")
                 closeDislikePopup();
             }else{
                 window.location.href="/login-page"
@@ -475,14 +418,12 @@ async function confirmDislike() {
    REPORT
    ───────────────────────────────────────── */
 async function rpt(btn, cardId) {
-    console.log("card id",cardId)
     const response = await checkuser();
         if(response.ok) {
             user = await response.json();
             if(user) {
                 let report = true
                 currentUserId = user.id;
-                console.log("current user id : ",currentUserId)
                 const card_id = parseInt(cardId.substring(1))
                 if (btn.classList.contains('reported')){
                     btn.classList.remove('reported');
@@ -492,7 +433,7 @@ async function rpt(btn, cardId) {
                     btn.classList.add('reported')
                     btn.textContent = 'Reported';
                 }
-                fetch(`http://localhost:8000/user/report/update?current_user=${currentUserId}&card_id=${card_id}&report=${report}`,{
+                fetch(`/user/report/update?current_user=${currentUserId}&card_id=${card_id}&report=${report}`,{
                     method : "POST"
                 });
            }else{
@@ -547,7 +488,6 @@ async function del(cardId) {
     }
 }
 
-
 /* ─────────────────────────────────────────
    REMOVE CARD FROM DOM
    used by both delete and websocket
@@ -561,21 +501,7 @@ function removeCard(reportId) {
     }
 }
 
-
-/* ═══════════════════════════════════════════════
-   createCard(report, canDelete)
-   ───────────────────────────────────────────────
-   report = {
-       id        : unique id           (string | number)
-       type      : 'fire'|'flood'|'quake'|'wind'
-       caption   : string              (fully from backend)
-       image_url : string | null       (null shows placeholder)
-   }
-   canDelete = true   → three-dot with Delete renders
-   canDelete = false  → no three-dot at all
-   ═══════════════════════════════════════════════ */
  async function createCard(report, canDelete, user_actions, position) {
-    console.log("create card",report)
     const id = report.image_id;
     const latitude = report.latitude;
     const longitude = report.longitude;
@@ -584,7 +510,7 @@ function removeCard(reportId) {
 
     /* image from backend or placeholder */
     const imageHTML = report.image_path
-        ? `<img src="http://127.0.0.1:8000/${report.image_path}" class="cimg" alt="Disaster photo">`
+        ? `<img src="/${report.image_path}" class="cimg" alt="Disaster photo">`
         : `<div class="cimg-placeholder"><i class="ti ti-photo"></i></div>`;
 
     /* caption 100% from backend */
@@ -637,29 +563,23 @@ function removeCard(reportId) {
                 </div>
             </div>
         </div>`;
-        
-    console.log("cardHTML", cardHTML)
+
     /* newest card at top of feed */  
         
     document.getElementById('disaster-feed').insertAdjacentHTML(position, cardHTML);
-    // const feed = await document.getElementById('disaster-feed');
-     //console.log("feed =", feed);
-     //feed.insertAdjacentHTML('beforeend', cardHTML);
+    
     if (user_actions && user_actions.reaction == "LIKE"){
             const card_id = document.getElementById(`l${id}`);
-            console.log("cardddd", card_id)
             card_id.classList.add('lk-on');
         }
 
     if (user_actions && user_actions.reaction == "DISLIKE") {
         const card_id = document.getElementById(`d${id}`);
-            console.log("cardddd", card_id)
             card_id.classList.add('dk-on');
         }
 
     if (user_actions && user_actions.reported == "TRUE") {
         const card_id = document.getElementById(`r${id}`);
-        console.log("report  cardddd", card_id)
         card_id.textContent = 'reported'
     }
  }
@@ -670,25 +590,20 @@ function removeCard(reportId) {
 
 /* new report from anyone → appears instantly on all screens */
 socket.on('new_report', async function(report) {
-    console.log("my_reporttttttttt",report)
     const feed = document.getElementById("disaster-feed");
     if (!feed) {
         return;
     }
     const response = await checkuser();
-    console.log("after checkuser")
     if (response.ok){
         user = await response.json();
            if(user){
                 currentUserId = user.id;
-                console.log("current user id : ",currentUserId)
            }else{
                 currentUserId = "";
             }
     }
     const canDelete = (report.user_id === currentUserId);
-    console.log("socket report",report)
-     //document.getElementById('disaster-feed').insertAdjacentHTML('afterbegin', createCard(report, canDelete));
       createCard(report, canDelete, null, "afterbegin");
 });
 
@@ -716,17 +631,12 @@ let page = 1;
 let currentUserId ="";
 const user_action_map = {}
 async function loadReports() {
-    console.log("load reports")
     const res = await fetch(`/feed/reports/latest?page=${page}`)
-    console.log("after fetch",res)
         reports = await res.json()
-        //.then(res => res.json())
-        //.then(reports => {
         if (reports.length === 0) {
             return;
         }
         const response = await checkuser();
-        console.log("after checkuser")
         if (response.ok){
             user = await response.json();
             if(user){
@@ -744,25 +654,14 @@ async function loadReports() {
                 currentUserId = "";
             }
         }
-        ////////
-        console.log("my reports",reports)
+        
         reports.forEach(report => {   
             const user_actions = user_action_map[report.image_id]
             can_delete = (report.user_id === currentUserId);
-            console.log("before create card")
              createCard(report, can_delete, user_actions,"beforeend")
-            //document.getElementById('disaster-feed').insertAdjacentHTML('beforeend',createCard(report, can_delete, user_actions));
-            console.log("bottom cards",report) 
             });
             page++;
-            console.log("page incrimented",page)
-            
-        //});
 }
-//if (window.location.pathname === "/") {
-//loadReports();
-//console.log("executd")
-//}
 
 /* load more when user scrolls to bottom */
 if (window.location.pathname === "/") {

@@ -18,6 +18,5 @@ async def predict_screen_capture(file):
     if prediction > 0.5:
         return{"Screen_captured_image"}
     else:
-        print("length of image bytes:", len(image_bytes))
         return await predict_disaster(file)
         

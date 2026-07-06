@@ -11,21 +11,11 @@ classes = ["Earthquake","Flood","Landslide","Non_Disaster","Wildfire"]
 async def predict_disaster(file):
     await file.seek(0)
     image_bytes = await file.read()
-    print("Image bytes length:", len(image_bytes))
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     image = image.resize((128,128))
     image_array = np.array(image)
     image_array = image_array/255.0
-    Final_image = np.expand_dims(image_array,axis=0)
-    ##prediction = model.predict(Final_image)[0][0]
-    #print("Prediction value:", f"{prediction*100:.2f}%")
-    #if prediction > 0.5:
-        #return{"Non_Disaster"}
-    #else:
-        #return{"Disaster"}
+    Final_image = np.expand_dims(image_array, axis=0)
     prediction = model.predict(Final_image)
-    print("prediction array:", prediction)
-    print("max prediction value:", f"{np.max(prediction)*100:.2f}%")
     predicted_class = classes[np.argmax(prediction)]
-    print("Predicted class:", predicted_class)
     return predicted_class
