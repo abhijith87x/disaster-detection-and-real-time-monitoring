@@ -11,7 +11,7 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main1:socket_app", "--host", "0.0.0.0", "--port", "8000"]
+CMD [uvicorn, "main1:socket_app", "--host", "0.0.0.0", "--port", "8000"]
 # docker build -t disaster-app . , docker build --no-cache -t disaster-app .
 #docker build -t disaster-app .
 #docker run -d --name disaster-container -p 8000:8000 disaster-app
