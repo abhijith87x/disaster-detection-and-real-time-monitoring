@@ -14,8 +14,6 @@ import socketio
 
 app = FastAPI()
 
-socket_app = socketio.ASGIApp(sio, app)
-
 #origins = [
     #"http://127.0.0.1:5500",
     #"http://localhost:5500"
@@ -38,3 +36,5 @@ app.include_router(image_router)
 app.include_router(profile_router)
 app.include_router(feed_cards_router)
 app.include_router(users_reactions_router)
+
+socket_app = socketio.ASGIApp(sio, app)
