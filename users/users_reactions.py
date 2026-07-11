@@ -3,6 +3,7 @@ from database.database import cursor,mydb
 from socket_app.feed_updates import card_del, status_update, update_description
 from users.image_route import get_location
 from cache.redis_connection import r
+from utils.aws_s3 import delete_file_from_s3
 
 router = APIRouter()
 
@@ -202,6 +203,11 @@ async def report_update(
         report_count = cursor.fetchone()["report_count"]
         if report_count == 1:
             cursor.execute(
+                "SELECT image_path FROM disaster_uploads WHERE image_id=%s",(card_id,)
+            )
+            image_path = cursor.fetchone()
+            
+            cursor.execute(
                 "DELETE FROM reactions WHERE card_id = %s",(card_id,)
             )
             cursor.execute(
@@ -212,6 +218,9 @@ async def report_update(
             if keys:
                 await r.delete(*keys)
             await card_del(card_id)
+            if image_path:
+                await delete_file_from_s3(image_path)
+            
     else:
         if not reaction:
             cursor.execute(
@@ -230,6 +239,10 @@ async def del_reports(
     currentUserId : int
 ):
     cursor.execute(
+        "SELECT image_path FROM disaster_uploads WHERE image_id=%s",(card_id,)
+    )
+    image_path = cursor.fetchone()
+    cursor.execute(
         "DELETE FROM reactions WHERE card_id=%s",(card_id,)
     )
     cursor.execute(
@@ -240,4 +253,6 @@ async def del_reports(
     if keys:
         await r.delete(*keys)
     await card_del(card_id)
+    if image_path:
+        await delete_file_from_s3(image_path)
     return {"success" : True}

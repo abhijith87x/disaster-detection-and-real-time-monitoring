@@ -12,6 +12,7 @@ import uuid, os, requests
 from database.database import cursor, mydb
 from socket_app.feed_updates import card_update
 from cache.redis_connection import r
+from utils.aws_s3 import upload_file_to_s3
 
 router = APIRouter()
 
@@ -94,13 +95,7 @@ async def demo(
             if nearby_disasters:
                 return "Disaster already reported in this area."
             
-            await File.seek(0)
-            file = await File.read()
-            extension = os.path.splitext(File.filename)[1]
-            filename = f"{uuid.uuid4()}{extension}"
-            file_path = f"user_uploads/{filename}"
-            with open(file_path, "wb") as f:
-                f.write(file)
+            file_path = await upload_file_to_s3(File)
             location = await get_location(latitude, longitude)
             cursor.execute(
                 "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, description) VALUES ( %s, %s, %s, %s, %s, %s)", 
