@@ -28,6 +28,7 @@ services:
     restart: always
     volumes:
       - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+      - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
     depends_on:
       mysql:
         condition: service_healthy
