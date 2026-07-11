@@ -26,6 +26,8 @@ services:
     image: abhijith87b/disaster-api:latest
     container_name: disaster-api
     restart: always
+    volumes:
+      - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
     depends_on:
       mysql:
         condition: service_healthy
