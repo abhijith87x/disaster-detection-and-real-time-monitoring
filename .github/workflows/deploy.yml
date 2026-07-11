@@ -42,6 +42,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/disaster-detection-and-real-time-monitoring
+            git pull origin main
             docker compose down
             docker compose pull
             docker compose up -d
