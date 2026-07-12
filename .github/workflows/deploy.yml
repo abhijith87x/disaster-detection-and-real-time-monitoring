@@ -30,6 +30,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Create env file
+        run: |
+          echo "GOOGLE_CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env 
+          echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
+          echo "ACCESS_TOKEN_EXPIRE_MINUTES=${{ secrets.TOKEN_EXPIRE_MINUTES }}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+          echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
@@ -53,7 +64,6 @@ jobs:
           script: |
             cd ~/disaster-detection-and-real-time-monitoring
             git pull origin main
-            docker compose down
             docker compose pull backend
             docker compose up -d --force-recreate backend
       

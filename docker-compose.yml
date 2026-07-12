@@ -24,6 +24,8 @@ services:
       - "6379:6379"
   backend:
     image: abhijith87b/disaster-api:latest
+    env_file:
+      - .env
     container_name: disaster-api
     restart: always
     volumes:
