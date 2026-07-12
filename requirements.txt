@@ -16,3 +16,4 @@ httpx
 itsdangerous
 python-jose
 boto3
+pytest

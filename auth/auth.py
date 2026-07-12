@@ -39,7 +39,7 @@ async def login_page(request: Request):
 
 @router.get("/login")
 async def login( request : Request):
-   return await oauth.google.authorize_redirect(request, redirect_uri="http://localhost:8000/auth/google/callback") 
+   return await oauth.google.authorize_redirect(request, redirect_uri="http://disaster-watch.duckdns.org:8000/auth/google/callback") 
 
 @router.get("/auth/google/callback")
 async def google_callback(request : Request):
