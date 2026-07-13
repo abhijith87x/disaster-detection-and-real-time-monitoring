@@ -22,6 +22,8 @@ jobs:
       
       - name: Run tests
         run: pytest tests/test_deletion.py
+        env:
+          PYTHONPATH: 
         
   deploy:
     runs-on: ubuntu-latest
