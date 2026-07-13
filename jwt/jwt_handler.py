@@ -10,7 +10,7 @@ templates = Jinja2Templates(directory="template")
 
 async def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=int(expire_minutes))
+    expire = datetime.utcnow() + timedelta(minutes=int(10))
     to_encode.update({"exp" : expire})
     encoded_jwt = jwt.encode(to_encode, algorithm=algorithm, key=client_secret)
     return encoded_jwt
