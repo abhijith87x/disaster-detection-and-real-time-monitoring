@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client_id = os.getenv("client_id")
-client_secret = os.getenv("client_secret")
+client_id = os.getenv("GOOGLE_CLIENT_ID")
+client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
 db_password = os.getenv("db_password")
 expire_minutes = os.getenv("TOKEN_EXPIRE_MINUTES")
 algorithm = os.getenv("ALGORITHM")
