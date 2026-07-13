@@ -10,6 +10,7 @@ s3 = boto3.client(
 )
 
 async def upload_file_to_s3(file):
+    file.file.seek(0)
     bucket_name = AWS_BUCKET_NAME
     file_name = file.filename
     s3.upload_fileobj(file.file, bucket_name, file_name)
