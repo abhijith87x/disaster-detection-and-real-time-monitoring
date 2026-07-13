@@ -510,7 +510,7 @@ function removeCard(reportId) {
 
     /* image from backend or placeholder */
     const imageHTML = report.image_path
-        ? `<img src="/${report.image_path}" class="cimg" alt="Disaster photo">`
+        ? `<img src="${report.image_path}" class="cimg" alt="Disaster photo">`
         : `<div class="cimg-placeholder"><i class="ti ti-photo"></i></div>`;
 
     /* caption 100% from backend */
