@@ -1,6 +1,6 @@
 var imageCapture;
 if(window.location.pathname.includes("/input-camera")) {
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: {ideal: "environment" } } })
     .then(mediaStream => {
         document.querySelector('video').srcObject = mediaStream
         const track = mediaStream.getVideoTracks()[0];
