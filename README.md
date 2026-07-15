@@ -1,6 +1,6 @@
 # Disaster Management System
 
-A disaster reporting and management platform that allows users to upload disaster reports with images, location details, and descriptions. The system uses AI-based image classification to identify disaster types and provides a real-time feed with user interactions.
+A disaster reporting and management platform that allows users to upload disaster reports with images, location details. The system uses AI-based image classification to identify disaster types and provides a real-time feed with user interactions.
 
 ## Features
 
@@ -10,7 +10,7 @@ A disaster reporting and management platform that allows users to upload disaste
 - AI-based disaster image classification
 - Real-time disaster feed updates using WebSockets
 - User reactions and feedback on reports
-- Report verification through user feedback
+- Report validation through user feedback
 - Image storage using AWS S3
 - Redis caching for faster feed loading
 - MySQL database for storing user and report data
