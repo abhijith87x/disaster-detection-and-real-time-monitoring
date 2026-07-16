@@ -135,7 +135,14 @@ docker compose up --build
 
 ## Screenshots
 
-(Add screenshots here)
+<img width="1917" height="1028" alt="Screenshot 2026-07-16 154209" src="https://github.com/user-attachments/assets/63c86ed9-6d1e-4620-9327-cee673e8b5a3" />
+<img width="1920" height="1080" alt="Screenshot (11)" src="https://github.com/user-attachments/assets/cef3170d-6059-4dbd-a500-d5fefec2dc92" />
+<img width="1600" height="900" alt="WhatsApp Image 2026-07-16 at 3 41 01 PM" src="https://github.com/user-attachments/assets/9b468894-691b-401e-bea1-6ed0490ebced" />
+<img width="1600" height="900" alt="WhatsApp Image 2026-07-16 at 3 41 01 PM (1)" src="https://github.com/user-attachments/assets/6e130589-16c3-40b6-a667-771070fd1d79" />
+<img width="1920" height="1080" alt="Screenshot (10)" src="https://github.com/user-attachments/assets/59378ad4-683b-495b-a4da-00da22be8355" />
+<img width="1920" height="1080" alt="Screenshot (9)" src="https://github.com/user-attachments/assets/7d80a0d2-e1ab-476f-b255-513e5593e179" />
+
+
 
 ## Future Improvements
 
