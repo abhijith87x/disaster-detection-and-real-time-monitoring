@@ -1,5 +1,5 @@
 export async function checkuser() {
-    return  fetch("http://localhost:8000/profile",{
+    return  fetch("/profile",{
       method : 'GET',
       credentials: 'include'
   });
