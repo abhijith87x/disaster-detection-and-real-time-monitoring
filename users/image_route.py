@@ -34,11 +34,14 @@ async def input_camera(request : Request):
     try:
         token = request.cookies.get("access_token")
         if token is None:
-            return RedirectResponse(url="/login-page")
+            raise HTTPException(
+                status_code=401,
+                detail="Not authenticated"
+            )
         user = await get_current_user(request)
         return templates.TemplateResponse("for_camera.html", {"request": request})
     except HTTPException:
-        return RedirectResponse(url="/login-page", status_code=303)
+        raise HTTPException( status_code=401, detail="Not authenticated")
 
 @router.post("/upload-data")
 async def upload(

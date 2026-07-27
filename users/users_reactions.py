@@ -219,7 +219,7 @@ async def report_update(
                 await r.delete(*keys)
             await card_del(card_id)
             if image_path:
-                await delete_file_from_s3(image_path)
+                await delete_file_from_s3(image_path["image_path"])
             
     else:
         if not reaction:
@@ -254,5 +254,5 @@ async def del_reports(
         await r.delete(*keys)
     await card_del(card_id)
     if image_path:
-        await delete_file_from_s3(image_path)
+        await delete_file_from_s3(image_path["image_path"])
     return {"success" : True}

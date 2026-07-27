@@ -1,0 +1,44 @@
+video {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 10em;
+    height: 150px;
+    background: rgb(114, 75, 75);
+}
+
+#start-button{
+    height:3em;
+    width:10em;
+    left:0;
+    top:0;
+    position:fixed;
+    background-color: black;
+    font-family: Luminari, fantasy;
+    cursor: pointer;
+}
+
+#upload{
+    position:fixed;
+    z-index:1;
+    float: right;
+    height: 50px;
+    width: 120px;
+    color: black;
+    right: 8px;
+    bottom: 13px;
+    font-size: 20px;
+    font-family:Luminari,fantasy;
+    border-radius: 15px;
+    cursor: pointer;}
+
+#takePhotoCanvas {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 3em;
+    z-index: 0;
+    pointer-events: none;
+}
+html,body,video {margin:0;padding:0;background: rgb(114, 75, 75);}

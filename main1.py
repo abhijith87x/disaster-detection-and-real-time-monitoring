@@ -10,6 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from config import client_secret
 from fastapi.staticfiles import StaticFiles
 from socket_app.socket_server import sio
+from fastapi.responses import FileResponse
 import socketio
 
 app = FastAPI()
@@ -28,11 +29,30 @@ app = FastAPI()
 #)
 
 app.add_middleware(SessionMiddleware, secret_key=client_secret)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(
+    "/assets",
+    StaticFiles(directory="frontend/dist/assets"),
+    name="assets"
+)
+
 app.include_router(auth_router)
 app.include_router(image_router)
 app.include_router(profile_router)
 app.include_router(feed_cards_router)
 app.include_router(users_reactions_router)
+
+@app.get("/")
+async def serve_react():
+    return FileResponse(
+        "frontend/dist/index.html"
+    )
+
+@app.get("/{full_path:path}")
+async def serve_react_routes(full_path: str):
+    return FileResponse(
+        "frontend/dist/index.html"
+    )
 
 socket_app = socketio.ASGIApp(sio, app)

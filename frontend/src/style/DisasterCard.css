@@ -1,0 +1,71 @@
+.dcard {
+    background: #12122a;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
+/* Image slot */
+.cimg-slot {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0d0d1a;
+    border-bottom: 0.5px solid #1a1a38;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Real image from backend */
+.cimg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Placeholder until image arrives */
+.cimg-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cimg-placeholder i {
+    font-size: 24px;
+    color: #1e1e3a;
+}
+
+/* Card body */
+.cbody {
+    padding: 10px 10px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Type tag */
+.ctag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.ctag.Unverified {  color: red; }
+.ctag.Verified {  color: green; }
+
+/* Caption */
+.ccap {
+    font-size: 11px;
+    color: #8890b8;
+    line-height: 1.45;
+}
