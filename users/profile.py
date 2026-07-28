@@ -10,7 +10,7 @@ router = APIRouter()
 async def get_profile(request : Request):
     token = request.cookies.get("access_token")
     if not token:
-        return None
+        raise HTTPException(status_code=401, detail="Unauthorized")
     else:
         try:
             payload =  await get_current_user(request)
