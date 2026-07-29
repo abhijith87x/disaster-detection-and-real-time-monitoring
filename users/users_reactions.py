@@ -118,7 +118,7 @@ async def dislike_update(
             (card_id, 'DISLIKE')
         )
         type_count = cursor.fetchone()["type_count"]
-        if type_count == 1:
+        if type_count == 2:
             cursor.execute(
                 "SELECT latitude, longitude FROM disaster_uploads WHERE image_id=%s",(card_id,)
             )
