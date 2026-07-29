@@ -36,6 +36,17 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build React
+        run: |
+          cd frontend
+          npm ci
+          npm run build    
+
       - name: Start containers
         run: |
           docker compose down
