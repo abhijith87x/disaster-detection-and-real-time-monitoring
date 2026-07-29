@@ -1,5 +1,5 @@
 export async function checkuser() {
-    return  fetch("/profile",{
+    return  await fetch("/profile",{
       method : 'GET',
       credentials: 'include'
   });

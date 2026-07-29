@@ -8,7 +8,7 @@ from fastapi import Request, HTTPException, status
 
 templates = Jinja2Templates(directory="template")
 
-async def create_access_token(data: dict):
+def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=int(10))
     to_encode.update({"exp" : expire})

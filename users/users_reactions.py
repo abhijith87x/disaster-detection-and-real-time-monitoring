@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from database.database import cursor,mydb
 from socket_app.feed_updates import card_del, status_update, update_description
 from users.image_route import get_location
@@ -201,7 +201,7 @@ async def report_update(
                 (card_id, 'TRUE')
             )
         report_count = cursor.fetchone()["report_count"]
-        if report_count == 1:
+        if report_count == 2:
             cursor.execute(
                 "SELECT image_path FROM disaster_uploads WHERE image_id=%s",(card_id,)
             )
@@ -238,6 +238,13 @@ async def del_reports(
     card_id : int,
     currentUserId : int
 ):
+    cursor.execute(
+        "SELECT user_id FROM Disaster_uploads WHERE image_id=%s AND user_id=%s",
+        (card_id,currentUserId)
+    )
+    user = cursor.fetchone()
+    if not user:
+        raise HTTPException(status_code=403)
     cursor.execute(
         "SELECT image_path FROM disaster_uploads WHERE image_id=%s",(card_id,)
     )

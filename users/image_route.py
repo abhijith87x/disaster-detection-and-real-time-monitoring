@@ -51,6 +51,13 @@ async def upload(
     file:UploadFile = File(...),
     date: str = Form(...) 
 ):
+    if File.content_type not in [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/jpg"
+    ]:
+        raise HTTPException(status_code=400, detail="Invalid image")
     try:
         token = request.cookies.get("access_token")
         if token is None:
@@ -85,7 +92,7 @@ async def demo(
     longitude: float = Form(...)
 ):
     try:
-        user = await get_current_user(request)
+        user =  get_current_user(request)
         user_id = user["user_id"]
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
