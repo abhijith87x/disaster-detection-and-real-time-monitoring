@@ -1,6 +1,7 @@
 from main1 import app
 from fastapi.testclient import TestClient
 from database.database import cursor, mydb
+from utils.aws_s3 import upload_file_to_s3
 
 client = TestClient(app)
 
@@ -25,6 +26,8 @@ def create_user(email):
 
 
 def create_report(user_id):
+    with open("tests/test_image.jpeg", "rb") as File:
+        file_path = upload_file_to_s3(File)
 
     cursor.execute(
         """
@@ -34,7 +37,7 @@ def create_report(user_id):
         """,
         (
             user_id,
-            "test.jpg",
+            file_path,
             "Flood",
             10.1234,
             76.1234,

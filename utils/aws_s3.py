@@ -9,7 +9,7 @@ s3 = boto3.client(
     region_name=AWS_REGION
 )
 
-async def upload_file_to_s3(file):
+def upload_file_to_s3(file):
     file.file.seek(0)
     bucket_name = AWS_BUCKET_NAME
     file_name = file.filename
@@ -18,7 +18,7 @@ async def upload_file_to_s3(file):
     })
     return f"https://{bucket_name}.s3.{AWS_REGION}.amazonaws.com/{file_name}"
 
-async def delete_file_from_s3(file_path):
+def delete_file_from_s3(file_path):
     key = file_path.split(".amazonaws.com/")[1]
     s3.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
     return

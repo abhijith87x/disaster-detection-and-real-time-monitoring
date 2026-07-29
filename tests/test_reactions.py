@@ -40,7 +40,7 @@ def create_test_data():
             "Flood",
             10.1234,
             76.1234,
-            "Test reaction report"
+            "test_discription"
         )
     )
 

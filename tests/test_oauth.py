@@ -2,12 +2,15 @@ from fastapi.testclient import TestClient
 from main1 import app
 from jwt.jwt_handler import create_access_token
 from database.database import cursor, mydb
+from utils.aws_s3 import upload_file_to_s3
+
 
 client = TestClient(app)
 
 
 def create_test_user():
-
+    
+    
     cursor.execute(
         """
         INSERT INTO users

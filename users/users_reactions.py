@@ -42,7 +42,7 @@ async def like_update(
         )
         like_count = cursor.fetchone()["like_count"]
            
-        if like_count == 1:
+        if like_count == 2:
             cursor.execute(
                 "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Verified',card_id)
             )

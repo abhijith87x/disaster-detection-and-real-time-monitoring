@@ -105,7 +105,7 @@ async def demo(
             if nearby_disasters:
                 return "Disaster already reported in this area."
             
-            file_path = await upload_file_to_s3(File)
+            file_path =  upload_file_to_s3(File)
             location = await get_location(latitude, longitude)
             cursor.execute(
                 "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, description) VALUES ( %s, %s, %s, %s, %s, %s)", 
