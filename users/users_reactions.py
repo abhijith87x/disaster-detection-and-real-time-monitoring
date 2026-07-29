@@ -237,12 +237,14 @@ async def report_update(
 async def del_reports(
     card_id : int,
     currentUserId : int
-):
+):  
+    print("card",card_id ,"currenuser",currentUserId)
     cursor.execute(
         "SELECT user_id FROM disaster_uploads WHERE image_id=%s AND user_id=%s",
-        (card_id,currentUserId)
+        (card_id, currentUserId)
     )
     user = cursor.fetchone()
+    print("user ",user)
     if not user:
         raise HTTPException(status_code=403)
     cursor.execute(
