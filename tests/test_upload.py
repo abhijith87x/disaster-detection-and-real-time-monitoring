@@ -2,11 +2,14 @@ from fastapi.testclient import TestClient
 from jwt.jwt_handler import create_access_token
 from main1 import app
 from database.database import cursor, mydb
+import uuid
 
 client = TestClient(app)
 
 
 def create_test_user():
+
+    unique = uuid.uuid4().hex
 
     cursor.execute(
         """
@@ -15,30 +18,28 @@ def create_test_user():
         VALUES (%s,%s,%s,%s)
         """,
         (
-            "upload@test.com",
+            f"{unique}@test.com",
             "Upload Test User",
-            "google_upload_test",
+            f"google_{unique}",
             "test.jpg"
         )
     )
 
     mydb.commit()
 
-    return cursor.lastrowid
-
+    return cursor.lastrowid, f"{unique}@test.com"
 
 
 def test_valid_image():
 
-    user_id = create_test_user()
+    user_id, email = create_test_user()
 
     token = create_access_token(
         data={
             "user_id": user_id,
-            "sub": "upload@test.com"
+            "sub": email
         }
     )
-
 
     with open("tests/test_image.jpeg", "rb") as image:
 
@@ -55,7 +56,6 @@ def test_valid_image():
             "longitude": "76.2144"
         }
 
-
         response = client.post(
             "/demo",
             files=files,
@@ -65,22 +65,19 @@ def test_valid_image():
             }
         )
 
-
     assert response.status_code == 200
-
 
 
 def test_invalid_image():
 
-    user_id = create_test_user()
+    user_id, email = create_test_user()
 
     token = create_access_token(
         data={
             "user_id": user_id,
-            "sub": "upload@test.com"
+            "sub": email
         }
     )
-
 
     files = {
         "File": (
@@ -95,7 +92,6 @@ def test_invalid_image():
         "longitude": "76.2144"
     }
 
-
     response = client.post(
         "/demo",
         files=files,
@@ -104,6 +100,5 @@ def test_invalid_image():
             "access_token": token
         }
     )
-
 
     assert response.status_code == 400

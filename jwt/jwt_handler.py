@@ -22,10 +22,10 @@ async def verify_token(token: str):
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired or is invalid")
         
-async def get_current_user(request : Request):
+def get_current_user(request : Request):
     token = request.cookies.get("access_token")
     try:
-        payload = await verify_token(token)
+        payload =  verify_token(token)
         return payload
     except HTTPException:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired or is invalid")

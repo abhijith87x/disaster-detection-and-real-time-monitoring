@@ -1,13 +1,17 @@
 from main1 import app
 from fastapi.testclient import TestClient
 from database.database import cursor, mydb
+import uuid
 
 client = TestClient(app)
 
 
 def create_test_data():
 
-    # Create user
+    # Create unique user
+    email = f"{uuid.uuid4()}@test.com"
+    google_id = str(uuid.uuid4())
+
     cursor.execute(
         """
         INSERT INTO users
@@ -15,9 +19,9 @@ def create_test_data():
         VALUES (%s,%s,%s,%s)
         """,
         (
-            "reaction@test.com",
+            email,
             "Reaction User",
-            "google_reaction_test",
+            google_id,
             "test.jpg"
         )
     )
@@ -25,7 +29,6 @@ def create_test_data():
     mydb.commit()
 
     user_id = cursor.lastrowid
-
 
     # Create report
     cursor.execute(
@@ -40,7 +43,7 @@ def create_test_data():
             "Flood",
             10.1234,
             76.1234,
-            "test_discription"
+            "test_description"
         )
     )
 
@@ -49,7 +52,6 @@ def create_test_data():
     card_id = cursor.lastrowid
 
     return user_id, card_id
-
 
 
 def test_like_report():
@@ -63,7 +65,6 @@ def test_like_report():
     assert response.status_code == 200
 
 
-
 def test_dislike_report():
 
     user_id, card_id = create_test_data()
@@ -73,7 +74,6 @@ def test_dislike_report():
     )
 
     assert response.status_code == 200
-
 
 
 def test_report():

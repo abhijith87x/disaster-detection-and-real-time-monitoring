@@ -30,7 +30,7 @@ def create_user(email):
 
 def create_report(user_id):
 
-    file_path = "https://test-bucket/test_image.jpeg"
+    file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
 
     cursor.execute(
         """
