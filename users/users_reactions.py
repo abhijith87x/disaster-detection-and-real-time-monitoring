@@ -239,6 +239,7 @@ async def del_reports(
     currentUserId : int
 ):  
     print("card",card_id ,"currenuser",currentUserId)
+    print("typeof cardid",type(card_id),"type userid", type(currentUserId))
     cursor.execute(
         "SELECT user_id FROM disaster_uploads WHERE image_id=%s AND user_id=%s",
         (card_id, currentUserId)
