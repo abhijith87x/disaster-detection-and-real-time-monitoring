@@ -37,7 +37,9 @@ jobs:
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
 
       - name: Start containers
-        run: docker compose up -d --build
+        run: |
+          docker compose down
+          docker compose up -d --build
 
       - name: Run tests
         run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
