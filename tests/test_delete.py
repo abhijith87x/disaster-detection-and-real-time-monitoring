@@ -1,7 +1,7 @@
-from main1 import app
+from main1 import socket_app
 from fastapi.testclient import TestClient
 
-client = TestClient(app)
+client = TestClient(socket_app)
 
 def test_delete_own_report():
     response = client.delete(

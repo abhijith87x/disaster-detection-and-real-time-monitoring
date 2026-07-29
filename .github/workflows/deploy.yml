@@ -40,7 +40,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Run tests
-        run: docker compose exec -T backend pytest tests -v
+        run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
 
       - name: Stop containers
         if: always()
