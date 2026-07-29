@@ -41,8 +41,10 @@ jobs:
           docker compose down
           docker compose up -d --build
 
-      - name: Run tests
-        docker compose exec -T backend bash -c "PYTHONPATH=/app python -c 'print(\"1\"); import users.users_reactions; print(\"2\")'"
+      # - name: Run tests
+      #   run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
+      - name: Test import
+        run: docker compose exec -T backend bash -c "PYTHONPATH=/app python -c 'import main1; print(\"SUCCESS\")'"
 
       - name: Stop containers
         if: always()
