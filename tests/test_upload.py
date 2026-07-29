@@ -48,7 +48,7 @@ def test_invalid_image():
         "File": (
             "test.txt",
             b"fake_image",
-            "image/jpeg"
+            "text/plain"
         )
     }
 
