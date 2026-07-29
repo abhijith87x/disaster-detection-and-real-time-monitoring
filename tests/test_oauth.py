@@ -11,8 +11,8 @@ def test_no_token():
 def test_valid_token():
     token = create_access_token(
          data={
-             "user_id" : "1",
-             "sub": "abhijith87b@gmail.com"
+            "sub": "abhijith87b@gmail.com",
+            "user_id" : 1
          }
     )
     

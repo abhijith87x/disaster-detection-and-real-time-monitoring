@@ -15,7 +15,7 @@ async def get_profile(request : Request):
         try:
             payload =  await get_current_user(request)
             user_id = payload["user_id"]
-            cursor.execute("SELECT id,email, name, profile_pic FROM users WHERE id = %s", (user_id,))
+            cursor.execute("SELECT id, email, name, profile_pic FROM users WHERE id = %s", (user_id,))
             user = cursor.fetchone()
             return {
                 "id": user[0],

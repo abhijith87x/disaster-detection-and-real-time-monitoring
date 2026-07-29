@@ -239,7 +239,7 @@ async def del_reports(
     currentUserId : int
 ):
     cursor.execute(
-        "SELECT user_id FROM Disaster_uploads WHERE image_id=%s AND user_id=%s",
+        "SELECT user_id FROM disaster_uploads WHERE image_id=%s AND user_id=%s",
         (card_id,currentUserId)
     )
     user = cursor.fetchone()
