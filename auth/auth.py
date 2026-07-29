@@ -68,7 +68,7 @@ async def google_callback(request : Request):
             )
             existing_user = cursor.fetchone()
         
-        jwt_token = await create_access_token(data={"sub": email,"user_id": existing_user[0] })
+        jwt_token =  create_access_token(data={"sub": email,"user_id": existing_user[0] })
         response = RedirectResponse(url="/")
         
         response.set_cookie(
