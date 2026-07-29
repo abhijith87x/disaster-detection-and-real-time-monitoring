@@ -32,6 +32,12 @@ app.add_middleware(SessionMiddleware, secret_key=client_secret)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+app.mount(
+    "/assets",
+    StaticFiles(directory="frontend/dist/assets"),
+    name="assets"
+)
+
 app.include_router(auth_router)
 app.include_router(image_router)
 app.include_router(profile_router)
