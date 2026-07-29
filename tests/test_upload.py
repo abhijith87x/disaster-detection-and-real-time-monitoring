@@ -9,7 +9,8 @@ client = TestClient(app)
 
 def create_test_user():
 
-    unique = uuid.uuid4().hex
+    email = f"{uuid.uuid4()}@test.com"
+    google_id = str(uuid.uuid4())
 
     cursor.execute(
         """
@@ -18,16 +19,16 @@ def create_test_user():
         VALUES (%s,%s,%s,%s)
         """,
         (
-            f"{unique}@test.com",
+            email,
             "Upload Test User",
-            f"google_{unique}",
+            google_id,
             "test.jpg"
         )
     )
 
     mydb.commit()
 
-    return cursor.lastrowid, f"{unique}@test.com"
+    return cursor.lastrowid, email
 
 
 def test_valid_image():

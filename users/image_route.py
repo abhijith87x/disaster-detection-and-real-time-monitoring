@@ -92,7 +92,7 @@ async def demo(
     longitude: float = Form(...)
 ):
     try:
-        user =  get_current_user(request)
+        user =  await get_current_user(request)
         user_id = user["user_id"]
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
