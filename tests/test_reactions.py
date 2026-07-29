@@ -1,22 +1,87 @@
 from main1 import app
 from fastapi.testclient import TestClient
+from database.database import cursor, mydb
 
 client = TestClient(app)
 
+
+def create_test_data():
+
+    # Create user
+    cursor.execute(
+        """
+        INSERT INTO users
+        (email, name, google_id, profile_pic)
+        VALUES (%s,%s,%s,%s)
+        """,
+        (
+            "reaction@test.com",
+            "Reaction User",
+            "google_reaction_test",
+            "test.jpg"
+        )
+    )
+
+    mydb.commit()
+
+    user_id = cursor.lastrowid
+
+
+    # Create report
+    cursor.execute(
+        """
+        INSERT INTO disaster_uploads
+        (user_id, image_path, disaster_type, latitude, longitude, description)
+        VALUES (%s,%s,%s,%s,%s,%s)
+        """,
+        (
+            user_id,
+            "test.jpg",
+            "Flood",
+            10.1234,
+            76.1234,
+            "Test reaction report"
+        )
+    )
+
+    mydb.commit()
+
+    card_id = cursor.lastrowid
+
+    return user_id, card_id
+
+
+
 def test_like_report():
+
+    user_id, card_id = create_test_data()
+
     response = client.post(
-        '/user/like/update?current_user=5&card_id=23&like=True'
+        f"/user/like/update?current_user={user_id}&card_id={card_id}&like=True"
     )
+
     assert response.status_code == 200
-    
+
+
+
 def test_dislike_report():
+
+    user_id, card_id = create_test_data()
+
     response = client.post(
-        '/user/dislike/update?current_user=5&card_id=23&dislike=True&type=tsunami'
+        f"/user/dislike/update?current_user={user_id}&card_id={card_id}&dislike=True&type=tsunami"
     )
+
     assert response.status_code == 200
-    
+
+
+
 def test_report():
+
+    user_id, card_id = create_test_data()
+
     response = client.post(
-        '/user/report/update?current_user=5&card_id=23&report=True'
+        f"/user/report/update?current_user={user_id}&card_id={card_id}&report=True"
     )
+
     assert response.status_code == 200
