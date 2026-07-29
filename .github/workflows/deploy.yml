@@ -114,3 +114,5 @@ jobs:
             git pull origin main
             docker compose pull backend
             docker compose up -d --force-recreate backend 
+            docker compose pull backend
+            # docker compose up -d
