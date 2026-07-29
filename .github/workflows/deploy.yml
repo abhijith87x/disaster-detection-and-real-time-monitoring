@@ -20,10 +20,31 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       
+      # - name: Run tests
+      #   run: pytest tests
+      #   env:
+      #     PYTHONPATH: .
+
+      - name: Create .env
+        run: |
+          echo "GOOGLE_CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
+          echo "ACCESS_TOKEN_EXPIRE_MINUTES=${{ secrets.TOKEN_EXPIRE_MINUTES }}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+          echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+
+      - name: Start containers
+        run: docker compose up -d --build
+
       - name: Run tests
-        run: pytest tests
-        env:
-          PYTHONPATH: .
+        run: docker compose exec -T backend pytest tests -v
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down
         
   deploy:
     runs-on: ubuntu-latest
