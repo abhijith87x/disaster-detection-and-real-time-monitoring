@@ -17,13 +17,20 @@ itsdangerous
 python-jose
 boto3
 pytest
+# langchain
+# langchain-core
+# langchain-google-genai
+# langgraph
+# langgraph-checkpoint
+# google-genai
+# typing-extensions < 4.6.0
 langchain
-langchain-core
-langchain-google-genai
 langgraph
-langgraph-checkpoint
-google-genai
-typing-extensions < 4.6.0
-pypdf
-chromadb
+langchain-google-genai
+langchain-mcp-adapters
 mcp
+chromadb
+langchain-chroma
+pypdf
+# chromadb
+# mcp
