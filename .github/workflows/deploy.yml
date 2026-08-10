@@ -51,6 +51,11 @@ jobs:
         run: |
           docker compose down
           docker compose up -d --build
+      
+      - name: Check memory
+        run: |
+          free -h
+          docker stats --no-stream || true
 
       - name: Run tests
         run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
