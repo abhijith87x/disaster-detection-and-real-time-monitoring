@@ -70,10 +70,15 @@ jobs:
           docker inspect disaster-api \
             --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
           docker compose logs backend --tail=100
+      - name: Debug backend failure
+        run: |
+          docker inspect disaster-api \
+            --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
 
-      - name: Stop containers
-        if: always()
-        run: docker compose down
+          docker compose logs backend --tail=100
+            - name: Stop containers
+              if: always()
+              run: docker compose down
         
   deploy:
     runs-on: ubuntu-latest
