@@ -11,6 +11,7 @@ import DisasterUpload from './pages/DisasterUpload.jsx'
 import Demo from './pages/Demo.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import Grid from './components/Grid.jsx'
+import ChatWidget from './components/ChatWidget.jsx'
 
 function App() {
     return (
@@ -20,7 +21,8 @@ function App() {
                     <div className='home-page'>
                         
                         <Feed />
-                         <NavBar />
+                        <NavBar />
+                        <ChatWidget />
                         <Camera />
                         <Grid />
                     </div>    
