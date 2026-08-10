@@ -18,11 +18,10 @@ python-jose
 boto3
 pytest
 langchain
+langchain-core
 langgraph
 langchain-google-genai
-langchain-mcp-adapters
+google-genai
 mcp
 chromadb
-langchain-chroma
-sentence-transformers
 pydantic
