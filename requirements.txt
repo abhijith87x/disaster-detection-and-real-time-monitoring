@@ -19,11 +19,11 @@ boto3
 pytest
 langchain
 langchain-core
-langgraph
 langchain-google-genai
+langgraph
+langgraph-checkpoint
 google-genai
-mcp
-chromadb
+pydantic==2.13.4
 pypdf
-strip-markdown
-pydantic
+chromadb
+mcp
