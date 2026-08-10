@@ -54,9 +54,7 @@ jobs:
 
       - name: Run tests
         run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
-      # - name: Test import
-      #   run: docker compose exec -T backend bash -c "PYTHONPATH=/app python -c 'import main1; print(\"SUCCESS\")'"
-
+      
       - name: Stop containers
         if: always()
         run: docker compose down
