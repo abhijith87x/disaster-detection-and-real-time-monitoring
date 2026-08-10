@@ -52,22 +52,24 @@ async def google_callback(request : Request):
         name = user_info.get("name")
         google_id = user_info.get("sub")
         profile = user_info.get("picture")
-       
-        cursor.execute(
-            "SELECT * FROM users WHERE email = %s",(email,)
-        )
-        existing_user = cursor.fetchone()
-        if not existing_user:
+        try:
             cursor.execute(
-                "INSERT INTO users (email, name, google_id, profile_pic) VALUES (%s, %s, %s, %s)",
-                (email, name, google_id, profile)
-            )
-            mydb.commit()
-            cursor.execute(
-                "SELECT id FROM users WHERE email = %s",(email,)
+                "SELECT * FROM users WHERE email = %s",(email,)
             )
             existing_user = cursor.fetchone()
-        
+            if not existing_user:
+                cursor.execute(
+                    "INSERT INTO users (email, name, google_id, profile_pic) VALUES (%s, %s, %s, %s)",
+                    (email, name, google_id, profile)
+                )
+                mydb.commit()
+                cursor.execute(
+                    "SELECT id FROM users WHERE email = %s",(email,)
+                )
+                existing_user = cursor.fetchone()
+        finally:
+            cursor.close()
+            mydb.close()
         jwt_token =  create_access_token(data={"sub": email,"user_id": existing_user[0] })
         response = RedirectResponse(url="/")
         

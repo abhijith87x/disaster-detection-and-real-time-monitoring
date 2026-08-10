@@ -70,9 +70,9 @@ async def get_location(lat, lon):
 
         response = requests.get(url, headers=headers, timeout=5)
 
-        data = response.json()
-
-        return data.get("display_name", "Unknown Location")
+        return response.json()
+        
+        # return data.get("display_name", "Unknown Location")
 
     except Exception as e:
         return "Unknown Location"
@@ -97,29 +97,40 @@ async def demo(
         user_id = user["user_id"]
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
-            cursor.execute(
-                "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",
-                (result, latitude - 0.005, latitude + 0.005, longitude - 0.005, longitude + 0.005)
-            )
-            nearby_disasters = cursor.fetchall()
-            
+            try:
+                cursor.execute(
+                    "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",
+                    (result, latitude - 0.005, latitude + 0.005, longitude - 0.005, longitude + 0.005)
+                )
+                nearby_disasters = cursor.fetchall()
+            finally:
+                cursor.close()
+                mydb.close()
             if nearby_disasters:
                 return "Disaster already reported in this area."
             
             file_path =  upload_file_to_s3(File)
-            location = await get_location(latitude, longitude)
-            cursor.execute(
-                "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, description) VALUES ( %s, %s, %s, %s, %s, %s)", 
-                ( user_id, 
-                 file_path, 
-                 result, 
-                 latitude, 
-                 longitude,
-                 f"AI detected {result}-related visual patterns in the user uploaded image at {location}."
+            data = await get_location(latitude, longitude)
+            location = data.get("display_name", "Unknown Location")
+            address = data['address']
+            district = address.get('state_district')
+            try:
+                cursor.execute(
+                    "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, district, description) VALUES ( %s, %s, %s, %s, %s, %s, %s)", 
+                    ( user_id, 
+                    file_path, 
+                    result, 
+                    latitude, 
+                    longitude,
+                    district,
+                    f"AI detected {result}-related visual patterns in the user uploaded image at {location}."
+                    )
                 )
-            )
-            last_row = cursor.lastrowid
-            mydb.commit()
+                last_row = cursor.lastrowid
+                mydb.commit()
+            finally:
+                cursor.close()
+                mydb.close()
             keys = await r.keys("feed:*")
             if keys:
                 await r.delete(*keys)

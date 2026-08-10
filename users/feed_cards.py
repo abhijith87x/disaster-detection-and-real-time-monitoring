@@ -20,13 +20,15 @@ async def get_latest_reports(page: int):
     if reports is not None:
         print("reports from cache:", reports)
         return json.loads(reports)
-    
-    cursor.execute(
-        "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
-        (LIMIT, OFFSET)
-    )
-    reports = cursor.fetchall()
-    
+    try:
+        cursor.execute(
+            "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
+            (LIMIT, OFFSET)
+        )
+        reports = cursor.fetchall()
+    finally:
+        cursor.close()
+        mydb.close()
     await r.set(f"feed:{OFFSET}:{LIMIT}",json.dumps(reports, default=float))
     return reports
 
@@ -35,10 +37,14 @@ async def user_action(
     currentUser : Optional[int] = None
 ):
     if currentUser:
-        cursor.execute(
-            "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
-        )
-        useraction = cursor.fetchall()
+        try:
+            cursor.execute(
+                "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
+            )
+            useraction = cursor.fetchall()
+        finally:
+            cursor.close()
+            mydb.close()
         return useraction
     else:
         return None

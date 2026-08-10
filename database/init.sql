@@ -20,6 +20,7 @@ CREATE TABLE disaster_uploads (
     disaster_type VARCHAR(50) DEFAULT NULL,
     latitude DECIMAL(10,8) DEFAULT NULL,
     longitude DECIMAL(11,8) DEFAULT NULL,
+    district VARCHAR(20) DEFAULT NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     description VARCHAR(255) DEFAULT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'Unverified',
