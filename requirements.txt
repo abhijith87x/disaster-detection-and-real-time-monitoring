@@ -17,3 +17,12 @@ itsdangerous
 python-jose
 boto3
 pytest
+langchain
+langgraph
+langchain-google-genai
+langchain-mcp-adapters
+mcp
+chromadb
+langchain-chroma
+sentence-transformers
+pydantic
