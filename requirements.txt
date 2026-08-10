@@ -24,4 +24,6 @@ langchain-google-genai
 google-genai
 mcp
 chromadb
+pypdf
+strip-markdown
 pydantic
