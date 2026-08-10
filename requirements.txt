@@ -67,7 +67,6 @@
 # pydantic==2.13.4
 # pypdf==6.15.0
 
-
 fastapi
 uvicorn
 jinja2
@@ -76,7 +75,7 @@ python-multipart
 tensorflow==2.15.0
 numpy==1.26.4
 protobuf==4.25.3
-typing-extensions==4.7.0
+typing-extensions==4.14.0
 opencv-python-headless
 pillow
 
@@ -93,11 +92,6 @@ python-jose
 boto3
 pytest
 
-# LangChain/LangGraph/MCP versions need to be changed
-# Don't add the current 1.x versions yet
-
-chromadb
-# sentence-transformers
 pydantic
 pypdf
 
@@ -109,6 +103,7 @@ langchain-text-splitters==1.1.2
 langchain-google-genai==4.3.2
 langchain-mcp-adapters==0.3.2
 langgraph==1.2.10
+
 chromadb==1.5.9
 google-genai==2.16.0
 mcp==1.29.0
