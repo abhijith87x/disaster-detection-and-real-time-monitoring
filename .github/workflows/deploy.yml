@@ -60,6 +60,13 @@ jobs:
       - name: Run tests
         run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
       
+      - name: Check container after tests
+        if: always()
+        run: |
+          docker inspect disaster-api \
+            --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
+          docker compose logs backend --tail=100
+
       - name: Stop containers
         if: always()
         run: docker compose down

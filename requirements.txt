@@ -97,6 +97,6 @@ pytest
 # Don't add the current 1.x versions yet
 
 chromadb
-sentence-transformers
+# sentence-transformers
 pydantic
 pypdf
