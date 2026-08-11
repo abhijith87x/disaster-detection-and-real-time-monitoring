@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse, RedirectResponse
 from httpx import request
-from jwt.jwt_handler import get_current_user
+from auth_jwt.jwt_handler import get_current_user
 from database.database import cursor,mydb
 
 router = APIRouter()

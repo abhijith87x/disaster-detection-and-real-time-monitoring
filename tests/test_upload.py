@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from jwt.jwt_handler import create_access_token
+from auth_jwt.jwt_handler import create_access_token
 from main1 import app
 from database.database import cursor, mydb
 import uuid

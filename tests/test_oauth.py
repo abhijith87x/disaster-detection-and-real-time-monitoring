@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from main1 import app
-from jwt.jwt_handler import create_access_token
+from auth_jwt.jwt_handler import create_access_token
 from database.database import cursor, mydb
 from utils.aws_s3 import upload_file_to_s3
 

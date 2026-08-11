@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from config import algorithm, expire_minutes
 from datetime import datetime, timedelta
-from jwt.jwt_handler import create_access_token, verify_token
+from auth_jwt.jwt_handler import create_access_token, verify_token
 
 router = APIRouter()
 
