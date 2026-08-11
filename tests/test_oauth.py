@@ -18,7 +18,7 @@ def create_test_user():
         VALUES (%s,%s,%s,%s)
         """,
         (
-            "oauthtest@gmail.com",
+            "oauth11test@gmail.com",
             "OAuth Test User",
             "google_oauth_test",
             "test.jpg"
