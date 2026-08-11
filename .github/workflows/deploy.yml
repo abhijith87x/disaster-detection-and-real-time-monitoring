@@ -60,6 +60,13 @@ jobs:
         run: |
           free -h
           docker stats --no-stream || true
+      
+      - name: Debug JWT
+        run: |
+          docker compose exec -T backend sh -c "ls -la /app/jwt"
+          docker compose exec -T backend python -c "import os; print(os.path.exists('/app/jwt/jwt_handler.py'))"
+          docker compose exec -T backend python -c "import jwt; print(jwt); print(list(jwt.__path__))"
+          docker compose exec -T backend python -c "import jwt.jwt_handler; print('JWT IMPORT OK')"
 
       - name: Run tests
         run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
