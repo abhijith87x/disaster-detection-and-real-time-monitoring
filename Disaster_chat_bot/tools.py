@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from rag.vectorstore import retriever
+from .rag.vectorstore import retriever
 import requests
 from typing import Optional
 

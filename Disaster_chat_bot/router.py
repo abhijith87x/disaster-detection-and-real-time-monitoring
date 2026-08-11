@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage
-from graph import create_graph
-from mcp_tools.client import get_mcp_tools
+from .graph import create_graph
+from .mcp_tools.client import get_mcp_tools
 from fastapi.middleware.cors import CORSMiddleware
 from strip_markdown import strip_markdown
 

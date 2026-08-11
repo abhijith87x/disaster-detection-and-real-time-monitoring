@@ -1,5 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from mcp_tools.client import get_mcp_tools
+from ..mcp_tools.client import get_mcp_tools
 from config import GOOGLE_GEMINI_KEY
 
 llm = ChatGoogleGenerativeAI(

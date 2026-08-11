@@ -1,5 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from tools import retrieve_disaster_info
+from ..tools import retrieve_disaster_info
 from config import GOOGLE_GEMINI_KEY
 
 llm = ChatGoogleGenerativeAI(
