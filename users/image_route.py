@@ -98,7 +98,7 @@ async def demo(
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
             try:
-                mydb = get_db
+                mydb = get_db()
                 cursor = mydb.cursor()
                 cursor.execute(
                     "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",

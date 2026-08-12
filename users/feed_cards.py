@@ -19,7 +19,7 @@ async def get_latest_reports(page: int):
         print("reports from cache:", reports)
         return json.loads(reports)
     try:
-        mydb = get_db
+        mydb = get_db()
         cursor = mydb.cursor(dictionary=True)
         
         cursor.execute(
@@ -39,7 +39,7 @@ async def user_action(
 ):
     if currentUser:
         try:
-            mydb = get_db
+            mydb = get_db()
             cursor = mydb.cursor(dictionary=True)
             
             cursor.execute(

@@ -52,7 +52,7 @@ async def google_callback(request : Request):
         google_id = user_info.get("sub")
         profile = user_info.get("picture")
         try:
-            mydb = get_db
+            mydb = get_db()
             cursor = mydb.cursor()
             cursor.execute(
                 "SELECT * FROM users WHERE email = %s",(email,)

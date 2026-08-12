@@ -16,7 +16,7 @@ async def get_profile(request : Request):
             payload =  get_current_user(request)
             user_id = payload["user_id"]
             try:
-                mydb = get_db
+                mydb = get_db()
                 cursor = mydb.cursor()
                 
                 cursor.execute("SELECT id, email, name, profile_pic FROM users WHERE id = %s", (user_id,))

@@ -84,7 +84,7 @@ def create_user(email):
 def create_report(user_id):
     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
 
-    mydb = get_db_connection()
+    mydb = get_db()
     cursor = mydb.cursor()
 
     cursor.execute(
