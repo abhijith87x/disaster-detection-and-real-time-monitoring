@@ -1,5 +1,6 @@
 from langchain_mcp_adapters.client import MultiServerMCPClient
 import sys
+import os 
 
 client = MultiServerMCPClient(
     {
@@ -7,6 +8,7 @@ client = MultiServerMCPClient(
             "transport": "stdio",
             "command":  sys.executable,
             "args": [
+                "-m",
                 "Disaster_chat_bot/mcp_tools/disaster_server.py"
             ],
         }
