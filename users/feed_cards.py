@@ -8,8 +8,6 @@ import json
 
 router = APIRouter()
 
-cursor = mydb.cursor(dictionary=True)
-
 @router.get("/feed/reports/latest")
 async def get_latest_reports(page: int):
     LIMIT = 6
@@ -22,7 +20,8 @@ async def get_latest_reports(page: int):
         return json.loads(reports)
     try:
         mydb = get_db
-        cursor = mydb.cursor()
+        cursor = mydb.cursor(dictionary=True)
+        
         cursor.execute(
             "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
             (LIMIT, OFFSET)
@@ -41,7 +40,8 @@ async def user_action(
     if currentUser:
         try:
             mydb = get_db
-            cursor = mydb.cursor()
+            cursor = mydb.cursor(dictionary=True)
+            
             cursor.execute(
                 "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
             )
