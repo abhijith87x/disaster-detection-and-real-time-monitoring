@@ -100,3 +100,4 @@ langgraph==1.2.10
 chromadb==1.5.9
 google-genai==2.16.0
 mcp==1.29.0
+strip-markdown
