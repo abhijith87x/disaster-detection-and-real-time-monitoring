@@ -9,7 +9,7 @@ from jinja2 import Template
 from fastapi.responses import RedirectResponse, HTMLResponse
 from auth_jwt.jwt_handler import get_current_user
 import uuid, os, requests
-from database.database import cursor, mydb
+from database.database import get_db
 from socket_app.feed_updates import card_update
 from cache.redis_connection import r
 from utils.aws_s3 import upload_file_to_s3
@@ -98,23 +98,25 @@ async def demo(
         result = await predict_disaster(File)
         if result in ["Earthquake","Flood","Landslide","Wildfire"]:
             try:
+                mydb = get_db
+                cursor = mydb.cursor()
                 cursor.execute(
                     "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",
                     (result, latitude - 0.005, latitude + 0.005, longitude - 0.005, longitude + 0.005)
                 )
                 nearby_disasters = cursor.fetchall()
-            finally:
-                cursor.close()
-                mydb.close()
-            if nearby_disasters:
-                return "Disaster already reported in this area."
+
+                if nearby_disasters:
+                    cursor.close()
+                    mydb.close()
+                    return "Disaster already reported in this area."
+                
+                file_path =  upload_file_to_s3(File)
+                data = await get_location(latitude, longitude)
+                location = data.get("display_name", "Unknown Location")
+                address = data['address']
+                district = address.get('state_district')
             
-            file_path =  upload_file_to_s3(File)
-            data = await get_location(latitude, longitude)
-            location = data.get("display_name", "Unknown Location")
-            address = data['address']
-            district = address.get('state_district')
-            try:
                 cursor.execute(
                     "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, district, description) VALUES ( %s, %s, %s, %s, %s, %s, %s)", 
                     ( user_id, 

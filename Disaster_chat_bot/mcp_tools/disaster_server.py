@@ -1,5 +1,5 @@
 import requests
-from database.database import mydb, cursor
+from database.database import get_db
 
 from mcp.server.fastmcp import FastMCP
 
@@ -75,6 +75,8 @@ def query_disaster_reports(
     start_date: str | None = None,
     end_date: str | None = None
 ):
+    mydb = get_db
+    cursor = mydb.cursor()
     cursor = mydb.cursor(dictionary=True)
     
     """

@@ -5,7 +5,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi import Request, Response
 from fastapi import APIRouter
-from database.database import cursor, mydb
+from database.database import get_db
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from config import algorithm, expire_minutes
@@ -52,6 +52,8 @@ async def google_callback(request : Request):
         google_id = user_info.get("sub")
         profile = user_info.get("picture")
         try:
+            mydb = get_db
+            cursor = mydb.cursor()
             cursor.execute(
                 "SELECT * FROM users WHERE email = %s",(email,)
             )

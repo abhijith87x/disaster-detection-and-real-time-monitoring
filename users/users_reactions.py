@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from database.database import cursor, mydb
+from database.database import get_db
 from socket_app.feed_updates import card_del, status_update, update_description
 from users.image_route import get_location
 from cache.redis_connection import r
@@ -16,6 +16,8 @@ async def like_update(
     like : bool
 ):
     try:
+        mydb = get_db
+        cursor = mydb.cursor()
         cursor.execute(
             "SELECT user_id, card_id, reaction, reported FROM reactions WHERE user_id=%s AND card_id=%s",(current_user,card_id)
         )
@@ -101,6 +103,8 @@ async def dislike_update(
     type : str | None = None
 ):
     try:
+        mydb = get_db
+        cursor = mydb.cursor()
         cursor.execute(
             "SELECT user_id, card_id, reaction, reported FROM reactions WHERE user_id=%s AND card_id=%s",(current_user,card_id)
         )
@@ -191,6 +195,8 @@ async def report_update(
     report : bool
 ):
     try:
+        mydb = get_db
+        cursor = mydb.cursor()
         cursor.execute(
             "SELECT user_id, card_id, reaction FROM reactions WHERE user_id=%s AND card_id=%s",(current_user, card_id)
         )
@@ -262,6 +268,8 @@ async def del_reports(
     print("card",card_id ,"currenuser",currentUserId)
     print("typeof cardid",type(card_id),"type userid", type(currentUserId))
     try:
+        mydb = get_db
+        cursor = mydb.cursor()
         cursor.execute(
             "SELECT user_id FROM disaster_uploads WHERE image_id=%s AND user_id=%s",
             (card_id, currentUserId)

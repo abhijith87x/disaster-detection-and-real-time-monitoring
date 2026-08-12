@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from database.database import cursor, mydb
+from database.database import get_db
 from typing import Optional
 from cache.redis_connection import r
 from decimal import Decimal
@@ -21,6 +21,8 @@ async def get_latest_reports(page: int):
         print("reports from cache:", reports)
         return json.loads(reports)
     try:
+        mydb = get_db
+        cursor = mydb.cursor()
         cursor.execute(
             "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
             (LIMIT, OFFSET)
@@ -38,6 +40,8 @@ async def user_action(
 ):
     if currentUser:
         try:
+            mydb = get_db
+            cursor = mydb.cursor()
             cursor.execute(
                 "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
             )

@@ -1,16 +1,42 @@
 from fastapi.testclient import TestClient
 from auth_jwt.jwt_handler import create_access_token
 from main1 import app
-from database.database import cursor, mydb
+from database.database import get_db
 import uuid
 
 client = TestClient(app)
 
 
-def create_test_user():
+# def create_test_user():
 
+#     email = f"{uuid.uuid4()}@test.com"
+#     google_id = str(uuid.uuid4())
+
+#     cursor.execute(
+#         """
+#         INSERT INTO users
+#         (email, name, google_id, profile_pic)
+#         VALUES (%s,%s,%s,%s)
+#         """,
+#         (
+#             email,
+#             "Upload Test User",
+#             google_id,
+#             "test.jpg"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     return cursor.lastrowid, email
+
+
+def create_test_user():
     email = f"{uuid.uuid4()}@test.com"
     google_id = str(uuid.uuid4())
+
+    db = get_db()
+    cursor = db.cursor()
 
     cursor.execute(
         """
@@ -26,12 +52,14 @@ def create_test_user():
         )
     )
 
-    mydb.commit()
+    db.commit()
 
-    return cursor.lastrowid, email
+    user_id = cursor.lastrowid
 
+    cursor.close()
+    db.close()
 
-
+    return user_id, email
 
 def test_invalid_image():
 

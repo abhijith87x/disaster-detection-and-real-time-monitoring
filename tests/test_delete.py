@@ -1,13 +1,37 @@
 from fastapi.testclient import TestClient
 from main1 import app
-from database.database import cursor, mydb
+from database.database import get_db
 import uuid
 
 client = TestClient(app)
 
 
+# def create_user(email):
+#     google_id = str(uuid.uuid4())
+
+#     cursor.execute(
+#         """
+#         INSERT INTO users
+#         (email, name, google_id, profile_pic)
+#         VALUES (%s, %s, %s, %s)
+#         """,
+#         (
+#             email,
+#             "Test User",
+#             google_id,
+#             "test.jpg"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     return cursor.lastrowid
+
 def create_user(email):
     google_id = str(uuid.uuid4())
+
+    mydb = get_db()
+    cursor = mydb.cursor()
 
     cursor.execute(
         """
@@ -25,12 +49,43 @@ def create_user(email):
 
     mydb.commit()
 
-    return cursor.lastrowid
+    user_id = cursor.lastrowid
 
+    cursor.close()
+    mydb.close()
+
+    return user_id
+
+
+# def create_report(user_id):
+
+#     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
+
+#     cursor.execute(
+#         """
+#         INSERT INTO disaster_uploads
+#         (user_id, image_path, disaster_type, latitude, longitude, description)
+#         VALUES (%s, %s, %s, %s, %s, %s)
+#         """,
+#         (
+#             user_id,
+#             file_path,
+#             "Flood",
+#             10.1234,
+#             76.1234,
+#             "Test disaster report"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     return cursor.lastrowid
 
 def create_report(user_id):
-
     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
+
+    mydb = get_db_connection()
+    cursor = mydb.cursor()
 
     cursor.execute(
         """
@@ -50,8 +105,12 @@ def create_report(user_id):
 
     mydb.commit()
 
-    return cursor.lastrowid
+    card_id = cursor.lastrowid
 
+    cursor.close()
+    mydb.close()
+
+    return card_id
 
 def test_delete_own_report():
 

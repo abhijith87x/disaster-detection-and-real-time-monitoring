@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse, RedirectResponse
 from httpx import request
 from auth_jwt.jwt_handler import get_current_user
-from database.database import cursor,mydb
+from database.database import get_db
 
 router = APIRouter()
 
@@ -16,8 +16,12 @@ async def get_profile(request : Request):
             payload =  get_current_user(request)
             user_id = payload["user_id"]
             try:
+                mydb = get_db
+                cursor = mydb.cursor()
+                
                 cursor.execute("SELECT id, email, name, profile_pic FROM users WHERE id = %s", (user_id,))
                 user = cursor.fetchone()
+                
             finally:
                 cursor.close()
                 mydb.close()

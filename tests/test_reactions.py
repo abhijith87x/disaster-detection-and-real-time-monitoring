@@ -1,14 +1,62 @@
 from main1 import app
 from fastapi.testclient import TestClient
-from database.database import cursor, mydb
+from database.database import get_db
 import uuid
 
 client = TestClient(app)
 
 
-def create_test_data():
+# def create_test_data():
 
-    # Create unique user
+#     # Create unique user
+#     email = f"{uuid.uuid4()}@test.com"
+#     google_id = str(uuid.uuid4())
+
+#     cursor.execute(
+#         """
+#         INSERT INTO users
+#         (email, name, google_id, profile_pic)
+#         VALUES (%s,%s,%s,%s)
+#         """,
+#         (
+#             email,
+#             "Reaction User",
+#             google_id,
+#             "test.jpg"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     user_id = cursor.lastrowid
+
+#     # Create report
+#     cursor.execute(
+#         """
+#         INSERT INTO disaster_uploads
+#         (user_id, image_path, disaster_type, latitude, longitude, description)
+#         VALUES (%s,%s,%s,%s,%s,%s)
+#         """,
+#         (
+#             user_id,
+#             "test.jpg",
+#             "Flood",
+#             10.1234,
+#             76.1234,
+#             "test_description"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     card_id = cursor.lastrowid
+
+#     return user_id, card_id
+
+def create_test_data():
+    db = get_db()
+    cursor = db.cursor()
+
     email = f"{uuid.uuid4()}@test.com"
     google_id = str(uuid.uuid4())
 
@@ -26,11 +74,10 @@ def create_test_data():
         )
     )
 
-    mydb.commit()
+    db.commit()
 
     user_id = cursor.lastrowid
 
-    # Create report
     cursor.execute(
         """
         INSERT INTO disaster_uploads
@@ -47,12 +94,14 @@ def create_test_data():
         )
     )
 
-    mydb.commit()
+    db.commit()
 
     card_id = cursor.lastrowid
 
-    return user_id, card_id
+    cursor.close()
+    db.close()
 
+    return user_id, card_id
 
 def test_like_report():
 

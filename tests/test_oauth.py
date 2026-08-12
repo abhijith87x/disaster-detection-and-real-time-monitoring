@@ -1,15 +1,37 @@
 from fastapi.testclient import TestClient
 from main1 import app
 from auth_jwt.jwt_handler import create_access_token
-from database.database import cursor, mydb
+from database.database import get_db
 from utils.aws_s3 import upload_file_to_s3
 
 client = TestClient(app)
 
 
+# def create_test_user():
+    
+    
+#     cursor.execute(
+#         """
+#         INSERT INTO users
+#         (email, name, google_id, profile_pic)
+#         VALUES (%s,%s,%s,%s)
+#         """,
+#         (
+#             "oauth11test@gmail.com",
+#             "OAuth Test User",
+#             "google_oauth_test",
+#             "test.jpg"
+#         )
+#     )
+
+#     mydb.commit()
+
+#     return cursor.lastrowid
+
 def create_test_user():
-    
-    
+    db = get_db()
+    cursor = db.cursor()
+
     cursor.execute(
         """
         INSERT INTO users
@@ -24,10 +46,13 @@ def create_test_user():
         )
     )
 
-    mydb.commit()
+    db.commit()
+    user_id = cursor.lastrowid
 
-    return cursor.lastrowid
+    cursor.close()
+    db.close()
 
+    return user_id
 
 
 def test_no_token():
