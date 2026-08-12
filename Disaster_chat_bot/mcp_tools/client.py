@@ -9,7 +9,7 @@ client = MultiServerMCPClient(
             "command":  sys.executable,
             "args": [
                 "-m",
-                "Disaster_chat_bot/mcp_tools/disaster_server.py"
+                "Disaster_chat_bot/mcp_tools/disaster_server"
             ],
         }
     }
