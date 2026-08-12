@@ -18,4 +18,5 @@ CMD ["uvicorn", "main1:socket_app", "--host", "0.0.0.0", "--port", "8000"]
 #docker rm -f disaster-container
 #docker rmi disaster-app
 #docker build --no-cache -t disaster-app .
+
 #docker run --name disaster-container -p 8000:8000 disaster-app
