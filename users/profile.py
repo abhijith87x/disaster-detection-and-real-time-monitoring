@@ -9,6 +9,7 @@ router = APIRouter()
 @router.get("/profile")
 async def get_profile(request : Request):
     token = request.cookies.get("access_token")
+    
     if not token:
         raise HTTPException(status_code=401, detail="Unauthorized")
     else:
