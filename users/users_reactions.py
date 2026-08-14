@@ -135,7 +135,9 @@ async def dislike_update(
                 location = cursor.fetchone()
                 
                 latitude, longitude = location["latitude"], location["longitude"]
-                location = await get_location(latitude, longitude)
+                data = await get_location(latitude, longitude)
+                location = data.get("display_name", "Unknown Location")
+                
                 description = f"AI detected {type}-related visual patterns in the user uploaded image at {location}."
                 cursor.execute(
                     "UPDATE disaster_uploads SET description = %s, disaster_type = %s WHERE image_id=%s",(description, type, card_id)

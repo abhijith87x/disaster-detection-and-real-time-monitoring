@@ -75,8 +75,7 @@ def query_disaster_reports(
     start_date: str | None = None,
     end_date: str | None = None
 ):
-    mydb = get_db
-    cursor = mydb.cursor()
+    mydb = get_db()
     cursor = mydb.cursor(dictionary=True)
     
     """
