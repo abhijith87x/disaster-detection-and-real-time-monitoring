@@ -75,6 +75,7 @@ def query_disaster_reports(
     start_date: str | None = None,
     end_date: str | None = None
 ):
+    print("reached")
     mydb = get_db()
     cursor = mydb.cursor(dictionary=True)
     
@@ -108,10 +109,11 @@ def query_disaster_reports(
 
 
     try:
+        print("query, para", query,params)
         cursor.execute(query, params)
 
         results = cursor.fetchall()
-
+        print(results)
         return results
 
     finally:
