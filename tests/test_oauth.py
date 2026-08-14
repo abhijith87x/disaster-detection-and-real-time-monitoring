@@ -29,6 +29,7 @@ client = TestClient(app)
 #     return cursor.lastrowid
 
 def create_test_user():
+    
     db = get_db()
     cursor = db.cursor()
 
