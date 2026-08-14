@@ -6,7 +6,7 @@ from users.image_route import router as image_router
 from users.profile import router as profile_router
 from users.feed_cards import router as feed_cards_router
 from users.users_reactions import router as users_reactions_router
-from Disaster_chat_bot.router import router as chat_bot_router
+from Disaster_chat_bot.router  import router as chat_bot_router
 from starlette.middleware.sessions import SessionMiddleware
 from config import client_secret
 from fastapi.staticfiles import StaticFiles
