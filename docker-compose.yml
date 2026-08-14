@@ -24,7 +24,7 @@ services:
       - "6379:6379"
   backend:
     # build: .
-    image: abhijith87b/disaster-api:latest
+    image:  abhijith87b/disaster-api:latest
     env_file:
       - .env
     container_name: disaster-api

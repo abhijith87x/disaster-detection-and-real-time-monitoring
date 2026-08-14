@@ -22,7 +22,7 @@ CREATE TABLE disaster_uploads (
     longitude DECIMAL(11,8) DEFAULT NULL,
     district VARCHAR(20) DEFAULT NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    description VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'Unverified',
     PRIMARY KEY (image_id),
     KEY user_id (user_id),

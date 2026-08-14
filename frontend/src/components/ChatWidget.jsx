@@ -16,7 +16,7 @@ import "../style/ChatWidget.css";
  *   placeholder(string)  - Input placeholder. Default "Type a message...".
  */
 export default function ChatWidget({
-  endpoint = "http://localhost:8000/chat",
+  endpoint = "/chat",
   title = "Chat",
   placeholder = "Type a message...",
 }) {
@@ -49,7 +49,7 @@ export default function ChatWidget({
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/chat", {
+      const res = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text }),
