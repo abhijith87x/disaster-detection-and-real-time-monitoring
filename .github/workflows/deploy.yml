@@ -122,6 +122,7 @@ jobs:
         
       - name: Build and push Docker image
         run: |
+          git pull origin main
           docker build -t abhijith87b/disaster-api:latest .
           docker push abhijith87b/disaster-api:latest
 
@@ -144,5 +145,6 @@ jobs:
             echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
             echo "GOOGLE_GEMINI_KEY=${{ secrets.GOOGLE_GEMINI_KEY }}" >> .env
             
+            git pull origin main
             docker compose pull backend
             docker compose up -d --force-recreate backend 
