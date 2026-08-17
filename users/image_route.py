@@ -24,7 +24,7 @@ async def get_upload_form(request : Request):
         token = request.cookies.get("access_token")
         if token is None:
             return RedirectResponse(url="/login-page")
-        user = await get_current_user(request)
+        user =  get_current_user(request)
         return templates.TemplateResponse("demo.html", {"request": request})
     except HTTPException:
         return RedirectResponse(url="/login-page")
