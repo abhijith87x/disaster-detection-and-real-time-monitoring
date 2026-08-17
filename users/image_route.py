@@ -56,7 +56,7 @@ async def upload(
         token = request.cookies.get("access_token")
         if token is None:
             return RedirectResponse(url="/login-page")
-        user = await get_current_user(request)
+        user = get_current_user(request)
         result = await predict_screen_capture(file)
         return result
     except HTTPException:
