@@ -38,7 +38,7 @@ async def input_camera(request : Request):
                 status_code=401,
                 detail="Not authenticated"
             )
-        user = await get_current_user(request)
+        user = get_current_user(request)
         return templates.TemplateResponse("for_camera.html", {"request": request})
     except HTTPException:
         raise HTTPException( status_code=401, detail="Not authenticated")
