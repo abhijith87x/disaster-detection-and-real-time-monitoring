@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+tensorflow==2.15.0
+numpy==1.26.4
+protobuf==4.25.3
+opencv-python-headless
+pillow
+python-dotenv
+requests
+httpx
+itsdangerous

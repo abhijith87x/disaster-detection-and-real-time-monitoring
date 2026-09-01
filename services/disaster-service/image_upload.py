@@ -1,0 +1,177 @@
+import shutil
+from fastapi import HTTPException, Request
+from fastapi import APIRouter,Form,File,UploadFile
+import httpx
+from ml.screen_capture_model import predict_screen_capture
+from ml.disaster_model import predict_disaster
+from fastapi.templating import Jinja2Templates
+from jinja2 import Template
+from fastapi.responses import RedirectResponse, HTMLResponse
+from .jwt_handler import get_current_user, verify_token
+import uuid, os, requests
+from database.database import get_db
+from socket_app.feed_updates import card_update
+from cache.redis_connection import r
+from utils.aws_s3 import upload_file_to_s3
+
+router = APIRouter()
+
+# templates = Jinja2Templates(directory="template")
+
+# @router.get("/upload-form", response_class=HTMLResponse)
+# async def get_upload_form(request : Request):
+#     try:
+#         token = request.cookies.get("access_token")
+#         if token is None:
+#             return RedirectResponse(url="/login-page")
+#         user =  get_current_user(request)
+#         return templates.TemplateResponse("demo.html", {"request": request})
+#     except HTTPException:
+#         return RedirectResponse(url="/login-page")
+
+# @router.get("/input-camera", response_class=HTMLResponse)
+# async def input_camera(request : Request):
+#     try:
+#         token = request.cookies.get("access_token")
+#         if token is None:
+#             raise HTTPException(
+#                 status_code=401,
+#                 detail="Not authenticated"
+#             )
+#         user = get_current_user(request)
+#         return templates.TemplateResponse("for_camera.html", {"request": request})
+#     except HTTPException:
+#         raise HTTPException( status_code=401, detail="Not authenticated")
+
+@router.post("/upload-data")
+async def upload(
+    request : Request,
+    latitude: float = Form(...),
+    longitude: float = Form(...),
+    file:UploadFile = File(...),
+    date: str = Form(...) 
+):
+    
+    try:
+        token = request.cookies.get("access_token")
+        
+        if token is None:
+            return RedirectResponse(url="/login-page")
+        
+        user = get_current_user(request)
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://cnn-service:8000/detect/ScreenCapture",
+                files={file}
+            )
+            
+        response.raise_for_status()
+        
+        result = response.json()
+        
+        return result
+    
+    except HTTPException:
+        raise HTTPException(status_code=401, detail="Unauthorized: Please log in to upload data")
+
+async def get_location(lat, lon):
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json"
+
+        headers = {"User-Agent": "disaster-app/1.0"}
+
+        response = requests.get(url, headers=headers, timeout=5)
+
+        return response.json()
+        
+        # return data.get("display_name", "Unknown Location")
+
+    except Exception as e:
+        return "Unknown Location"
+   
+
+@router.post("/demo")
+async def demo(
+    request : Request,
+    File:UploadFile = File(...),
+    latitude: float = Form(...),
+    longitude: float = Form(...)
+):
+    if File.content_type not in [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "image/jpg"
+    ]:
+        raise HTTPException(status_code=400, detail="Invalid image")
+    try:
+        user =   get_current_user(request)
+        user_id = user["user_id"]
+        
+        async with httpx.AsyncClient() as client:
+            
+            response = await client.post(
+                "http://cnn-service:8000/detect/disaster",
+                files={File}
+            )
+            
+        response.raise_for_status()
+        
+        result = response.json()
+        
+        if result in ["Earthquake","Flood","Landslide","Wildfire"]:
+            try:
+                mydb = get_db()
+                cursor = mydb.cursor()
+                cursor.execute(
+                    "SELECT * FROM  disaster_uploads WHERE disaster_type = %s AND latitude  BETWEEN %s AND %s AND longitude  BETWEEN %s AND %s",
+                    (result, latitude - 0.005, latitude + 0.005, longitude - 0.005, longitude + 0.005)
+                )
+                nearby_disasters = cursor.fetchall()
+
+                if nearby_disasters:
+                    cursor.close()
+                    mydb.close()
+                    return "Disaster already reported in this area."
+                
+                file_path =  upload_file_to_s3(File)
+                data = await get_location(latitude, longitude)
+                location = data.get("display_name", "Unknown Location")
+                address = data['address']
+                district = address.get('state_district')
+            
+                cursor.execute(
+                    "INSERT INTO disaster_uploads (user_id, image_path, disaster_type, latitude, longitude, district, description) VALUES ( %s, %s, %s, %s, %s, %s, %s)", 
+                    ( user_id, 
+                    file_path, 
+                    result, 
+                    latitude, 
+                    longitude,
+                    district,
+                    f"AI detected {result}-related visual patterns in the user uploaded image at {location}."
+                    )
+                )
+                last_row = cursor.lastrowid
+                mydb.commit()
+            finally:
+                cursor.close()
+                mydb.close()
+            keys = await r.keys("feed:*")
+            if keys:
+                await r.delete(*keys)
+            await card_update({
+                "image_id" : last_row,
+                "user_id" : user_id,
+                "description" : f"AI detected {result}-related visual patterns in the user uploaded image at {location}.",
+                "latitude" : latitude,
+                "longitude" : longitude,
+                "image_path" : file_path,
+                "status" : "Unverified",   
+            })
+            return "Disaster"
+        else:
+            return result
+    except HTTPException:
+        return RedirectResponse(url="/login-page")    
+    

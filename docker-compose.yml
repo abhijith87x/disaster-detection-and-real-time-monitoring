@@ -5,9 +5,8 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root87141
-      MYSQL_DATABASE: disaster_db
-    ports:
-      - "3307:3306"
+    # ports:
+    #   - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -20,30 +19,94 @@ services:
     image: redis:7
     container_name: redis-container
     restart: always
-    ports:
-      - "6379:6379"
-  backend:
-    # build: .
-    image:  abhijith87b/disaster-api:latest
+    # ports:
+    #   - "6379:6379"
+  # backend:
+  #   # build: .
+  #   image:  abhijith87b/disaster-api:latest
+  #   env_file:
+  #     - .env
+  #   container_name: disaster-api
+  #   restart: always
+  #   volumes:
+  #     - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+  #     - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_started
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     DB_HOST: mysql
+  #     DB_USER: root
+  #     DB_PASSWORD: root87141
+  #     DB_NAME: disaster_db
+  #     REDIS_HOST: redis
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: auth-service
+    restart: always
     env_file:
       - .env
-    container_name: disaster-api
-    restart: always
-    volumes:
-      - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
-      - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: root87141
+      DB_NAME: oauth_db
     depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    ports:
-      - "8000:8000"
+      - mysql:
+          condition: service_healthy
+
+  disaster-service:
+    build: ./services/disaster-service
+    container_name: disaster-service
+    restart: always
+    env_file:
+      - .env
     environment:
       DB_HOST: mysql
       DB_USER: root
       DB_PASSWORD: root87141
       DB_NAME: disaster_db
-      REDIS_HOST: redis
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      cnn-service:
+        condition: service_started
+
+    cnn-service:
+      build: ./services/cnn-service
+      container_name: cnn-service
+      restart: always
+      volumes:
+        - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+        - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+        
+    chatbot-service:
+      build: ./services/chatbot-service
+      container_name: chatbot-service 
+      restart: always
+      env_file:
+        - .env
+
+    gateway:
+      build: ./gateway
+      container_name: api-gateway
+      restart: always
+      ports:
+        - "443:443"
+      volumes:
+        - /etc/letsencrypt/live/disaster-watch.duckdns.org/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+        - /etc/letsencrypt/live/disaster-watch.duckdns.org/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      depends_on:
+        - auth-service
+        - disaster-service
+        - chatbot-service
+
 volumes:
   mysql_data:

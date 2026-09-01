@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+mysql-connector-python
+python-dotenv
+requests
+Authlib
+httpx
+itsdangerous
+python-jose

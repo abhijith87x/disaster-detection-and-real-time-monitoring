@@ -1,17 +1,20 @@
 CREATE DATABASE IF NOT EXISTS disaster_db;
+CREATE DATABASE IF NOT EXISTS oauth_db;
 
-USE disaster_db;
+USE oauth_db;
 
 CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT,
-  google_id VARCHAR(255) DEFAULT NULL,
-  name VARCHAR(255) DEFAULT NULL,
-  email VARCHAR(255) DEFAULT NULL,
-  profile_pic TEXT,
-  PRIMARY KEY (id),
-  UNIQUE KEY google_id (google_id),
-  UNIQUE KEY email (email)
+    id INT NOT NULL AUTO_INCREMENT,
+    google_id VARCHAR(255) DEFAULT NULL,
+    name VARCHAR(255) DEFAULT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    profile_pic TEXT,
+    PRIMARY KEY (id),
+    UNIQUE KEY google_id (google_id),
+    UNIQUE KEY email (email)
 );
+
+USE disaster_db;
 
 CREATE TABLE disaster_uploads (
     image_id INT NOT NULL AUTO_INCREMENT,
@@ -25,8 +28,7 @@ CREATE TABLE disaster_uploads (
     description TEXT DEFAULT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'Unverified',
     PRIMARY KEY (image_id),
-    KEY user_id (user_id),
-    CONSTRAINT disaster_uploads FOREIGN KEY (user_id) REFERENCES users(id)
+    KEY user_id (user_id)
 );
 
 CREATE TABLE reactions (
@@ -36,6 +38,5 @@ CREATE TABLE reactions (
     suggested_type VARCHAR(50) DEFAULT NULL,
     reported VARCHAR(50) DEFAULT NULL,
     UNIQUE KEY (user_id, card_id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (card_id) REFERENCES disaster_uploads(image_id)
 );

@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+numpy==1.26.4
+protobuf==4.25.3
+typing-extensions>=4.14.1
+pillow
+mysql-connector-python
+redis
+python-socketio
+python-dotenv
+requests
+httpx
+python-jose
+boto3
