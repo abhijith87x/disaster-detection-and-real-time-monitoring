@@ -57,8 +57,8 @@ services:
       DB_PASSWORD: root87141
       DB_NAME: oauth_db
     depends_on:
-      - mysql:
-          condition: service_healthy
+      mysql:
+        condition: service_healthy
 
   disaster-service:
     build: ./services/disaster-service
