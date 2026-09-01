@@ -120,11 +120,11 @@ jobs:
           npm ci
           npm run build
         
-      - name: Build and push Docker image
-        run: |
-          git pull origin main
-          docker build -t abhijith87b/disaster-api:latest .
-          docker push abhijith87b/disaster-api:latest
+      # - name: Build and push Docker image
+      #   run: |
+      #     git pull origin main
+      #     docker build -t abhijith87b/disaster-api:latest .
+      #     docker push abhijith87b/disaster-api:latest
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.5
