@@ -79,34 +79,34 @@ services:
       cnn-service:
         condition: service_started
 
-    cnn-service:
-      build: ./services/cnn-service
-      container_name: cnn-service
-      restart: always
-      volumes:
-        - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
-        - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
-        
-    chatbot-service:
-      build: ./services/chatbot-service
-      container_name: chatbot-service 
-      restart: always
-      env_file:
-        - .env
+  cnn-service:
+    build: ./services/cnn-service
+    container_name: cnn-service
+    restart: always
+    volumes:
+      - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+      - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+      
+  chatbot-service:
+    build: ./services/chatbot-service
+    container_name: chatbot-service 
+    restart: always
+    env_file:
+      - .env
 
-    gateway:
-      build: ./gateway
-      container_name: api-gateway
-      restart: always
-      ports:
-        - "443:443"
-      volumes:
-        - /etc/letsencrypt/live/disaster-watch.duckdns.org/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-        - /etc/letsencrypt/live/disaster-watch.duckdns.org/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
-      depends_on:
-        - auth-service
-        - disaster-service
-        - chatbot-service
+  gateway:
+    build: ./gateway
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/disaster-watch.duckdns.org/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/disaster-watch.duckdns.org/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    depends_on:
+      - auth-service
+      - disaster-service
+      - chatbot-service
 
 volumes:
   mysql_data:
