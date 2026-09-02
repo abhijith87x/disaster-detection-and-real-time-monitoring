@@ -4,7 +4,7 @@ from fastapi import APIRouter,Form,File,UploadFile
 import httpx
 # from ml.screen_capture_model import predict_screen_capture
 # from ml.disaster_model import predict_disaster
-from fastapi.templating import Jinja2Templates
+# from fastapi.templating import Jinja2Templates
 # from jinja2 import Template
 from fastapi.responses import RedirectResponse, HTMLResponse
 from .jwt_handler import get_current_user, verify_token
