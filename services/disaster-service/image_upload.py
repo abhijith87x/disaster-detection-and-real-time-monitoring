@@ -7,7 +7,7 @@ import httpx
 # from fastapi.templating import Jinja2Templates
 # from jinja2 import Template
 from fastapi.responses import RedirectResponse, HTMLResponse
-from .jwt_handler import get_current_user, verify_token
+from jwt_handler import get_current_user, verify_token
 import uuid, os, requests
 from database.database import get_db
 from socket_app.feed_updates import card_update
