@@ -26,15 +26,15 @@ oauth.register(
     }
 )
 
-templates = Jinja2Templates(directory="template")
+# templates = Jinja2Templates(directory="template")
 
 # @router.get("/", response_class=HTMLResponse)
 # async def home(request: Request):
 #     return templates.TemplateResponse("index1.html",{"request": request})
 
-@router.get("/login-page", response_class=HTMLResponse)
-async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+# @router.get("/login-page", response_class=HTMLResponse)
+# async def login_page(request: Request):
+#     return templates.TemplateResponse("login.html", {"request": request})
 
 @router.get("/login")
 async def login( request : Request):
