@@ -1,4 +1,4 @@
-from socket_app.socket_server import sio
+from socket_server import sio
 
 async def card_update(report):
     await sio.emit('new_report', report)
