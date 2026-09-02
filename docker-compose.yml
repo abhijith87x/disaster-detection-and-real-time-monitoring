@@ -100,7 +100,9 @@ services:
       - .env
 
   gateway:
-    build: ./gateway
+    build: 
+      context: .
+      dockerfile: gateway/Dockerfile
     container_name: api-gateway
     restart: always
     ports:
