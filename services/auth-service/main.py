@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from auth import router as auth_router
-from .config import client_secret
+from config import client_secret
 
 app = FastAPI()
 
