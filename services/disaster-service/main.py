@@ -1,6 +1,10 @@
 from fastapi import FastAPI
+import socketio
 from image_upload import router as upload_router
+from socket_connection.socket_server import sio
 
-app =  FastAPI()
+fastapi_app =  FastAPI()
 
-app.include_router(upload_router)
+fastapi_app.include_router(upload_router)
+
+app = socketio.ASGIApp(sio, fastapi_app)
