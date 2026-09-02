@@ -1,6 +1,6 @@
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from config import GOOGLE_GEMINI_KEY
+from ..config import GOOGLE_GEMINI_KEY
 
 embeddings = GoogleGenerativeAIEmbeddings(
     model="gemini-embedding-001",
