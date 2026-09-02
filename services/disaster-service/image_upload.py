@@ -9,8 +9,8 @@ import httpx
 from fastapi.responses import RedirectResponse, HTMLResponse
 from jwt_handler import get_current_user, verify_token
 import uuid, os, requests
-from database.database import get_db
-from socket_app.feed_updates import card_update
+from database import get_db
+from socket_feed_updates import card_update
 from cache.redis_connection import r
 from utils.aws_s3 import upload_file_to_s3
 
