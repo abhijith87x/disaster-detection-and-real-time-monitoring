@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .predict import router as predict_router
+from predict import router as predict_router
 
 app = FastAPI()
 
