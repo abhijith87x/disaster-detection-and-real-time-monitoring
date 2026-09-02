@@ -5,12 +5,12 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi import Request, Response
 from fastapi import APIRouter
-from database.database import get_db
-from fastapi.templating import Jinja2Templates
-from jinja2 import Template
+from database import get_db
+# from fastapi.templating import Jinja2Templates
+# from jinja2 import Template
 from config import algorithm, expire_minutes
 from datetime import datetime, timedelta
-from auth_jwt.jwt_handler import create_access_token, verify_token
+from jwt_handler import create_access_token, verify_token
 
 router = APIRouter()
 

@@ -1,12 +1,12 @@
 from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
-from jinja2 import Template
+# from fastapi.templating import Jinja2Templates
+# from jinja2 import Template
 from config import algorithm, expire_minutes, client_secret
 from datetime import datetime, timedelta
 from jose import jwt, JWTError, ExpiredSignatureError
 from fastapi import Request, HTTPException, status
 
-templates = Jinja2Templates(directory="template")
+# templates = Jinja2Templates(directory="template")
 
 def create_access_token(data: dict):
     to_encode = data.copy()
