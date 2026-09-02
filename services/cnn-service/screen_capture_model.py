@@ -3,7 +3,7 @@ import io
 from PIL import Image
 import tensorflow as tf
 
-from .disaster_prediction_model import predict_disaster
+from disaster_prediction_model import predict_disaster
 
 
 model = None

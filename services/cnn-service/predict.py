@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from .screen_capture_model import get_screen_model
-from .disaster_prediction_model import predict_disaster
+from screen_capture_model import get_screen_model
+from disaster_prediction_model import predict_disaster
 
 router = APIRouter()
 
