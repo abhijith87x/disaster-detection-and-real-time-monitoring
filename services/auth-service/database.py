@@ -27,7 +27,7 @@ def get_db():
                 port=3306,
                 user="root",
                 password="root87141",
-                database="disaster_db"
+                database="oauth_db"
             )
         except mysql.connector.Error:
             time.sleep(2)
