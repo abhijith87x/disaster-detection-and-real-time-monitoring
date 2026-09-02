@@ -1,5 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from config import GOOGLE_GEMINI_KEY
+from .config import GOOGLE_GEMINI_KEY
 from tools import get_weather,retrieve_disaster_info
 
 

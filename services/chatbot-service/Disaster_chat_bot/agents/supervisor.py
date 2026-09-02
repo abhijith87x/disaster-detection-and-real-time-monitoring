@@ -2,7 +2,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage
-from config import GOOGLE_GEMINI_KEY
+from ..config import GOOGLE_GEMINI_KEY
 
 class Route(BaseModel):
 
