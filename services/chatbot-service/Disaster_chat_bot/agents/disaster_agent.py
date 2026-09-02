@@ -1,6 +1,6 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from ..tools import retrieve_disaster_info
-from ...config import GOOGLE_GEMINI_KEY
+from ..config import GOOGLE_GEMINI_KEY
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-flash-lite-latest",
