@@ -2,8 +2,8 @@ import shutil
 from fastapi import HTTPException, Request
 from fastapi import APIRouter,Form,File,UploadFile
 import httpx
-from ml.screen_capture_model import predict_screen_capture
-from ml.disaster_model import predict_disaster
+# from ml.screen_capture_model import predict_screen_capture
+# from ml.disaster_model import predict_disaster
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from fastapi.responses import RedirectResponse, HTMLResponse
