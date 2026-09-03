@@ -98,11 +98,11 @@ async def get_location(lat, lon):
 @router.post("/demo")
 async def demo(
     request : Request,
-    file:UploadFile = File(...),
+    File:UploadFile = File(...),
     latitude: float = Form(...),
     longitude: float = Form(...)
 ):
-    if file.content_type not in [
+    if File.content_type not in [
                 "image/jpeg",
                 "image/png",
                 "image/webp",
@@ -118,9 +118,9 @@ async def demo(
             response = await client.post(
                 "http://cnn-service:8000/detect/disaster",
                 files={"file": (
-                    file.filename,
-                    await file.read(),
-                    file.content_type
+                    File.filename,
+                    await File.read(),
+                    File.content_type
                 )}
             )
             
@@ -143,7 +143,7 @@ async def demo(
                     mydb.close()
                     return "Disaster already reported in this area."
                 
-                file_path =  upload_file_to_s3(file)
+                file_path =  upload_file_to_s3(File)
                 data = await get_location(latitude, longitude)
                 location = data.get("display_name", "Unknown Location")
                 address = data['address']
