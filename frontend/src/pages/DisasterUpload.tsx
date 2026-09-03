@@ -236,7 +236,7 @@ function DisasterUpload() {
         }
 
         const response = await fetch(
-            "/upload-data",
+            "/api/disaster/upload-data",
             {
                 method: "POST",
                 body: formData,
