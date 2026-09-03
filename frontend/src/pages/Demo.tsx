@@ -72,7 +72,7 @@ function Demo() {
             return;
         }
         console.log("executredddd")
-        const response = await fetch("/demo",{
+        const response = await fetch("/api/disaster/demo",{
             
             method:"POST",
             body : demo_formData,
