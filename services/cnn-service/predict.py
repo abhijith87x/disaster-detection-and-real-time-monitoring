@@ -1,12 +1,12 @@
 from fastapi import APIRouter, File, UploadFile
-from screen_capture_model import get_screen_model
+from screen_capture_model import predict_screen_capture
 from disaster_prediction_model import predict_disaster
 
 router = APIRouter()
 
 @router.post("/detect/ScreenCapture")
 async def detect_screen_captuture(file: UploadFile = File(...)):
-    result = await get_screen_model(file)
+    result = await predict_screen_capture(file)
     return result
 
 @router.post("/detect/disaster")
