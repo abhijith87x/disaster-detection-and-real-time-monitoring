@@ -21,7 +21,7 @@ interface ChatResponse {
 }
 
 export default function ChatWidget({
-  endpoint = "/chat",
+  endpoint = "/api/chatbot/chat",
   title = "Chat",
   placeholder = "Type a message...",
 }: ChatWidgetProps) {
