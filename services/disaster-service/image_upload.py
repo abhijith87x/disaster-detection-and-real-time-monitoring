@@ -63,7 +63,11 @@ async def upload(
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "http://cnn-service:8000/detect/ScreenCapture",
-                files={file}
+                files={"file": (
+                    file.filename,
+                    await file.read(),
+                    file.content_type
+                )}
             )
             
         response.raise_for_status()
@@ -94,11 +98,11 @@ async def get_location(lat, lon):
 @router.post("/demo")
 async def demo(
     request : Request,
-    File:UploadFile = File(...),
+    file:UploadFile = File(...),
     latitude: float = Form(...),
     longitude: float = Form(...)
 ):
-    if File.content_type not in [
+    if file.content_type not in [
                 "image/jpeg",
                 "image/png",
                 "image/webp",
@@ -113,7 +117,11 @@ async def demo(
             
             response = await client.post(
                 "http://cnn-service:8000/detect/disaster",
-                files={File}
+                files={"file": (
+                    file.filename,
+                    await file.read(),
+                    file.content_type
+                )}
             )
             
         response.raise_for_status()
@@ -135,7 +143,7 @@ async def demo(
                     mydb.close()
                     return "Disaster already reported in this area."
                 
-                file_path =  upload_file_to_s3(File)
+                file_path =  upload_file_to_s3(file)
                 data = await get_location(latitude, longitude)
                 location = data.get("display_name", "Unknown Location")
                 address = data['address']

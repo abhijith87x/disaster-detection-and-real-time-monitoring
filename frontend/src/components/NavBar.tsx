@@ -28,7 +28,7 @@ function NavBar() {
         },[]);
         
          function logout(): void {
-            window.location.href="/logout"
+            window.location.href="/api/oauth/logout"
             setUser(null)
         }
 
