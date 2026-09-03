@@ -1,5 +1,5 @@
 import requests
-from .database import get_db
+from reports_db import get_db
 
 from mcp.server.fastmcp import FastMCP
 
