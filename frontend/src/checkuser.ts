@@ -1,5 +1,5 @@
 export  function checkuser():Promise<Response>{
-    return  fetch("/profile",{
+    return  fetch("/api/oauth/profile",{
       method : 'GET',
       credentials: 'include'
   });
