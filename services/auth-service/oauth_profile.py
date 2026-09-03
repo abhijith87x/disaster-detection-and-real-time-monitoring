@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse, RedirectResponse
 from httpx import request
-from auth_jwt.jwt_handler import get_current_user
-from database.database import get_db
+from jwt_handler import get_current_user
+from oauth_database import get_db
 
 router = APIRouter()
 
