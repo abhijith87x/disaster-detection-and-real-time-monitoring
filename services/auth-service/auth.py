@@ -5,7 +5,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi import Request, Response
 from fastapi import APIRouter
-from database import get_db
+from oauth_database import get_db
 # from fastapi.templating import Jinja2Templates
 # from jinja2 import Template
 from config import algorithm, expire_minutes
