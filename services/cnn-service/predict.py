@@ -6,11 +6,11 @@ router = APIRouter()
 
 @router.post("/detect/ScreenCapture")
 async def detect_screen_captuture(file: UploadFile = File(...)):
-    result = get_screen_model(file)
+    result = await get_screen_model(file)
     return result
 
 @router.post("/detect/disaster")
 async def detect_disaster(file: UploadFile = File(...)):
-    result = predict_disaster(file)
+    result = await predict_disaster(file)
     return result
     
