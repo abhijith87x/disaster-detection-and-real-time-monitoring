@@ -165,9 +165,12 @@ async def demo(
             finally:
                 cursor.close()
                 mydb.close()
+            print("1")
             keys = await r.keys("feed:*")
+            print("2")
             if keys:
                 await r.delete(*keys)
+            print("3")
             await card_update({
                 "image_id" : last_row,
                 "user_id" : user_id,
@@ -177,6 +180,7 @@ async def demo(
                 "image_path" : file_path,
                 "status" : "Unverified",   
             })
+            print("Card update emitted successfully.")
             return "Disaster"
         else:
             return result
