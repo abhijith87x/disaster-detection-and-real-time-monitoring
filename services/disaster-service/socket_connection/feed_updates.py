@@ -3,7 +3,7 @@ from socket_connection.socket_server import sio
 async def card_update(report):
     print("a")
     await sio.emit('new_report', report)
-    print("b")
+    print("b",report)
    
 async def card_del(report):
     await sio.emit('remove_report', report)
