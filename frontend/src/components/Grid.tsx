@@ -181,7 +181,7 @@ function Grid() {
 
 
     function handleNewReport(report: NewReport): void {
-
+        console.log("Received new report:", report);
         setReports((oldReports) => {
 
             const exists = oldReports.some(
