@@ -73,7 +73,7 @@ async def like_update(
                 "SELECT COUNT(*) as like_count FROM reactions WHERE card_id=%s AND reaction='LIKE'",(card_id,)
             )
             like_count = cursor.fetchone()["like_count"]
-            if like_count < 1:
+            if like_count <= 1:
                 cursor.execute(
                     "UPDATE disaster_uploads SET status=%s WHERE image_id=%s",('Unverified', card_id)
                 )
