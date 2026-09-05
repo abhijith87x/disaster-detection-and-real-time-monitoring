@@ -67,7 +67,7 @@ function Grid() {
         try {
 
             const res = await fetch(
-                `/feed/reports/latest?page=${page}`
+                `/api/disaster/feed/reports/latest?page=${page}`
             );
 
             const newReports: Report[] = await res.json();

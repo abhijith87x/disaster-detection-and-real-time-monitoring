@@ -85,7 +85,7 @@ function CardActions({ report, user_actions, canDelete }: CardActionProps) {
 
         // Send the new value to backend
         await fetch(
-            `/user/like/update?current_user=${currentUserId}&card_id=${report.image_id}&like=${nextLike}`,
+            `/api/disaster/user/like/update?current_user=${currentUserId}&card_id=${report.image_id}&like=${nextLike}`,
             {
                 method: "POST",
                 credentials: "include",
@@ -157,7 +157,7 @@ function CardActions({ report, user_actions, canDelete }: CardActionProps) {
         const currentUserId = user.id;
 
         await fetch(
-            `/user/dislike/update?current_user=${currentUserId}&card_id=${report.image_id}&dislike=${dislike}&type=${selectedType}`,
+            `/api/disaster/user/dislike/update?current_user=${currentUserId}&card_id=${report.image_id}&dislike=${dislike}&type=${selectedType}`,
             {
                 method: "POST",
                 credentials: "include",
@@ -210,7 +210,7 @@ function CardActions({ report, user_actions, canDelete }: CardActionProps) {
 
         // Send the updated value to backend
         await fetch(
-            `/user/report/update?current_user=${currentUserId}&card_id=${report.image_id}&report=${nextReported}`,
+            `/api/disaster/user/report/update?current_user=${currentUserId}&card_id=${report.image_id}&report=${nextReported}`,
             {
                 method: "POST",
                 credentials: "include",
@@ -240,7 +240,7 @@ function CardActions({ report, user_actions, canDelete }: CardActionProps) {
         const currentUserId = user.id;
 
         const responseDelete = await fetch(
-            `user/reports/delete?card_id=${report.image_id}&currentUserId=${currentUserId}`,
+            `/api/disaster/user/reports/delete?card_id=${report.image_id}&currentUserId=${currentUserId}`,
             {
                 method: "DELETE",
                 credentials: "include",
