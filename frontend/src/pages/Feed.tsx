@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "../style/Feed.css";
 
 interface TileStyle extends React.CSSProperties {
@@ -5,6 +6,17 @@ interface TileStyle extends React.CSSProperties {
 }
 
 function Feed() {
+    useEffect(() => {
+    const hasSeenWelcome = localStorage.getItem("welcomeShown");
+
+    if (!hasSeenWelcome) {
+        alert(
+           "Welcome to the Disaster Management System! Use the camera icon at the bottom right to upload real disaster images. Use the Demo button at the top right for testing and demonstration purposes, since real disaster incidents cannot be created for testing."
+        );
+
+        localStorage.setItem("welcomeShown", "true");
+    }
+    }, []);
     return (
         <div className="main-body">
             <div className="image">

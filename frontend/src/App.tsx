@@ -12,7 +12,6 @@ import Grid from "./components/Grid";
 import ChatWidget from "./components/ChatWidget";
 
 function App() {
-    alert("Welcome to the Disaster Management System! Use the camera icon at the bottom right to upload real disaster images. Use the Demo button at the top right for testing and demonstration purposes, since real disaster incidents cannot be created for testing. ");
     return (
         <Routes>
             <Route
