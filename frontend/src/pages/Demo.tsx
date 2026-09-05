@@ -81,11 +81,11 @@ function Demo() {
         .then(res => res.json())
         .then(data => {
             if (data == "Non_Disaster"){
-                alert("Given image is not Disaster...Reupload");
+                alert("The given image is not a disaster image. Please re-upload.");
             }else if (data == "Disaster already reported in this area."){
                 alert("A disaster of the same type has already been reported in this area.");
             }else if (data == "Disaster"){
-                alert("Successfully Uploaded for Backend Process");
+                alert("Successfully uploaded. The image is now being processed by the backend.");
                 navigate('/')
             }else{
                 navigate('/login-page')

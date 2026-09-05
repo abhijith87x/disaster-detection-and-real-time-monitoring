@@ -248,17 +248,17 @@ function DisasterUpload() {
 
         if (response.status === 401) {
             window.location.href = "/login-page";
-        } else if (data === "Non_Disaster") {
+        } else if (data === "Non_Disaster" || data === "Screen_captured_image") {
             alert(
-                "Given image is not Disaster...Reupload"
+                 "The uploaded image is not a valid disaster image or is a screen-captured image. Please upload an original disaster image."
             );
-        } else if (data === "Screen_captured_image") {
-            alert(
-                "Sorry Not uploaded! Image is fake or manipulated"
-            );
+        // } else if (data === "Screen_captured_image") {
+        //     alert(
+        //         "Sorry Not uploaded! Image is fake or manipulated"
+        //     );
         } else {
             alert(
-                "Successfully Uploaded for Backend Process"
+                "Successfully uploaded. The image is now being processed by the backend."
             );
         }
     }
