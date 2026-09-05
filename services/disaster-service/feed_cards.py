@@ -1,0 +1,53 @@
+from fastapi import APIRouter
+from database import get_db
+from typing import Optional
+from redis_cache.redis_connection import r
+from decimal import Decimal
+import json
+
+router = APIRouter()
+
+@router.get("/feed/reports/latest")
+async def get_latest_reports(page: int):
+    LIMIT = 6
+    OFFSET = (page - 1) * LIMIT
+    
+    reports = await r.get(f"feed:{OFFSET}:{LIMIT}")
+  
+    if reports is not None:
+        print("reports from cache:", reports)
+        return json.loads(reports)
+    try:
+        mydb = get_db()
+        cursor = mydb.cursor(dictionary=True)
+        
+        cursor.execute(
+            "SELECT image_id, user_id, image_path, description, latitude, longitude, status FROM disaster_uploads ORDER BY created_at DESC LIMIT %s OFFSET %s",
+            (LIMIT, OFFSET)
+        )
+        reports = cursor.fetchall()
+    finally:
+        cursor.close()
+        mydb.close()
+    await r.set(f"feed:{OFFSET}:{LIMIT}",json.dumps(reports, default=float))
+    return reports
+
+@router.get("/feed/card/action")
+async def user_action(
+    currentUser : Optional[int] = None
+):
+    if currentUser:
+        try:
+            mydb = get_db()
+            cursor = mydb.cursor(dictionary=True)
+            
+            cursor.execute(
+                "SELECT *  FROM reactions WHERE user_id=%s",(currentUser,)
+            )
+            useraction = cursor.fetchall()
+        finally:
+            cursor.close()
+            mydb.close()
+        return useraction
+    else:
+        return None
