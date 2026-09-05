@@ -87,7 +87,7 @@ function Grid() {
                     setCurrentUserId(user.id);
 
                     const actionResponse = await fetch(
-                        `/feed/card/action?currentUser=${user.id}`
+                        `/api/disaster/feed/card/action?currentUser=${user.id}`
                     );
 
                     if (actionResponse.ok) {
