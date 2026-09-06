@@ -6,7 +6,7 @@ def get_disaster_db():
         host="localhost",
         port=3307,
         user="root",
-        password=db_password,
+        password="root87141",
         database="disaster_db",
         connection_timeout=10
     )
@@ -16,7 +16,7 @@ def get_oauth_db():
         host="localhost",
         port=3307,
         user="root",
-        password=db_password,
+        password="root87141",
         database="oauth_db",
         connection_timeout=10
     )
