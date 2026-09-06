@@ -82,7 +82,9 @@ jobs:
       #   run: pip install pytest
 
       - name: Run tests
-        run: pytest tests/test_delete.py
+        env:
+          PYTHONPATH: tests
+          run: pytest tests/test_delete.py -v
 
       # - name: Check container after tests
       #   if: always()
