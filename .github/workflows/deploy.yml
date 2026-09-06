@@ -31,7 +31,7 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
           echo "GOOGLE_GEMINI_KEY=${{ secrets.GOOGLE_GEMINI_KEY }}" >> .env
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -65,7 +65,7 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: tests
-        run: pytest tests/test_reactions.py -v -s
+        run: pytest tests -v -s
 
       - name: Stop containers
         if: always()
