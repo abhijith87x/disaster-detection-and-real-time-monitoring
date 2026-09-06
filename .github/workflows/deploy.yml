@@ -20,7 +20,7 @@ jobs:
       # - name: Install dependencies
       #   run: pip install -r requirements.txt
       - name: Install test dependencies
-        run: pip install pytest requests mysql-connector-python python-dotenv
+        run: pip install pytest requests mysql-connector-python python-dotenv python-jose fastapi
       # # - name: Run tests
       # #   run: pytest tests
       # #   env:
