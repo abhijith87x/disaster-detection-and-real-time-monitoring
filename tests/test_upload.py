@@ -1,5 +1,5 @@
 from auth_jwt_helper.jwt_handler import create_access_token
-from database import get_disaster_db
+from database import get_oauth_db
 import uuid, requests
 
 def create_test_user():
@@ -7,7 +7,7 @@ def create_test_user():
     email = f"{uuid.uuid4()}@test.com"
     google_id = str(uuid.uuid4())
 
-    db = get_disaster_db()
+    db = get_oauth_db()
     cursor = db.cursor()
 
     cursor.execute(
