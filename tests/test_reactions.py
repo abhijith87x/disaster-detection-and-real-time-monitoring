@@ -2,6 +2,7 @@ from database import get_oauth_db, get_disaster_db
 import uuid, requests
 
 def create_test_data():
+    
     db = get_oauth_db()
     cursor = db.cursor()
 
