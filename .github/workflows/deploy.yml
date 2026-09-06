@@ -87,7 +87,7 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: tests
-        run: pytest tests/test_delete.py -v
+        run: pytest tests/test_delete.py -v -s
 
       # - name: Check container after tests
       #   if: always()

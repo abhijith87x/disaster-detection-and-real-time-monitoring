@@ -115,8 +115,9 @@ def create_report(user_id):
 def test_delete_own_report():
     BASE_URL = "http://localhost:8002"
     owner_email = f"{uuid.uuid4()}@test.com"
+    print("1")
     user_id = create_user(owner_email)
-
+    print("2")
     card_id = create_report(user_id)
 
     response = requests.delete(
