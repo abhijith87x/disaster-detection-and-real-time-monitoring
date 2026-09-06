@@ -97,7 +97,6 @@ jobs:
       #     docker inspect disaster-api \
       #       --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
 
-      #     docker compose logs backend --tail=100
       - name: Stop containers
         if: always()
         run: docker compose down
