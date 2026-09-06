@@ -1,6 +1,5 @@
 from auth_jwt_helper.jwt_handler import create_access_token
 from database import get_oauth_db
-from utils.aws_s3 import upload_file_to_s3
 import requests
 def create_test_user():
     
