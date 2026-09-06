@@ -50,9 +50,9 @@ services:
   #     DB_NAME: disaster_db
   #     REDIS_HOST: redis
 
-  auth-service:
-    build: ./services/auth-service
-    container_name: auth-service
+  auth_service:
+    build: ./services/auth_service
+    container_name: auth_service
     ports:
     - "8001:8000"
     restart: always
@@ -67,9 +67,9 @@ services:
       mysql:
         condition: service_healthy
 
-  disaster-service:
-    build: ./services/disaster-service
-    container_name: disaster-service
+  disaster_service:
+    build: ./services/disaster_service
+    container_name: disaster_service
     ports:
     - "8002:8000"
     restart: always
@@ -85,20 +85,20 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      cnn-service:
+      cnn_service:
         condition: service_started
 
-  cnn-service:
-    build: ./services/cnn-service
-    container_name: cnn-service
+  cnn_service:
+    build: ./services/cnn_service
+    container_name: cnn_service
     restart: always
     volumes:
       - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
       - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
       
-  chatbot-service:
-    build: ./services/chatbot-service
-    container_name: chatbot-service 
+  chatbot_service:
+    build: ./services/chatbot_service
+    container_name: chatbot_service 
     restart: always
     env_file:
       - .env
@@ -115,9 +115,9 @@ services:
       - /etc/letsencrypt/live/disaster-watch.duckdns.org/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
       - /etc/letsencrypt/live/disaster-watch.duckdns.org/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     depends_on:
-      - auth-service
-      - disaster-service
-      - chatbot-service
+      - auth_service
+      - disaster_service
+      - chatbot_service
 
 volumes:
   mysql_data:
