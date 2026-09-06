@@ -1,4 +1,4 @@
-from config import db_password
+from ..config import db_password
 # import mysql.connector
 # import time
 
