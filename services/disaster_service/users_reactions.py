@@ -3,7 +3,7 @@ from database import get_db
 from socket_connection.feed_updates import card_del, status_update, update_description
 from image_upload import get_location
 from redis_cache.redis_connection import r
-from util_s3.aws_s3 import upload_file_to_s3
+from util_s3.aws_s3 import upload_file_to_s3, delete_file_from_s3
 
 router = APIRouter()
 
@@ -300,5 +300,5 @@ async def del_reports(
         await r.delete(*keys)
     await card_del(card_id)
     if image_path:
-         delete_file_from_s3(image_path["image_path"])
+        delete_file_from_s3(image_path["image_path"])
     return {"success" : True}
