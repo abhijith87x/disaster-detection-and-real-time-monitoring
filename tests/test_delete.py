@@ -1,9 +1,9 @@
-from fastapi.testclient import TestClient
-from main1 import app
-from database.database import get_db
-import uuid
 
-client = TestClient(app)
+# from services.auth_service.main import app
+from database.database import get_disaster_db, get_oauth_db
+import uuid
+import requests
+
 
 
 # def create_user(email):
@@ -30,7 +30,7 @@ client = TestClient(app)
 def create_user(email):
     google_id = str(uuid.uuid4())
 
-    mydb = get_db()
+    mydb = get_oauth_db()
     cursor = mydb.cursor()
 
     cursor.execute(
@@ -84,7 +84,7 @@ def create_user(email):
 def create_report(user_id):
     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
 
-    mydb = get_db()
+    mydb = get_disaster_db()
     cursor = mydb.cursor()
 
     cursor.execute(
@@ -113,14 +113,14 @@ def create_report(user_id):
     return card_id
 
 def test_delete_own_report():
-
+    BASE_URL = "http://localhost:8002"
     owner_email = f"{uuid.uuid4()}@test.com"
     user_id = create_user(owner_email)
 
     card_id = create_report(user_id)
 
-    response = client.delete(
-        f"/user/reports/delete?card_id={card_id}&currentUserId={user_id}"
+    response = requests.delete(
+        f"{BASE_URL}/user/reports/delete?card_id={card_id}&currentUserId={user_id}"
     )
 
     assert response.status_code == 200
@@ -128,6 +128,7 @@ def test_delete_own_report():
 
 def test_delete_other_user_report():
 
+    BASE_URL = "http://localhost:8002"
     owner_email = f"{uuid.uuid4()}@test.com"
     owner_id = create_user(owner_email)
 
@@ -136,8 +137,8 @@ def test_delete_other_user_report():
     other_email = f"{uuid.uuid4()}@test.com"
     other_user_id = create_user(other_email)
 
-    response = client.delete(
-        f"/user/reports/delete?card_id={card_id}&currentUserId={other_user_id}"
+    response = requests.delete(
+        f"{BASE_URL}/user/reports/delete?card_id={card_id}&currentUserId={other_user_id}"
     )
 
     assert response.status_code == 403
