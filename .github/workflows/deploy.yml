@@ -16,16 +16,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10' 
-      
-      # - name: Install dependencies
-      #   run: pip install -r requirements.txt
+  
       - name: Install test dependencies
         run: pip install pytest requests mysql-connector-python python-dotenv python-jose fastapi
-      # # - name: Run tests
-      # #   run: pytest tests
-      # #   env:
-      # #     PYTHONPATH: .
-
+   
       - name: Create .env
         run: |
           echo "GOOGLE_CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
@@ -37,6 +31,7 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
           echo "GOOGLE_GEMINI_KEY=${{ secrets.GOOGLE_GEMINI_KEY }}" >> .env
+          
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,56 +45,27 @@ jobs:
 
       - name: Start containers
         run: |
-          # docker compose down
-          # docker compose up -d --build
           docker compose down
-          docker compose build
-          docker compose up -d --force-recreate 
+          docker compose up -d --build
+          # docker compose down
+          # docker compose build
+          # docker compose up -d --force-recreate 
 
       - name: Check MySQL
         run: |
           docker compose ps
           nc -zv localhost 3307
-      # - name: Check memory
-      #   run: |
-      #     free -h
-      #     docker stats --no-stream || true
-      
-      # # - name: Debug JWT
-      # #   run: |
-      # #     docker compose exec -T backend sh -c "ls -la /app/jwt"
-      # #     docker compose exec -T backend python -c "import os; print(os.path.exists('/app/jwt/jwt_handler.py'))"
-      # #     docker compose exec -T backend python -c "import jwt; print(jwt); print(list(jwt.__path__))"
-      # #     docker compose exec -T backend python -c "import auth_jwt.jwt_handler; print('JWT IMPORT OK')"
-      
-      # - name: Debug JWT
-      #   run: |
-      #     docker compose exec -T backend sh -c "ls -la /app/auth_jwt"
-      #     docker compose exec -T backend python -c "import os; print(os.path.exists('/app/auth_jwt/jwt_handler.py'))"
-      #     docker compose exec -T backend python -c "import auth_jwt.jwt_handler; print('JWT IMPORT OK')"
-      
-      # - name: Install test dependencies
-      #   run: pip install pytest
+     
       - name: MySQL diagnostics
         run: |
           docker compose ps
           echo "===== MYSQL LOGS ====="
           docker compose logs --tail=200 mysql
+
       - name: Run tests
         env:
           PYTHONPATH: tests
         run: pytest tests/test_reactions.py -v -s
-
-      # - name: Check container after tests
-      #   if: always()
-      #   run: |
-      #     docker inspect disaster-api \
-      #       --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
-      #     docker compose logs backend --tail=100
-      # - name: Debug backend failure
-      #   run: |
-      #     docker inspect disaster-api \
-      #       --format='Memory={{.HostConfig.Memory}} MemorySwap={{.HostConfig.MemorySwap}} OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'
 
       - name: Stop containers
         if: always()
