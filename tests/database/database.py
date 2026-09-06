@@ -23,8 +23,8 @@ def get_disaster_db():
     while True:
         try:
             return mysql.connector.connect(
-                host="mysql",
-                port=3306,
+                host="localhost",
+                port=3307,
                 user="root",
                 password=db_password,
                 database="disaster_db"
@@ -36,8 +36,8 @@ def get_oauth_db():
     while True:
         try:
             return mysql.connector.connect(
-                host="mysql",
-                port=3306,
+                host="localhost",
+                port=3307,
                 user="root",
                 password=db_password,
                 database="oauth_db"
