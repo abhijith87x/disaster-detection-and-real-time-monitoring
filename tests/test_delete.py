@@ -1,31 +1,6 @@
-
-# from services.auth_service.main import app
 from database import get_disaster_db, get_oauth_db
 import uuid
 import requests
-
-
-
-# def create_user(email):
-#     google_id = str(uuid.uuid4())
-
-#     cursor.execute(
-#         """
-#         INSERT INTO users
-#         (email, name, google_id, profile_pic)
-#         VALUES (%s, %s, %s, %s)
-#         """,
-#         (
-#             email,
-#             "Test User",
-#             google_id,
-#             "test.jpg"
-#         )
-#     )
-
-#     mydb.commit()
-
-#     return cursor.lastrowid
 
 def create_user(email):
     google_id = str(uuid.uuid4())
@@ -57,29 +32,6 @@ def create_user(email):
     return user_id
 
 
-# def create_report(user_id):
-
-#     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
-
-#     cursor.execute(
-#         """
-#         INSERT INTO disaster_uploads
-#         (user_id, image_path, disaster_type, latitude, longitude, description)
-#         VALUES (%s, %s, %s, %s, %s, %s)
-#         """,
-#         (
-#             user_id,
-#             file_path,
-#             "Flood",
-#             10.1234,
-#             76.1234,
-#             "Test disaster report"
-#         )
-#     )
-
-#     mydb.commit()
-
-#     return cursor.lastrowid
 
 def create_report(user_id):
     file_path = "https://test-bucket.s3.amazonaws.com/test_image.jpeg"
