@@ -8,7 +8,7 @@ def get_disaster_db():
         user="root",
         password="root87141",
         database="disaster_db",
-        connection_timeout=10
+        # connection_timeout=10
     )
 
 def get_oauth_db():
@@ -18,5 +18,5 @@ def get_oauth_db():
         user="root",
         password="root87141",
         database="oauth_db",
-        connection_timeout=10
+        # connection_timeout=10
     )
