@@ -1,6 +1,4 @@
-from main1 import app
-from fastapi.testclient import TestClient
-from database.database import get_db
+from database import get_oauth_db, get_disaster_db
 import uuid
 
 client = TestClient(app)
@@ -54,7 +52,7 @@ client = TestClient(app)
 #     return user_id, card_id
 
 def create_test_data():
-    db = get_db()
+    db = get_oauth_db()
     cursor = db.cursor()
 
     email = f"{uuid.uuid4()}@test.com"
@@ -77,8 +75,10 @@ def create_test_data():
     db.commit()
 
     user_id = cursor.lastrowid
-
-    cursor.execute(
+    
+    disaster_db = get_disaster_db()
+    d_cursor = disaster_db.cursor()
+    d_cursor.execute(
         """
         INSERT INTO disaster_uploads
         (user_id, image_path, disaster_type, latitude, longitude, description)
@@ -94,12 +94,12 @@ def create_test_data():
         )
     )
 
-    db.commit()
+    disaster_db.commit()
 
-    card_id = cursor.lastrowid
+    card_id = d_cursor.lastrowid
 
-    cursor.close()
-    db.close()
+    d_cursor.close()
+    disaster_db.close()
 
     return user_id, card_id
 

@@ -1,6 +1,7 @@
 from auth_jwt_helper.jwt_handler import create_access_token
 from database import get_oauth_db
 import requests
+
 def create_test_user():
     
     db = get_oauth_db()
@@ -31,7 +32,7 @@ def create_test_user():
 
 def test_no_token():
 
-    response = requests.get("/profile")
+    response = requests.get("http://localhost:8001/profile")
 
     assert response.status_code == 401
 
@@ -52,7 +53,7 @@ def test_valid_token():
 
 
     response = requests.get(
-        "/profile",
+        "http://localhost:8001/profile",
         cookies={
             "access_token": token
         }
