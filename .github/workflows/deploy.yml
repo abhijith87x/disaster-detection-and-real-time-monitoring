@@ -77,9 +77,6 @@ jobs:
       #     docker compose exec -T backend sh -c "ls -la /app/auth_jwt"
       #     docker compose exec -T backend python -c "import os; print(os.path.exists('/app/auth_jwt/jwt_handler.py'))"
       #     docker compose exec -T backend python -c "import auth_jwt.jwt_handler; print('JWT IMPORT OK')"
-
-      # - name: Run tests
-      #   run: docker compose exec -T backend bash -c "PYTHONPATH=/app pytest tests -v"
       
       # - name: Install test dependencies
       #   run: pip install pytest
