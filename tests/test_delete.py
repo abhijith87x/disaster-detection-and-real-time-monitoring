@@ -1,6 +1,6 @@
 
 # from services.auth_service.main import app
-from database.database import get_disaster_db, get_oauth_db
+from .database import get_disaster_db, get_oauth_db
 import uuid
 import requests
 
