@@ -56,7 +56,10 @@ jobs:
           docker compose build
           docker compose up -d --force-recreate 
 
-      
+      - name: Check MySQL
+        run: |
+          docker compose ps
+          nc -zv localhost 3307
       # - name: Check memory
       #   run: |
       #     free -h
