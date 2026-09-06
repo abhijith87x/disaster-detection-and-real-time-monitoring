@@ -83,7 +83,11 @@ jobs:
       
       # - name: Install test dependencies
       #   run: pip install pytest
-
+      - name: MySQL diagnostics
+        run: |
+          docker compose ps
+          echo "===== MYSQL LOGS ====="
+          docker compose logs --tail=200 mysql
       - name: Run tests
         env:
           PYTHONPATH: tests
