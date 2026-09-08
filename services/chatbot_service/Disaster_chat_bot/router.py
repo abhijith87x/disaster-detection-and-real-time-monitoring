@@ -36,7 +36,6 @@ async def chat(request : ChatRequest):
     }
     
     result = await chatbot.ainvoke(
-        print("result", result),
         {
             "messages": [
                 HumanMessage(
@@ -48,7 +47,7 @@ async def chat(request : ChatRequest):
     )
 
     text = result["messages"][-1].text
-    
+    print("text", text)
     return{
         "response": strip_markdown(text)
     }
