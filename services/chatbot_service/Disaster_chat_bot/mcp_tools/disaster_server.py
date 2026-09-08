@@ -1,3 +1,5 @@
+import sys
+
 import requests
 from .reports_db import get_db
 
@@ -114,6 +116,7 @@ def get_weather(location: str):
 #         cursor.close()
 #         mydb.close()
 
+
 @mcp.tool()
 def query_disaster_reports(
     location: str | None = None,
@@ -121,13 +124,13 @@ def query_disaster_reports(
     start_date: str | None = None,
     end_date: str | None = None
 ):
-    print("1. TOOL REACHED", flush=True)
+    print("1. TOOL REACHED", file=sys.stderr, flush=True)
 
     mydb = get_db()
-    print("2. DB CONNECTED", flush=True)
+    print("2. DB CONNECTED", file=sys.stderr, flush=True)
 
     cursor = mydb.cursor(dictionary=True)
-    print("3. CURSOR CREATED", flush=True)
+    print("3. CURSOR CREATED", file=sys.stderr, flush=True)
 
     query = """
         SELECT *
@@ -153,16 +156,30 @@ def query_disaster_reports(
         query += " AND created_at <= %s"
         params.append(end_date)
 
-    try:
-        print("4. EXECUTING:", query, params, flush=True)
+    query += " ORDER BY created_at DESC LIMIT 10"
 
+    print(
+        f"4. EXECUTING QUERY: {query} {params}",
+        file=sys.stderr,
+        flush=True
+    )
+
+    try:
         cursor.execute(query, params)
 
-        print("5. QUERY COMPLETED", flush=True)
+        print(
+            "5. QUERY COMPLETED",
+            file=sys.stderr,
+            flush=True
+        )
 
         results = cursor.fetchall()
 
-        print("6. RESULTS:", results, flush=True)
+        print(
+            f"6. RESULTS: {results}",
+            file=sys.stderr,
+            flush=True
+        )
 
         return results
 
