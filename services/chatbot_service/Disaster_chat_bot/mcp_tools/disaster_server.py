@@ -7,9 +7,6 @@ from mcp.server.fastmcp import FastMCP
 mcp = FastMCP("DisasterServer")
 
 
-# ========================================================
-# WEATHER TOOL
-# ========================================================
 
 @mcp.tool()
 def get_weather(location: str):
@@ -64,9 +61,6 @@ def get_weather(location: str):
     return response.json()["current"]
 
 
-# =========================================================
-# DISASTER REPORTS TOOL
-# =========================================================
 
 @mcp.tool()
 def query_disaster_reports(
@@ -121,9 +115,6 @@ def query_disaster_reports(
         mydb.close()
 
 
-# =========================================================
-# START SERVER
-# =========================================================
 
 if __name__ == "__main__":
     mcp.run()

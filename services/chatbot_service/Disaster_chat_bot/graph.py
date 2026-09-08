@@ -13,9 +13,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 async def create_graph(mcp_tools):
 
-    # -------------------------
-    # Get MCP tools
-    # -------------------------
+  
 
     weather_tools = [
         tool
@@ -37,9 +35,7 @@ async def create_graph(mcp_tools):
 
     graph = StateGraph(AgentState)
 
-    # -------------------------
-    # Agents
-    # -------------------------
+  
 
     graph.add_node(
         "supervisor",
@@ -61,9 +57,7 @@ async def create_graph(mcp_tools):
         reports_agent
     )
 
-    # -------------------------
-    # MCP Tool Nodes
-    # -------------------------
+  
 
     graph.add_node(
         "weather_tools",
@@ -80,18 +74,14 @@ async def create_graph(mcp_tools):
         ToolNode(disaster_tools)
     )
 
-    # -------------------------
-    # START
-    # -------------------------
+  
 
     graph.add_edge(
         START,
         "supervisor"
     )
 
-    # -------------------------
-    # SUPERVISOR
-    # -------------------------
+    
 
     def route_from_supervisor(state):
 
@@ -108,9 +98,7 @@ async def create_graph(mcp_tools):
         }
     )
 
-    # -------------------------
-    # DISASTER
-    # -------------------------
+  
 
     def route_disaster(state):
 
@@ -135,9 +123,6 @@ async def create_graph(mcp_tools):
         "disaster_agent"
     )
 
-    # -------------------------
-    # WEATHER
-    # -------------------------
 
     def route_weather(state):
 
@@ -162,9 +147,6 @@ async def create_graph(mcp_tools):
         "weather_agent"
     )
 
-    # -------------------------
-    # REPORTS
-    # -------------------------
 
     def route_reports(state):
 
@@ -189,9 +171,7 @@ async def create_graph(mcp_tools):
         "reports_agent"
     )
 
-    # -------------------------
-    # Compile
-    # -------------------------
+  
 
     checkpointer = MemorySaver()
 
