@@ -62,6 +62,58 @@ def get_weather(location: str):
 
 
 
+# @mcp.tool()
+# def query_disaster_reports(
+#     location: str | None = None,
+#     disaster_type: str | None = None,
+#     start_date: str | None = None,
+#     end_date: str | None = None
+# ):
+#     print("reached")
+#     mydb = get_db()
+#     cursor = mydb.cursor(dictionary=True)
+    
+#     """
+#     Query recent, latest disaster reports from MySQL Based on user query.
+#     """
+    
+#     query = """
+#         SELECT *
+#         FROM disaster_uploads
+#         WHERE 1=1
+#     """
+
+#     params = []
+
+#     if location:
+#         query += " AND district = %s"
+#         params.append(location)
+
+#     if disaster_type:
+#         query += " AND disaster_type = %s"
+#         params.append(disaster_type)
+
+#     if start_date:
+#         query += " AND created_at >= %s"
+#         params.append(start_date)
+
+#     if end_date:
+#         query += " AND created_at <= %s"
+#         params.append(end_date)
+
+
+#     try:
+#         print("query, para", query,params)
+#         cursor.execute(query, params)
+
+#         results = cursor.fetchall()
+#         print(results)
+#         return results
+
+#     finally:
+#         cursor.close()
+#         mydb.close()
+
 @mcp.tool()
 def query_disaster_reports(
     location: str | None = None,
@@ -69,14 +121,14 @@ def query_disaster_reports(
     start_date: str | None = None,
     end_date: str | None = None
 ):
-    print("reached")
+    print("1. TOOL REACHED", flush=True)
+
     mydb = get_db()
+    print("2. DB CONNECTED", flush=True)
+
     cursor = mydb.cursor(dictionary=True)
-    
-    """
-    Query recent, latest disaster reports from MySQL Based on user query.
-    """
-    
+    print("3. CURSOR CREATED", flush=True)
+
     query = """
         SELECT *
         FROM disaster_uploads
@@ -101,20 +153,22 @@ def query_disaster_reports(
         query += " AND created_at <= %s"
         params.append(end_date)
 
-
     try:
-        print("query, para", query,params)
+        print("4. EXECUTING:", query, params, flush=True)
+
         cursor.execute(query, params)
 
+        print("5. QUERY COMPLETED", flush=True)
+
         results = cursor.fetchall()
-        print(results)
+
+        print("6. RESULTS:", results, flush=True)
+
         return results
 
     finally:
         cursor.close()
         mydb.close()
-
-
 
 if __name__ == "__main__":
     mcp.run()
