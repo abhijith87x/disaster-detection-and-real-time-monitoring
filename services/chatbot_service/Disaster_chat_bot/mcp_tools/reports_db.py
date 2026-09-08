@@ -4,6 +4,7 @@ import mysql.connector
 import time
 
 def get_db():
+    
     while True:
         try:
             return mysql.connector.connect(
