@@ -3,6 +3,7 @@ import uuid
 import requests
 
 def create_user(email):
+    
     google_id = str(uuid.uuid4())
 
     mydb = get_oauth_db()
