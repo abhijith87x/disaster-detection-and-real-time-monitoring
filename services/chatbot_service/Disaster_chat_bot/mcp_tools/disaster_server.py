@@ -125,7 +125,7 @@ def query_disaster_reports(
     end_date: str | None = None
 ):
     print("1. TOOL REACHED", file=sys.stderr, flush=True)
-
+    print("2. BEFORE get_db()", file=sys.stderr, flush=True)
     mydb = get_db()
     print("2. DB CONNECTED", file=sys.stderr, flush=True)
 
