@@ -10,7 +10,7 @@ def get_db():
                 host="mysql",
                 port=3306,
                 user="root",
-                password="root87141",
+                password=db_password,
                 database="disaster_db"
             )
         except mysql.connector.Error:
