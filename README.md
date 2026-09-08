@@ -1,19 +1,24 @@
-# Disaster Management System
+# DisasterWatch — Disaster Reporting & Verification Platform
 
-A disaster reporting and management platform that allows users to upload disaster reports with images, location details. The system uses AI-based image classification to identify disaster types and provides a real-time feed with user interactions.
+A real-time disaster reporting and verification platform built as a set of independent microservices. Users can submit disaster reports with images and location data, get them automatically classified and verified using a CNN model, and chat with a multi-agent AI assistant that gives location-aware safety guidance using live weather and report data.
 
 ## Features
 
 - User registration and authentication using JWT
-- Google OAuth login integration
-- Upload disaster reports with images and location
-- AI-based disaster image classification
-- Real-time disaster feed updates using WebSockets
+- Google OAuth 2.0 login integration
+- Role-Based Access Control (RBAC) for secured API access
+- Upload disaster reports with images and location details
+- AI-based disaster image classification using a CNN model
+- Fake/screenshot report detection to improve report authenticity
+- Real-time disaster feed updates using WebSockets (Socket.IO)
+- Multi-agent AI chatbot (Gemini + RAG) with ChromaDB, combining live weather data and report history to give location-aware precautions and safety guidance
 - User reactions and feedback on reports
-- Report validation through user feedback
+- Report validation through community feedback
 - Image storage using AWS S3
 - Redis caching for faster feed loading
-- MySQL database for storing user and report data
+- MySQL database for persistent user and report data
+- Automated integration testing with pytest, run in isolated Docker containers
+- CI/CD pipeline with GitHub Actions
 
 ## Tech Stack
 
@@ -23,54 +28,70 @@ A disaster reporting and management platform that allows users to upload disaste
 - REST APIs
 - WebSockets
 - JWT Authentication
+- OAuth 2.0 / RBAC
+
+### Frontend
+- React
+- TypeScript
+- Socket.IO Client
 
 ### Database
 - MySQL
 - Redis (Caching)
+- ChromaDB (Vector store for RAG)
 
-### Machine Learning
+### Machine Learning / AI
 - TensorFlow
 - Keras
-- CNN Model
+- CNN Model (disaster classification + fake-report detection)
 - OpenCV
+- Gemini LLM
+- Retrieval-Augmented Generation (RAG) — multi-agent chatbot
 
-### Cloud & Deployment
+### Cloud & DevOps
 - AWS EC2
 - AWS S3
 - Docker
 - GitHub Actions (CI/CD)
+- pytest (integration testing in isolated Docker environments)
 
-### Frontend
-- HTML
-- CSS
-- JavaScript
+## Architecture
 
-## Project Architecture
+The platform is split into independent, containerized microservices rather than a single monolith:
 
 ```
-Frontend
-    |
-    |
-FastAPI Backend
-    |
- -------------------
- |        |         |
-MySQL   Redis    ML Model
-                 |
-              CNN Model
+                        React + TypeScript Frontend
+                                   |
+                          API Gateway / FastAPI
+                                   |
+   ---------------------------------------------------------------
+   |              |                |                  |
+Auth Service   Reporting        CNN Inference     Chatbot Service
+(JWT/OAuth,     Service         Service           (Gemini + RAG
+ RBAC)          (MySQL, S3)     (TensorFlow/      + ChromaDB)
+                                 Keras, OpenCV)
+   |              |                |                  |
+   -------------------------------------------------------
+                                   |
+                        Redis (cache) + Socket.IO
+                           (real-time feed)
 ```
+
+Each service is containerized with Docker and can be built, tested, and deployed independently through the GitHub Actions CI/CD pipeline, with pytest integration tests running in isolated containers before deployment to AWS EC2.
 
 ## Installation
 
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/disaster-management-system.git
+git clone https://github.com/abhijith87x/disaster-detection-and-real-time-monitoring.git
 
-cd disaster-management-system
+cd disaster-detection-and-real-time-monitoring
 ```
 
-### Create Virtual Environment
+### Backend Setup
+
+Create a virtual environment:
 
 ```bash
 python -m venv venv
@@ -83,15 +104,22 @@ Windows:
 venv\Scripts\activate
 ```
 
-Linux:
+Linux/macOS:
 ```bash
 source venv/bin/activate
 ```
 
-### Install Dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
 ```
 
 ## Environment Variables
@@ -109,6 +137,12 @@ SECRET_KEY=your_secret_key
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_BUCKET_NAME=your_bucket
+
+GEMINI_API_KEY=your_gemini_api_key
+CHROMADB_PATH=your_chromadb_path
+
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 ```
 
 ## Running the Application
@@ -116,7 +150,14 @@ AWS_BUCKET_NAME=your_bucket
 Start backend:
 
 ```bash
-uvicorn main1:app --reload
+uvicorn main:app --reload
+```
+
+Start frontend:
+
+```bash
+cd frontend
+npm run dev
 ```
 
 API documentation:
@@ -125,9 +166,17 @@ API documentation:
 http://localhost:8000/docs
 ```
 
+## Running Tests
+
+```bash
+pytest
+```
+
+Integration tests run against isolated Docker containers as part of the CI/CD pipeline.
+
 ## Docker Setup
 
-Build image:
+Build and run all services:
 
 ```bash
 docker compose up --build
@@ -142,17 +191,21 @@ docker compose up --build
 <img width="1920" height="1080" alt="Screenshot (10)" src="https://github.com/user-attachments/assets/59378ad4-683b-495b-a4da-00da22be8355" />
 <img width="1920" height="1080" alt="Screenshot (9)" src="https://github.com/user-attachments/assets/7d80a0d2-e1ab-476f-b255-513e5593e179" />
 
+## Live Demo
 
+https://disaster-watch.duckdns.org/
 
 ## Future Improvements
 
 - Improve AI model accuracy
 - Add emergency notification system
 - Add live disaster map visualization
-- Deploy frontend separately
+- Expand multi-agent chatbot with more data sources
+- Add rate limiting and API gateway-level monitoring
 
 ## Author
 
 Abhijith B
 
 GitHub: https://github.com/abhijith87x
+LinkedIn: https://linkedin.com/in/abhijith87b
