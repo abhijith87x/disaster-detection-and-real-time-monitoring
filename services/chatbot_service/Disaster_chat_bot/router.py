@@ -36,6 +36,7 @@ async def chat(request : ChatRequest):
     }
     
     result = await chatbot.ainvoke(
+        print("result", result),
         {
             "messages": [
                 HumanMessage(

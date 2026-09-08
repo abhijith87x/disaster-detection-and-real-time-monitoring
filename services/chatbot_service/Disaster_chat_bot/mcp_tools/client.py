@@ -19,5 +19,5 @@ client = MultiServerMCPClient(
 async def get_mcp_tools():
 
     tools = await client.get_tools()
-
+    print("tools", tools)
     return tools
