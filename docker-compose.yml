@@ -1,0 +1,123 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root87141
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7
+    container_name: redis-container
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # ports:
+    #   - "6379:6379"
+  # backend:
+  #   # build: .
+  #   image:  abhijith87b/disaster-api:latest
+  #   env_file:
+  #     - .env
+  #   container_name: disaster-api
+  #   restart: always
+  #   volumes:
+  #     - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+  #     - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_started
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     DB_HOST: mysql
+  #     DB_USER: root
+  #     DB_PASSWORD: root87141
+  #     DB_NAME: disaster_db
+  #     REDIS_HOST: redis
+
+  auth_service:
+    build: ./services/auth_service
+    container_name: auth_service
+    ports:
+    - "8001:8000"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: root87141
+      DB_NAME: oauth_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  disaster_service:
+    build: ./services/disaster_service
+    container_name: disaster_service
+    ports:
+    - "8002:8000"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: root87141
+      DB_NAME: disaster_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      cnn_service:
+        condition: service_started
+
+  cnn_service:
+    build: ./services/cnn_service
+    container_name: cnn_service
+    restart: always
+    volumes:
+      - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
+      - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
+      
+  chatbot_service:
+    build: ./services/chatbot_service
+    container_name: chatbot_service 
+    restart: always
+    env_file:
+      - .env
+
+  gateway:
+    build: 
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/disaster-watch.duckdns.org/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/disaster-watch.duckdns.org/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    depends_on:
+      - auth_service
+      - disaster_service
+      - chatbot_service
+
+volumes:
+  mysql_data:
