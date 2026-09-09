@@ -24,32 +24,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    # ports:
-    #   - "6379:6379"
-  # backend:
-  #   # build: .
-  #   image:  abhijith87b/disaster-api:latest
-  #   env_file:
-  #     - .env
-  #   container_name: disaster-api
-  #   restart: always
-  #   volumes:
-  #     - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
-  #     - ./ml/screen_image_detector.h5:/app/ml/screen_image_detector.h5
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_started
-  #   ports:
-  #     - "8000:8000"
-  #   environment:
-  #     DB_HOST: mysql
-  #     DB_USER: root
-  #     DB_PASSWORD: root87141
-  #     DB_NAME: disaster_db
-  #     REDIS_HOST: redis
-
   auth_service:
     build: ./services/auth_service
     container_name: auth_service
