@@ -8,7 +8,7 @@ import httpx
 # from jinja2 import Template
 from fastapi.responses import RedirectResponse, HTMLResponse
 from jwt_handler import get_current_user, verify_token
-import uuid, os, requests
+import uuid, os, requests, json
 from database import get_db
 from socket_connection.feed_updates import card_update
 from redis_cache.redis_connection import r
@@ -165,22 +165,20 @@ async def demo(
             finally:
                 cursor.close()
                 mydb.close()
-            print("1")
-            keys = await r.keys("feed:*")
-            print("2")
-            if keys:
-                await r.delete(*keys)
-            print("3")
-            await card_update({
-                "image_id" : last_row,
-                "user_id" : user_id,
-                "description" : f"AI detected {result}-related visual patterns in the user uploaded image at {location}.",
-                "latitude" : latitude,
-                "longitude" : longitude,
-                "image_path" : file_path,
-                "status" : "Unverified",   
-            })
-            print("Card update emitted successfully.")
+            
+            # keys = await r.keys("feed:*")
+            report = {
+                "image_id": last_row,
+                "user_id": user_id,
+                "description": f"AI detected {result}-related visual patterns in the user uploaded image at {location}.",
+                "latitude": latitude,
+                "longitude": longitude,
+                "image_path": file_path,
+                "status": "Unverified"
+            }
+
+            await r.lpush("feed:", json.dumps(report))
+            await card_update(report)
             return "Disaster"
         else:
             return result
