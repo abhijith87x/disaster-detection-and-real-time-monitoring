@@ -65,6 +65,8 @@ services:
   cnn_service:
     build: ./services/cnn_service
     container_name: cnn_service
+    ports:
+      - "8003:8000"
     restart: always
     volumes:
       - ./ml/multi-Disaster_detector3.h5:/app/ml/multi-Disaster_detector3.h5
