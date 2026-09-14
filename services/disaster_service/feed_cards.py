@@ -12,11 +12,11 @@ async def get_latest_reports(page: int):
     LIMIT = 6
     OFFSET = (page - 1) * LIMIT
     
-    reports = await r.lrange("feed:", OFFSET, OFFSET + LIMIT - 1)
-  
-    if reports is not None:
-        print("reports from cache:", reports)
-        return [json.loads(report) for report in reports]
+    cached = await r.get("feed:")
+
+    if cached:
+        reports = json.loads(cached)
+        return reports[OFFSET:OFFSET + LIMIT]
     try:
         mydb = get_db()
         cursor = mydb.cursor(dictionary=True)
@@ -30,6 +30,7 @@ async def get_latest_reports(page: int):
         cursor.close()
         mydb.close()
     await r.set(f"feed:", json.dumps(reports, default=float))
+    print("reports from database:", reports)
     return reports
 
 @router.get("/feed/card/action")
