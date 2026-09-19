@@ -1,10 +1,28 @@
 import { useState } from "react";
 import "../style/Demo.css"
 import { useNavigate } from "react-router-dom";
+import { checkuser } from "../checkuser";
+import {useEffect } from "react";
 
 function Demo() {
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+            checkUser();
+        }, []);
+    
+       
+    async function checkUser(): Promise<void> {
+           
+        const response = await checkuser()
+        if (response.ok) {
+            navigate('/camera-page')
+        }else {
+            navigate('/login-page')
+        }
+    }
+    
 
     const [image, setImage] = useState<File | null>(null); 
     const [preview, setPreview] = useState<string | null>(null)

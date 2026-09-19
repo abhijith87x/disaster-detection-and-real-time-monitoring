@@ -1,9 +1,13 @@
 import { useEffect, useRef } from "react";
 import "../style/DisasterUpload.css";
+import { checkuser } from "../checkuser";
+import { useNavigate } from "react-router-dom"
+
 
 let formData: FormData | undefined;
 
 function DisasterUpload() {
+    const navigate = useNavigate();
     const imageCaptureRef = useRef<ImageCapture | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -45,6 +49,21 @@ function DisasterUpload() {
             }
         };
     }, []);
+
+    useEffect(() => {
+        checkUser();
+    }, []);
+
+   
+    async function checkUser(): Promise<void> {
+       
+        const response = await checkuser()
+        if (response.ok) {
+            navigate('/camera-page')
+        }else {
+            navigate('/login-page')
+       }
+    }
 
     function takePhotoButton(): void {
         if (!imageCaptureRef.current) {
@@ -228,6 +247,7 @@ function DisasterUpload() {
     }
 
     async function senddata(): Promise<void> {
+        checkUser();
         console.log("worked");
 
         if (!formData) {

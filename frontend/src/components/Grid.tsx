@@ -259,16 +259,10 @@ function Grid() {
 
 
     useEffect(() => {
-        console.log("🟢 Grid listener setup");
 
-        // socket.on(
-        //     "new_report",
-        //     handleNewReport
-        // );
-        // console.log("🟢 Listend");
 
         socket.on("new_report", (report) => {
-        console.log("🟢 NEW REPORT RECEIVED:", report);
+       
 
         handleNewReport(report);
         });
