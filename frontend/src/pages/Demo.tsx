@@ -17,7 +17,7 @@ function Demo() {
            
         const response = await checkuser()
         if (response.ok) {
-            navigate('/camera-page')
+            navigate('/upload-form')
         }else {
             navigate('/login-page')
         }
